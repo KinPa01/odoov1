@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ═════════════════════════════════════════════════════════════
+             Reorder Rules — กฎการสั่งซื้อซ้ำ
+        ════════════════════════════════════════════════════════════ -->
+
+        <record id="reorder_rule_oil_001" model="spare.reorder.rule">
+            <field name="part_id" ref="part_oil_001"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="min_qty">6.0</field>
+            <field name="max_qty">36.0</field>
+            <field name="lead_time">3</field>
+            <field name="notes">น้ำมัน 10W-40 ขนาด 4 ลิตร - สั่งจาก Top Oil</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="reorder_rule_oil_002" model="spare.reorder.rule">
+            <field name="part_id" ref="part_oil_002"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="min_qty">4.0</field>
+            <field name="max_qty">24.0</field>
+            <field name="lead_time">3</field>
+            <field name="notes">น้ำมัน 5W-30 Mobil 1 ขนาด 4 ลิตร</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="reorder_rule_brk_001" model="spare.reorder.rule">
+            <field name="part_id" ref="part_brk_001"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="min_qty">3.0</field>
+            <field name="max_qty">20.0</field>
+            <field name="lead_time">2</field>
+            <field name="notes">ผ้าเบรกหน้า Toyota Vios</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="reorder_rule_brk_002" model="spare.reorder.rule">
+            <field name="part_id" ref="part_brk_002"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="min_qty">2.0</field>
+            <field name="max_qty">15.0</field>
+            <field name="lead_time">2</field>
+            <field name="notes">ผ้าเบรกหลัง Honda City</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="reorder_rule_fil_001" model="spare.reorder.rule">
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="supplier_id" ref="sup_002"/>
+            <field name="min_qty">10.0</field>
+            <field name="max_qty">50.0</field>
+            <field name="lead_time">2</field>
+            <field name="notes">กรองน้ำมัน Honda - สั่งจาก Filter Pro (Min qty: 10)</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

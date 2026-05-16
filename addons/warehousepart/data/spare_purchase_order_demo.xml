@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ═════════════════════════════════════════════════════════════
+             Purchase Orders — ตัวอย่างใบสั่งซื้อ
+        ════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── PO #1: สั่งซื้อน้ำมันจาก Top Oil ─────────────────── -->
+        <record id="po_001" model="spare.purchase.order">
+            <field name="name">PO/2025/0001</field>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="order_date">2025-05-15 10:30:00</field>
+            <field name="expected_date">2025-05-18 18:00:00</field>
+            <field name="state">draft</field>
+            <field name="notes">สั่งน้ำมันเครื่องเพื่อทำให้สต็อกพอเพียง</field>
+        </record>
+
+        <record id="po_001_line_1" model="spare.purchase.order.line">
+            <field name="order_id" ref="po_001"/>
+            <field name="part_id" ref="part_oil_001"/>
+            <field name="name">น้ำมันเครื่อง 10W-40 ขนาด 4 ลิตร</field>
+            <field name="product_qty">12.0</field>
+            <field name="price_unit">520.00</field>
+        </record>
+
+        <record id="po_001_line_2" model="spare.purchase.order.line">
+            <field name="order_id" ref="po_001"/>
+            <field name="part_id" ref="part_oil_002"/>
+            <field name="name">น้ำมันเครื่อง 5W-30 ฟูลซินเทติก 4 ลิตร</field>
+            <field name="product_qty">6.0</field>
+            <field name="price_unit">750.00</field>
+        </record>
+
+        <!-- ─── PO #2: สั่งซื้อกรองน้ำมันจาก Filter Pro ────────────── -->
+        <record id="po_002" model="spare.purchase.order">
+            <field name="name">PO/2025/0002</field>
+            <field name="supplier_id" ref="sup_002"/>
+            <field name="order_date">2025-05-14 14:15:00</field>
+            <field name="expected_date">2025-05-16 12:00:00</field>
+            <field name="state">draft</field>
+            <field name="notes">สั่งกรองน้ำมัน Honda เพื่อเติมสต็อก</field>
+        </record>
+
+        <record id="po_002_line_1" model="spare.purchase.order.line">
+            <field name="order_id" ref="po_002"/>
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="name">กรองน้ำมัน Honda (15400-PLM-A02)</field>
+            <field name="product_qty">30.0</field>
+            <field name="price_unit">90.00</field>
+        </record>
+
+        <!-- ─── PO #3: สั่งซื้อผ้าเบรกจาก Top Oil ──────────────────── -->
+        <record id="po_003" model="spare.purchase.order">
+            <field name="name">PO/2025/0003</field>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="order_date">2025-05-13 09:00:00</field>
+            <field name="expected_date">2025-05-15 16:00:00</field>
+            <field name="state">confirmed</field>
+            <field name="notes">สั่งผ้าเบรกวาจำนวนมาก เพื่อ fill stock</field>
+        </record>
+
+        <record id="po_003_line_1" model="spare.purchase.order.line">
+            <field name="order_id" ref="po_003"/>
+            <field name="part_id" ref="part_brk_001"/>
+            <field name="name">ผ้าเบรกหน้า Toyota Vios</field>
+            <field name="product_qty">10.0</field>
+            <field name="price_unit">650.00</field>
+        </record>
+
+        <record id="po_003_line_2" model="spare.purchase.order.line">
+            <field name="order_id" ref="po_003"/>
+            <field name="part_id" ref="part_brk_002"/>
+            <field name="name">ผ้าเบรกหลัง Honda City</field>
+            <field name="product_qty">8.0</field>
+            <field name="price_unit">480.00</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ─── Pricelists ─────────────────────────────────────────── -->
+        <record id="price_retail" model="spare.pricelist">
+            <field name="name">ราคาปกติ (Retail)</field>
+            <field name="code">RETAIL</field>
+            <field name="sequence">1</field>
+            <field name="pricelist_type">retail</field>
+            <field name="discount_percent">0.0</field>
+            <field name="default_pricelist">True</field>
+            <field name="active">True</field>
+            <field name="description">ราคาขายปกติสำหรับลูกค้าทั่วไป</field>
+        </record>
+
+        <record id="price_garage" model="spare.pricelist">
+            <field name="name">ราคาอู่ (ลด 10%)</field>
+            <field name="code">GARAGE</field>
+            <field name="sequence">2</field>
+            <field name="pricelist_type">garage</field>
+            <field name="discount_percent">10.0</field>
+            <field name="default_pricelist">False</field>
+            <field name="active">True</field>
+            <field name="description">ราคาสำหรับอู่ซ่อมรถ ลด 10% จากราคาปกติ</field>
+        </record>
+
+        <record id="price_member" model="spare.pricelist">
+            <field name="name">ราคาสมาชิก (ลด 5%)</field>
+            <field name="code">MEMBER</field>
+            <field name="sequence">3</field>
+            <field name="pricelist_type">member</field>
+            <field name="discount_percent">5.0</field>
+            <field name="default_pricelist">False</field>
+            <field name="active">True</field>
+            <field name="description">ราคาสำหรับสมาชิก ลด 5% จากราคาปกติ</field>
+        </record>
+
+        <record id="price_online" model="spare.pricelist">
+            <field name="name">ราคาออนไลน์</field>
+            <field name="code">ONLINE</field>
+            <field name="sequence">4</field>
+            <field name="pricelist_type">online</field>
+            <field name="discount_percent">0.0</field>
+            <field name="default_pricelist">False</field>
+            <field name="active">True</field>
+            <field name="description">ราคาสำหรับลูกค้าออนไลน์ (รวมค่าจัดส่ง)</field>
+        </record>
+
+        <record id="price_wholesale" model="spare.pricelist">
+            <field name="name">ราคาส่ง</field>
+            <field name="code">WHOLESALE</field>
+            <field name="sequence">5</field>
+            <field name="pricelist_type">wholesale</field>
+            <field name="discount_percent">15.0</field>
+            <field name="default_pricelist">False</field>
+            <field name="active">True</field>
+            <field name="description">ราคาส่งสำหรับร้านค้าอื่น ลด 15%</field>
+        </record>
+
+        <!-- ─── Pricelist Lines (ตัวอย่างสำหรับสินค้าบางรายการ) ─────── -->
+        <!-- ราคาอู่สำหรับน้ำมันเครื่อง -->
+        <record id="price_garage_line_oil_001" model="spare.pricelist.line">
+            <field name="pricelist_id" ref="price_garage"/>
+            <field name="part_id" ref="part_oil_001"/>
+            <field name="price">621.00</field>
+            <field name="discount_percent">10.0</field>
+            <field name="min_qty">0</field>
+        </record>
+
+        <!-- ราคาสมาชิกสำหรับผ้าเบรก -->
+        <record id="price_member_line_brk_001" model="spare.pricelist.line">
+            <field name="pricelist_id" ref="price_member"/>
+            <field name="part_id" ref="part_brk_001"/>
+            <field name="price">902.50</field>
+            <field name="discount_percent">5.0</field>
+            <field name="min_qty">0</field>
+        </record>
+
+        <!-- ราคาอู่สำหรับกรองน้ำมัน -->
+        <record id="price_garage_line_fil_001" model="spare.pricelist.line">
+            <field name="pricelist_id" ref="price_garage"/>
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="price">162.00</field>
+            <field name="discount_percent">10.0</field>
+            <field name="min_qty">0</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- หมวดหมู่สินค้า (Product Category) -->
+        <record id="product_category_engine" model="product.category">
+            <field name="name">อะไหล่เครื่องยนต์</field>
+        </record>
+        <record id="product_category_brake" model="product.category">
+            <field name="name">ระบบเบรก</field>
+        </record>
+        <record id="product_category_suspension" model="product.category">
+            <field name="name">ช่วงล่างและบังคับเลี้ยว</field>
+        </record>
+
+        <!-- หมวดหมู่ POS (POS Category) -->
+        <record id="pos_category_engine" model="pos.category">
+            <field name="name">อะไหล่เครื่องยนต์</field>
+        </record>
+        <record id="pos_category_brake" model="pos.category">
+            <field name="name">ระบบเบรก</field>
+        </record>
+
+        <!-- สินค้า (Product Templates) -->
+        
+        <!-- 1. กรองน้ำมันเครื่อง -->
+        <record id="product_oil_filter_vios" model="product.template">
+            <field name="name">กรองน้ำมันเครื่อง Toyota Vios</field>
+            <field name="default_code">OF-TY-001</field>
+            <field name="barcode">885123456001</field>
+            <field name="categ_id" ref="product_category_engine"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_engine')])]"/>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">150.00</field>
+            <field name="standard_price">85.00</field>
+            <!-- Custom Fields -->
+            <field name="part_brand">Toyota Genuine Parts</field>
+            <field name="car_model">Toyota Vios 2007-2013 (NCP93)</field>
+        </record>
+
+        <!-- 2. ผ้าเบรกหน้า -->
+        <record id="product_brake_pad_city" model="product.template">
+            <field name="name">ผ้าเบรกหน้า Honda City</field>
+            <field name="default_code">BP-HD-001</field>
+            <field name="barcode">885123456002</field>
+            <field name="categ_id" ref="product_category_brake"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_brake')])]"/>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">1200.00</field>
+            <field name="standard_price">750.00</field>
+            <!-- Custom Fields -->
+            <field name="part_brand">Bendix</field>
+            <field name="car_model">Honda City 2014-2019 (GM6)</field>
+        </record>
+
+        <!-- 3. หัวเทียน -->
+        <record id="product_spark_plug_iridium" model="product.template">
+            <field name="name">หัวเทียน Iridium NGK</field>
+            <field name="default_code">SP-NGK-001</field>
+            <field name="barcode">885123456003</field>
+            <field name="categ_id" ref="product_category_engine"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_engine')])]"/>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">350.00</field>
+            <field name="standard_price">220.00</field>
+            <!-- Custom Fields -->
+            <field name="part_brand">NGK</field>
+            <field name="car_model">Universal (Toyota, Honda, Mazda)</field>
+        </record>
+
+    </data>
+</odoo>

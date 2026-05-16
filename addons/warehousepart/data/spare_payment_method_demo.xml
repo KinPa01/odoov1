@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ─── Payment Methods ─────────────────────────────────────── -->
+        <record id="pay_cash" model="spare.payment.method">
+            <field name="name">เงินสด</field>
+            <field name="code">CASH</field>
+            <field name="sequence">1</field>
+            <field name="payment_type">cash</field>
+            <field name="is_online">False</field>
+            <field name="require_reference">False</field>
+            <field name="available_in_pos">True</field>
+            <field name="active">True</field>
+            <field name="description">ชำระเงินสดที่หน้าร้าน</field>
+        </record>
+
+        <record id="pay_transfer" model="spare.payment.method">
+            <field name="name">โอนธนาคาร</field>
+            <field name="code">TRANSFER</field>
+            <field name="sequence">2</field>
+            <field name="payment_type">bank_transfer</field>
+            <field name="is_online">False</field>
+            <field name="require_reference">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="active">True</field>
+            <field name="description">โอนเงินผ่านธนาคาร (ต้องมีเลขที่อ้างอิง)</field>
+        </record>
+
+        <record id="pay_qr" model="spare.payment.method">
+            <field name="name">QR Code</field>
+            <field name="code">QR</field>
+            <field name="sequence">3</field>
+            <field name="payment_type">qr_code</field>
+            <field name="is_online">False</field>
+            <field name="require_reference">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="active">True</field>
+            <field name="description">สแกน QR Code ผ่านแอปธนาคาร (ต้องมีเลขที่อ้างอิง)</field>
+        </record>
+
+        <record id="pay_card" model="spare.payment.method">
+            <field name="name">บัตรเครดิต/เดบิต</field>
+            <field name="code">CARD</field>
+            <field name="sequence">4</field>
+            <field name="payment_type">credit_card</field>
+            <field name="is_online">False</field>
+            <field name="require_reference">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="active">True</field>
+            <field name="description">ชำระผ่านบัตรเครดิตหรือเดบิต (ต้องมีเลขที่อ้างอิง)</field>
+        </record>
+
+        <record id="pay_check" model="spare.payment.method">
+            <field name="name">เช็ค</field>
+            <field name="code">CHECK</field>
+            <field name="sequence">5</field>
+            <field name="payment_type">check</field>
+            <field name="is_online">False</field>
+            <field name="require_reference">True</field>
+            <field name="available_in_pos">False</field>
+            <field name="active">True</field>
+            <field name="description">รับเช็ค (ต้องมีเลขที่เช็ค)</field>
+        </record>
+    </data>
+</odoo>

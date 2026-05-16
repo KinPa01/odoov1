@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- คลังหลัก -->
+        <record id="loc_main" model="spare.location">
+            <field name="code">WH</field>
+            <field name="name">คลังหลักร้านอาหลั่ย</field>
+            <field name="location_type">warehouse</field>
+            <field name="description">คลังสินค้าหลัก</field>
+        </record>
+
+        <!-- ชั้นวาง A1–E1 ตามแผน -->
+        <record id="loc_a1" model="spare.location">
+            <field name="code">A1</field>
+            <field name="name">ชั้นวาง A1</field>
+            <field name="location_type">shelf</field>
+            <field name="parent_id" ref="loc_main"/>
+            <field name="description">น้ำมันเครื่อง / OIL</field>
+        </record>
+
+        <record id="loc_b1" model="spare.location">
+            <field name="code">B1</field>
+            <field name="name">ชั้นวาง B1</field>
+            <field name="location_type">shelf</field>
+            <field name="parent_id" ref="loc_main"/>
+            <field name="description">ระบบเบรก / BRK</field>
+        </record>
+
+        <record id="loc_c1" model="spare.location">
+            <field name="code">C1</field>
+            <field name="name">ชั้นวาง C1</field>
+            <field name="location_type">shelf</field>
+            <field name="parent_id" ref="loc_main"/>
+            <field name="description">กรอง / FIL</field>
+        </record>
+
+        <record id="loc_d1" model="spare.location">
+            <field name="code">D1</field>
+            <field name="name">ชั้นวาง D1</field>
+            <field name="location_type">shelf</field>
+            <field name="parent_id" ref="loc_main"/>
+            <field name="description">แบตเตอรี่ / BAT</field>
+        </record>
+
+        <record id="loc_e1" model="spare.location">
+            <field name="code">E1</field>
+            <field name="name">ชั้นวาง E1</field>
+            <field name="location_type">shelf</field>
+            <field name="parent_id" ref="loc_main"/>
+            <field name="description">ช่วงล่าง / SUS</field>
+        </record>
+    </data>
+</odoo>

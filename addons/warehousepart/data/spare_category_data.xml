@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- หมวดหมู่หลัก 6 หมวด ตามแผน -->
+        <record id="cat_oil" model="spare.category">
+            <field name="code">OIL</field>
+            <field name="name">น้ำมันเครื่อง</field>
+            <field name="description">น้ำมันเครื่อง น้ำมันเกียร์ น้ำมันเพาเวอร์</field>
+        </record>
+
+        <record id="cat_brk" model="spare.category">
+            <field name="code">BRK</field>
+            <field name="name">ระบบเบรก</field>
+            <field name="description">ผ้าเบรก จานเบรก ดิสก์เบรก ปั๊มเบรก</field>
+        </record>
+
+        <record id="cat_fil" model="spare.category">
+            <field name="code">FIL</field>
+            <field name="name">กรอง</field>
+            <field name="description">กรองน้ำมัน กรองอากาศ กรองเชื้อเพลิง</field>
+        </record>
+
+        <record id="cat_bat" model="spare.category">
+            <field name="code">BAT</field>
+            <field name="name">แบตเตอรี่</field>
+            <field name="description">แบตเตอรี่รถยนต์ทุกรุ่น</field>
+        </record>
+
+        <record id="cat_sus" model="spare.category">
+            <field name="code">SUS</field>
+            <field name="name">ช่วงล่าง</field>
+            <field name="description">โช้คอัพ ลูกหมาก บุชช์ แหนบ</field>
+        </record>
+
+        <record id="cat_elec" model="spare.category">
+            <field name="code">ELEC</field>
+            <field name="name">ระบบไฟ</field>
+            <field name="description">หลอดไฟ ฟิวส์ ไดชาร์จ สตาร์ทเตอร์</field>
+        </record>
+    </data>
+</odoo>

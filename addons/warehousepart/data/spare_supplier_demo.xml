@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sup_001" model="spare.supplier">
+            <field name="code">SUP-001</field>
+            <field name="name">บริษัท ท็อปออย จำกัด</field>
+            <field name="contact_person">คุณสมชาย</field>
+            <field name="phone">02-111-2222</field>
+            <field name="email">topoil@example.com</field>
+            <field name="address">123 ถ.พระราม 2 แขวงบางบอน เขตบางบอน กรุงเทพฯ 10150</field>
+            <field name="payment_term">credit_30</field>
+            <field name="lead_time">3</field>
+        </record>
+
+        <record id="sup_002" model="spare.supplier">
+            <field name="code">SUP-002</field>
+            <field name="name">ห้างหุ้นส่วน ฟิลเตอร์โปร</field>
+            <field name="contact_person">คุณวิชัย</field>
+            <field name="phone">038-333-4444</field>
+            <field name="email">filterpro@example.com</field>
+            <field name="address">456 ถ.สุขุมวิท ต.บางปู อ.เมือง จ.สมุทรปราการ 10270</field>
+            <field name="payment_term">credit_15</field>
+            <field name="lead_time">2</field>
+        </record>
+
+        <record id="sup_003" model="spare.supplier">
+            <field name="code">SUP-003</field>
+            <field name="name">บริษัท แบตเตอรี่ไทย จำกัด</field>
+            <field name="contact_person">คุณประยุทธ</field>
+            <field name="phone">02-555-6666</field>
+            <field name="email">batterthai@example.com</field>
+            <field name="address">789 ถ.บางนา-ตราด กม.7 แขวงบางนา เขตบางนา กรุงเทพฯ 10260</field>
+            <field name="payment_term">credit_30</field>
+            <field name="lead_time">5</field>
+        </record>
+    </data>
+</odoo>

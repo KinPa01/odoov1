@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ═════════════════════════════════════════════════════════════
+             Vendor Prices — ราคาซื้อจากผู้จัดจำหน่าย
+        ════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── OIL-10W40-001 ─────────────────────────────────────── -->
+        <record id="vendor_price_oil_001_sup001" model="spare.vendor.price">
+            <field name="part_id" ref="part_oil_001"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="supplier_code">OIL10W40CS</field>
+            <field name="price_unit">520.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">1.0</field>
+            <field name="lead_time">3</field>
+            <field name="is_default">True</field>
+            <field name="notes">ราคาปกติจาก Top Oil</field>
+        </record>
+
+        <!-- ─── OIL-5W30-001 ─────────────────────────────────────── -->
+        <record id="vendor_price_oil_002_sup001" model="spare.vendor.price">
+            <field name="part_id" ref="part_oil_002"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="supplier_code">OIL5W30MB1</field>
+            <field name="price_unit">750.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">1.0</field>
+            <field name="lead_time">3</field>
+            <field name="is_default">True</field>
+            <field name="notes">Mobil 1 Full Synthetic</field>
+        </record>
+
+        <!-- ─── BRK-VIOS-001 ─────────────────────────────────────── -->
+        <record id="vendor_price_brk_001_sup001" model="spare.vendor.price">
+            <field name="part_id" ref="part_brk_001"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="supplier_code">BRKVIOSTOP</field>
+            <field name="price_unit">650.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">1.0</field>
+            <field name="lead_time">2</field>
+            <field name="is_default">True</field>
+            <field name="notes">Bendix Brake Pad</field>
+        </record>
+
+        <!-- ─── BRK-CITY-001 ─────────────────────────────────────── -->
+        <record id="vendor_price_brk_002_sup001" model="spare.vendor.price">
+            <field name="part_id" ref="part_brk_002"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="supplier_code">BRKCITYTRW</field>
+            <field name="price_unit">480.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">1.0</field>
+            <field name="lead_time">2</field>
+            <field name="is_default">True</field>
+            <field name="notes">TRW Brake Pad</field>
+        </record>
+
+        <!-- ─── FIL-HONDA-001 ─────────────────────────────────────── -->
+        <record id="vendor_price_fil_001_sup002" model="spare.vendor.price">
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="supplier_id" ref="sup_002"/>
+            <field name="supplier_code">FILHONDA15400</field>
+            <field name="price_unit">90.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">10.0</field>
+            <field name="lead_time">2</field>
+            <field name="is_default">True</field>
+            <field name="notes">Honda OEM Filter</field>
+        </record>
+
+        <!-- Price variations for different suppliers (optional) -->
+        <record id="vendor_price_fil_001_sup001" model="spare.vendor.price">
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="supplier_id" ref="sup_001"/>
+            <field name="supplier_code">FILHONDA-ALT</field>
+            <field name="price_unit">95.00</field>
+            <field name="currency">thb</field>
+            <field name="min_qty">1.0</field>
+            <field name="lead_time">5</field>
+            <field name="is_default">False</field>
+            <field name="notes">ราคาสูงกว่าหน่อย แต่ส่งเร็ว</field>
+        </record>
+    </data>
+</odoo>

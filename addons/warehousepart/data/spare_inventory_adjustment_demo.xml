@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ═════════════════════════════════════════════════════════════
+             Opening Stock — นับของครั้งแรก (เสร็จสมบูรณ์แล้ว)
+        ════════════════════════════════════════════════════════════ -->
+
+        <record id="inv_adj_opening_001" model="spare.inventory.adjustment">
+            <field name="name">ADJ/2025/OPENING/001</field>
+            <field name="adjustment_date">2025-05-15 14:30:00</field>
+            <field name="adjustment_type">opening</field>
+            <field name="reason">opening</field>
+            <field name="state">done</field>
+            <field name="notes">นับของครั้งแรก ก่อนเปิดระบบ ตรวจสอบข้อมูลจากใบนับ ร้องนับ</field>
+        </record>
+
+        <!-- น้ำมัน 10W-40 -->
+        <record id="inv_adj_opening_001_line_1" model="spare.inventory.adjustment.line">
+            <field name="adjustment_id" ref="inv_adj_opening_001"/>
+            <field name="part_id" ref="part_oil_001"/>
+            <field name="qty_change">24.0</field>
+            <field name="reason">นับจากใบจริง ชั้น A1</field>
+        </record>
+
+        <!-- น้ำมัน 5W-30 -->
+        <record id="inv_adj_opening_001_line_2" model="spare.inventory.adjustment.line">
+            <field name="adjustment_id" ref="inv_adj_opening_001"/>
+            <field name="part_id" ref="part_oil_002"/>
+            <field name="qty_change">12.0</field>
+            <field name="reason">นับจากใบจริง ชั้น A1</field>
+        </record>
+
+        <!-- ผ้าเบรก Vios -->
+        <record id="inv_adj_opening_001_line_3" model="spare.inventory.adjustment.line">
+            <field name="adjustment_id" ref="inv_adj_opening_001"/>
+            <field name="part_id" ref="part_brk_001"/>
+            <field name="qty_change">8.0</field>
+            <field name="reason">นับจากใบจริง ชั้น B1</field>
+        </record>
+
+        <!-- ผ้าเบรก City -->
+        <record id="inv_adj_opening_001_line_4" model="spare.inventory.adjustment.line">
+            <field name="adjustment_id" ref="inv_adj_opening_001"/>
+            <field name="part_id" ref="part_brk_002"/>
+            <field name="qty_change">5.0</field>
+            <field name="reason">นับจากใบจริง ชั้น B1</field>
+        </record>
+
+        <!-- กรองน้ำมัน Honda -->
+        <record id="inv_adj_opening_001_line_5" model="spare.inventory.adjustment.line">
+            <field name="adjustment_id" ref="inv_adj_opening_001"/>
+            <field name="part_id" ref="part_fil_001"/>
+            <field name="qty_change">30.0</field>
+            <field name="reason">นับจากใบจริง ชั้น C1</field>
+        </record>
+    </data>
+</odoo>

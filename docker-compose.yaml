@@ -1,26 +1,30 @@
+version: '3.8'
 services:
   web:
-    build:
-    command:
-    environment:
-      DATABASE_URL:
-    links:
-      - 'database_default'
+    image: odoo:19.0
+    depends_on:
+      - db
     ports:
-      - '8069:8044'
+      - "8044:8069"
     volumes:
-      - '.:/app:rw'
-      - './data:/data:rw'
-
-  database_default:
-    image: postgres:15.7-alpine
+      - ./addons:/mnt/extra-addons
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
     environment:
-      POSTGRES_DB: 'db'
-      POSTGRES_HOST_AUTH_METHOD: 'trust'
-      SERVICE_MANAGER: 'fsm-postgres'
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+      - ODOO_MASTER_PASS=admin
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
     volumes:
-      - '.:/app:rw'
-      - 'database-default:/var/lib/postgresql/data/'
+      - odoo-db-data:/var/lib/postgresql/data
 
 volumes:
-  database-default:
+  odoo-web-data:
+  odoo-db-data:

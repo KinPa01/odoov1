@@ -9,11 +9,11 @@
 
 | ลำดับ | หมวด | สถานะ |
 |-------|------|--------|
-| 1 | **Product Master Data** — SKU, Barcode, Cost, Price, Category | 🔲 รอทำ |
-| 2 | **Supplier & Purchase** — Vendor, ราคาซื้อ, Lead Time | 🔲 รอทำ |
-| 3 | **Inventory & Location** — คลัง, ชั้นวาง, Opening Stock | 🔲 รอทำ |
-| 4 | **POS & Payment Method** — จุดขาย, วิธีรับเงิน, Barcode | 🔲 รอทำ |
-| 5 | **User Roles & Access Rights** — Admin, Manager, Cashier, Stock Staff | 🔲 รอทำ |
+| 1 | **Product Master Data** — SKU, Barcode, Cost, Price, Category | ✅ เสร็จแล้ว |
+| 2 | **Supplier & Purchase** — Vendor, ราคาซื้อ, Lead Time | ✅ เสร็จแล้ว |
+| 3 | **Inventory & Location** — คลัง, ชั้นวาง, Opening Stock | ✅ เสร็จแล้ว |
+| 4 | **POS & Payment Method** — จุดขาย, วิธีรับเงิน, Barcode | ✅ เสร็จแล้ว |
+| 5 | **User Roles & Access Rights** — Admin, Manager, Cashier, Stock Staff | ✅ เสร็จแล้ว |
 | 6 | **Website / eCommerce** — เปิดหลังสุด เมื่อ POS นิ่งแล้ว | 🔲 ทำภายหลัง |
 
 ---

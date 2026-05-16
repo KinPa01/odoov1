@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- สืบทอด Product Form View เพื่อแทรกฟิลด์ใหม่ -->
+    <record id="view_product_template_form_inherit_spare" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit.spare</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- เพิ่ม Tab ใหม่สำหรับเก็บข้อมูลอะไหล่โดยเฉพาะ เพื่อไม่ให้ตีกับฟิลด์ Odoo -->
+            <xpath expr="//notebook" position="inside">
+                <page string="ข้อมูลอะไหล่รถยนต์" name="spare_part_info">
+                    <group>
+                        <group string="สเปกและรุ่นรถ (Fitment)">
+                            <field name="part_brand"/>
+                            <field name="car_model"/>
+                        </group>
+                        <group string="Webike Integration">
+                            <field name="webike_url" widget="url"/>
+                            <field name="webike_sku"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Action สำหรับเปิดเฉพาะสินค้าที่เป็นอะไหล่ (ดึงหน้าจอมาตรฐาน) -->
+    <record id="action_spare_product_template" model="ir.actions.act_window">
+        <field name="name">รายการอะไหล่</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form,activity</field>
+        <!-- Filter ให้เห็นสินค้าที่ใช้งานได้ใน POS หรือที่เป็นสินค้าชิ้นเป็นหลัก -->
+        <field name="context">{'search_default_filter_to_sell': 1}</field>
+    </record>
+</odoo>

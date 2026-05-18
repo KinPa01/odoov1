@@ -1,59 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- ══════════════════════════════════════════════════
+     <!-- ══════════════════════════════════════════════════
          เมนูหลัก — ร้านอาหลั่ย (Hub สำหรับอะไหล่รถยนต์)
     ══════════════════════════════════════════════════ -->
-    <menuitem id="menu_warehousepart_root"
-              name="ร้านอาหลั่ย"
-              sequence="10"
-              web_icon="warehousepart,static/description/icon.png"/>
+     <menuitem id="menu_warehousepart_root" name="ร้านอาหลั่ย" sequence="10" web_icon="warehousepart,static/description/icon.png"/>
 
-    <!-- ══ สินค้าอะไหล่ ══ -->
-    <menuitem id="menu_spare_parts_main"
-              name="📦 ฐานข้อมูลอะไหล่"
-              parent="menu_warehousepart_root"
-              sequence="10"/>
+     <!-- ══ สินค้าอะไหล่ ══ -->
+     <menuitem id="menu_spare_parts_main" name="📦 ฐานข้อมูลอะไหล่" parent="menu_warehousepart_root" sequence="10"/>
 
-    <menuitem id="menu_spare_part_list"
-              name="แคตตาล็อกอะไหล่"
-              parent="menu_spare_parts_main"
-              action="action_spare_product_template"
-              sequence="10"/>
+     <menuitem id="menu_spare_part_list" name="แคตตาล็อกอะไหล่" parent="menu_spare_parts_main" action="action_spare_product_template" sequence="10"/>
 
-    <menuitem id="menu_spare_part_category"
-              name="หมวดหมู่อะไหล่ (POS)"
-              parent="menu_spare_parts_main"
-              action="point_of_sale.product_pos_category_action"
-              sequence="20"/>
+     <menuitem id="menu_spare_part_category" name="หมวดหมู่อะไหล่ (POS)" parent="menu_spare_parts_main" action="point_of_sale.product_pos_category_action" sequence="20"/>
 
-    <!-- ══ คลังสินค้า (ทางลัดไป Inventory ของ Odoo) ══ -->
-    <menuitem id="menu_spare_inventory_shortcut"
-              name="🏗️ คลังสินค้าและการจัดส่ง"
-              parent="menu_warehousepart_root"
-              action="stock.stock_picking_type_action"
-              groups="warehousepart.group_spare_manager"
-              sequence="20"/>
+     <!-- ══ คลังสินค้า (ทางลัดไป Inventory ของ Odoo) ══ -->
+     <menuitem id="menu_spare_inventory_shortcut" name="🏗️ คลังสินค้าและการจัดส่ง" parent="menu_warehousepart_root" action="stock.stock_picking_type_action" groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" sequence="20"/>
 
-    <!-- ══ POS & การขาย (ทางลัดไป POS ของ Odoo) ══ -->
-    <menuitem id="menu_spare_pos_shortcut"
-              name="🖥️ ระบบขายหน้าร้าน (POS)"
-              parent="menu_warehousepart_root"
-              action="point_of_sale.action_pos_config_kanban"
-              sequence="30"/>
-              
-    <!-- ══ การจัดซื้อ (ทางลัดไป Purchase ของ Odoo) ══ -->
-    <menuitem id="menu_spare_purchase_shortcut"
-              name="🛒 ระบบสั่งซื้อ (Purchase)"
-              parent="menu_warehousepart_root"
-              action="purchase.purchase_rfq"
-              groups="warehousepart.group_spare_manager"
-              sequence="40"/>
+     <!-- ══ การสั่งซื้อออนไลน์ (eCommerce) ══ -->
+     <menuitem id="menu_spare_ecommerce_shortcut" name="🌐 คำสั่งซื้อออนไลน์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_cashier" sequence="25"/>
 
-    <!-- ══ ข้อมูลผู้ติดต่อ / Supplier ══ -->
-    <menuitem id="menu_spare_partner_shortcut"
-              name="🤝 ลูกค้า &amp; ซัพพลายเออร์"
-              parent="menu_warehousepart_root"
-              action="base.action_partner_form"
-              groups="warehousepart.group_spare_manager"
-              sequence="50"/>
+     <menuitem id="menu_spare_unpaid_orders" name="ออเดอร์รอชำระเงิน (Unpaid)" parent="menu_spare_ecommerce_shortcut" action="website_sale.action_unpaid_orders_ecommerce" sequence="10"/>
+
+     <menuitem id="menu_spare_paid_orders" name="ออเดอร์ที่ยืนยันแล้ว (Orders)" parent="menu_spare_ecommerce_shortcut" action="website_sale.action_orders_ecommerce" sequence="20"/>
+
+     <!-- ══ POS & การขาย (ทางลัดไป POS ของ Odoo) ══ -->
+     <menuitem id="menu_spare_pos_shortcut" name="🖥️ ระบบขายหน้าร้าน (POS)" parent="menu_warehousepart_root" action="point_of_sale.action_pos_config_kanban" groups="warehousepart.group_spare_cashier" sequence="30"/>
+
+     <!-- ══ การจัดซื้อ (ทางลัดไป Purchase ของ Odoo) ══ -->
+     <menuitem id="menu_spare_purchase_shortcut" name="🛒 ระบบสั่งซื้อ (Purchase)" parent="menu_warehousepart_root" action="purchase.purchase_rfq" groups="warehousepart.group_spare_manager" sequence="40"/>
+
+     <!-- ══ ข้อมูลผู้ติดต่อ ══ -->
+     <record id="action_spare_customers" model="ir.actions.act_window">
+          <field name="name">ลูกค้า (Customers)</field>
+          <field name="res_model">res.partner</field>
+          <field name="view_mode">kanban,list,form</field>
+          <field name="context">{'search_default_customer': 1, 'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
+     </record>
+
+     <record id="action_spare_suppliers" model="ir.actions.act_window">
+          <field name="name">ซัพพลายเออร์ (Suppliers)</field>
+          <field name="res_model">res.partner</field>
+          <field name="view_mode">kanban,list,form</field>
+          <field name="context">{'search_default_supplier': 1, 'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+     </record>
+
+     <menuitem id="menu_spare_contacts_main" name="🤝 ข้อมูลผู้ติดต่อ" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="50"/>
+
+     <menuitem id="menu_spare_customers" name="ลูกค้า (Customers)" parent="menu_spare_contacts_main" action="action_spare_customers" sequence="10"/>
+
+     <menuitem id="menu_spare_suppliers" name="ซัพพลายเออร์ (Suppliers)" parent="menu_spare_contacts_main" action="action_spare_suppliers" sequence="20"/>
 </odoo>

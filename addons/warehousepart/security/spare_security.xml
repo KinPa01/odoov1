@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <!-- หมวดหมู่สิทธิ์สำหรับร้านอาหลั่ย -->
-        <record model="ir.module.category" id="module_category_warehousepart">
-            <field name="name">ร้านอาหลั่ย (Ran Ahlai)</field>
-            <field name="description">จัดการสิทธิ์การเข้าถึงสำหรับร้านอะไหล่รถยนต์</field>
-            <field name="sequence">10</field>
-        </record>
-
         <!-- สิทธิ์: พนักงานขาย (Cashier) -->
         <record id="group_spare_cashier" model="res.groups">
-            <field name="name">พนักงานขาย / แคชเชียร์</field>
-            <field name="category_id" ref="module_category_warehousepart"/>
+            <field name="name">พนักงานขาย / แคชเชียร์ (Cashier)</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
             <field name="comment">มีสิทธิ์เฉพาะดูข้อมูลแคตตาล็อกอะไหล่ และเข้าใช้งาน POS ได้</field>
         </record>
 
+        <!-- สิทธิ์: พนักงานคลังสินค้า (Inventory) -->
+        <record id="group_spare_inventory" model="res.groups">
+            <field name="name">พนักงานคลังสินค้า (Inventory Staff)</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">มีสิทธิ์จัดการคลังสินค้าและการจัดส่ง</field>
+        </record>
+
         <!-- สิทธิ์: ผู้จัดการร้าน (Manager) -->
         <record id="group_spare_manager" model="res.groups">
-            <field name="name">ผู้จัดการร้าน</field>
-            <field name="category_id" ref="module_category_warehousepart"/>
-            <field name="implied_ids" eval="[(4, ref('group_spare_cashier'))]"/>
+            <field name="name">ผู้จัดการร้าน (Manager)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_cashier')), (4, ref('group_spare_inventory'))]"/>
             <field name="comment">มีสิทธิ์เข้าถึงทุกเมนู รวมถึงการจัดซื้อและคลังสินค้า</field>
         </record>
     </data>

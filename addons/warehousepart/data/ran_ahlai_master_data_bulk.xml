@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- New Categories for Motorcycle Parts -->
+        <!-- Product Categories -->
+        <record id="product_category_tire" model="product.category">
+            <field name="name">ยาง/ล้อ</field>
+        </record>
+        <record id="product_category_chain" model="product.category">
+            <field name="name">ระบบขับเคลื่อน/โซ่</field>
+        </record>
+        <record id="product_category_elec" model="product.category">
+            <field name="name">ระบบไฟฟ้า/หลอดไฟ</field>
+        </record>
+        <record id="product_category_engine" model="product.category">
+            <field name="name">อะไหล่เครื่องยนต์</field>
+        </record>
+
+        <!-- POS Categories -->
+        <record id="pos_category_tire" model="pos.category">
+            <field name="name">ยาง/ล้อ</field>
+        </record>
+        <record id="pos_category_chain" model="pos.category">
+            <field name="name">ระบบขับเคลื่อน/โซ่</field>
+        </record>
+        <record id="pos_category_elec" model="pos.category">
+            <field name="name">ระบบไฟฟ้า</field>
+        </record>
+        <record id="pos_category_engine" model="pos.category">
+            <field name="name">เครื่องยนต์</field>
+        </record>
+
+        <!-- Website eCommerce Categories -->
+        <record id="web_category_tire" model="product.public.category">
+            <field name="name">ยาง/ล้อ</field>
+        </record>
+        <record id="web_category_chain" model="product.public.category">
+            <field name="name">ระบบขับเคลื่อน</field>
+        </record>
+        <record id="web_category_elec" model="product.public.category">
+            <field name="name">ระบบไฟ</field>
+        </record>
+        <record id="web_category_engine" model="product.public.category">
+            <field name="name">เครื่องยนต์</field>
+        </record>
+
+        <!-- New Locations -->
+        <record id="location_shelf_f1" model="stock.location">
+            <field name="name">F1 (ยางและล้อ)</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+        <record id="location_shelf_g1" model="stock.location">
+            <field name="name">G1 (โซ่และสเตอร์)</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+        <record id="location_shelf_h1" model="stock.location">
+            <field name="name">H1 (ระบบไฟฟ้า)</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="usage">internal</field>
+        </record>
+
+        <!-- 1. ยาง IRC -->
+        <record id="product_tire_irc_7090" model="product.template">
+            <field name="name">ยางนอก IRC 70/90-17</field>
+            <field name="default_code">TIRE-IRC-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000101</field>
+            <field name="part_brand">IRC</field>
+            <field name="car_model">Wave, Finn, Smash</field>
+            <field name="shelf_location" ref="location_shelf_f1"/>
+            <field name="categ_id" ref="product_category_tire"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_tire')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_tire')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">450.00</field>
+            <field name="standard_price">300.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_001'), 'min_qty': 1, 'price': 300.00})]"/>
+        </record>
+
+        <!-- 2. ยาง Michelin -->
+        <record id="product_tire_mic_9090" model="product.template">
+            <field name="name">ยางนอก Michelin City Grip 90/90-14</field>
+            <field name="default_code">TIRE-MIC-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000102</field>
+            <field name="part_brand">Michelin</field>
+            <field name="car_model">PCX, Click, Aerox</field>
+            <field name="shelf_location" ref="location_shelf_f1"/>
+            <field name="categ_id" ref="product_category_tire"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_tire')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_tire')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">1250.00</field>
+            <field name="standard_price">850.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_002'), 'min_qty': 1, 'price': 850.00})]"/>
+        </record>
+
+        <!-- 3. โซ่สเตอร์ DID -->
+        <record id="product_chain_did_428" model="product.template">
+            <field name="name">ชุดโซ่สเตอร์ DID 428-104L</field>
+            <field name="default_code">CHN-DID-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000103</field>
+            <field name="part_brand">DID</field>
+            <field name="car_model">Wave 110i, Wave 125i</field>
+            <field name="shelf_location" ref="location_shelf_g1"/>
+            <field name="categ_id" ref="product_category_chain"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_chain')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_chain')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">550.00</field>
+            <field name="standard_price">380.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_003'), 'min_qty': 1, 'price': 380.00})]"/>
+        </record>
+
+        <!-- 4. ผ้าเบรก NMAX -->
+        <record id="product_brk_nmax" model="product.template">
+            <field name="name">ผ้าเบรกหน้า NMAX</field>
+            <field name="default_code">BRK-NMAX-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000104</field>
+            <field name="part_brand">Yamaha Genuine</field>
+            <field name="car_model">Yamaha NMAX 155</field>
+            <field name="shelf_location" ref="location_shelf_b1"/>
+            <field name="categ_id" ref="product_category_brk"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_brk')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_brk')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">350.00</field>
+            <field name="standard_price">220.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_001'), 'min_qty': 1, 'price': 220.00})]"/>
+        </record>
+
+        <!-- 5. ผ้าเบรก PCX -->
+        <record id="product_brk_pcx" model="product.template">
+            <field name="name">ผ้าเบรกหลัง PCX</field>
+            <field name="default_code">BRK-PCX-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000105</field>
+            <field name="part_brand">Honda Genuine</field>
+            <field name="car_model">Honda PCX 150/160</field>
+            <field name="shelf_location" ref="location_shelf_b1"/>
+            <field name="categ_id" ref="product_category_brk"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_brk')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_brk')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">280.00</field>
+            <field name="standard_price">150.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_002'), 'min_qty': 1, 'price': 150.00})]"/>
+        </record>
+
+        <!-- 6. แบต YUASA -->
+        <record id="product_bat_yuasa" model="product.template">
+            <field name="name">แบตเตอรี่ YUASA YTZ5S</field>
+            <field name="default_code">BAT-YTZ5S-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000106</field>
+            <field name="part_brand">YUASA</field>
+            <field name="car_model">Wave, Click, Fino</field>
+            <field name="shelf_location" ref="location_shelf_c1"/>
+            <field name="categ_id" ref="product_category_bat"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_bat')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_bat')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">650.00</field>
+            <field name="standard_price">420.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_003'), 'min_qty': 1, 'price': 420.00})]"/>
+        </record>
+
+        <!-- 7. กรองอากาศ Wave 110i -->
+        <record id="product_fil_wave" model="product.template">
+            <field name="name">กรองอากาศ Honda Wave 110i</field>
+            <field name="default_code">FIL-WAV-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000107</field>
+            <field name="part_brand">Honda Genuine</field>
+            <field name="car_model">Honda Wave 110i</field>
+            <field name="shelf_location" ref="location_shelf_a1"/>
+            <field name="categ_id" ref="product_category_fil"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_fil')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_fil')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">150.00</field>
+            <field name="standard_price">80.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_002'), 'min_qty': 1, 'price': 80.00})]"/>
+        </record>
+
+        <!-- 8. กรองอากาศ XMAX -->
+        <record id="product_fil_xmax" model="product.template">
+            <field name="name">กรองอากาศ Yamaha XMAX 300</field>
+            <field name="default_code">FIL-XMA-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000108</field>
+            <field name="part_brand">Yamaha Genuine</field>
+            <field name="car_model">Yamaha XMAX 300</field>
+            <field name="shelf_location" ref="location_shelf_a1"/>
+            <field name="categ_id" ref="product_category_fil"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_fil')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_fil')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">320.00</field>
+            <field name="standard_price">200.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_001'), 'min_qty': 1, 'price': 200.00})]"/>
+        </record>
+
+        <!-- 9. หัวเทียน NGK -->
+        <record id="product_spk_ngk" model="product.template">
+            <field name="name">หัวเทียน NGK CPR6EA-9</field>
+            <field name="default_code">SPK-NGK-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000109</field>
+            <field name="part_brand">NGK</field>
+            <field name="car_model">Wave 110i, Dream</field>
+            <field name="shelf_location" ref="location_shelf_h1"/>
+            <field name="categ_id" ref="product_category_elec"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_elec')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_elec')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">85.00</field>
+            <field name="standard_price">50.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_003'), 'min_qty': 1, 'price': 50.00})]"/>
+        </record>
+
+        <!-- 10. หลอดไฟหน้า Osram -->
+        <record id="product_led_osram" model="product.template">
+            <field name="name">หลอดไฟหน้า Osram LED</field>
+            <field name="default_code">LED-OSR-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000110</field>
+            <field name="part_brand">Osram</field>
+            <field name="car_model">Universal (T19/H6)</field>
+            <field name="shelf_location" ref="location_shelf_h1"/>
+            <field name="categ_id" ref="product_category_elec"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_elec')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_elec')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">290.00</field>
+            <field name="standard_price">180.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_001'), 'min_qty': 1, 'price': 180.00})]"/>
+        </record>
+
+        <!-- 11. สายพาน PCX -->
+        <record id="product_belt_pcx" model="product.template">
+            <field name="name">สายพานขับเคลื่อน Honda PCX 150</field>
+            <field name="default_code">BLT-PCX-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000111</field>
+            <field name="part_brand">Bando</field>
+            <field name="car_model">Honda PCX 150</field>
+            <field name="shelf_location" ref="location_shelf_e1"/>
+            <field name="categ_id" ref="product_category_engine"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_engine')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_engine')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">580.00</field>
+            <field name="standard_price">400.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_002'), 'min_qty': 1, 'price': 400.00})]"/>
+        </record>
+
+        <!-- 12. สายพาน Aerox -->
+        <record id="product_belt_aerox" model="product.template">
+            <field name="name">สายพานขับเคลื่อน Yamaha Aerox 155</field>
+            <field name="default_code">BLT-AER-001</field>
+            <field name="is_storable">True</field>
+            <field name="barcode">885100000112</field>
+            <field name="part_brand">Yamaha Genuine</field>
+            <field name="car_model">Yamaha Aerox 155</field>
+            <field name="shelf_location" ref="location_shelf_e1"/>
+            <field name="categ_id" ref="product_category_engine"/>
+            <field name="pos_categ_ids" eval="[(6, 0, [ref('pos_category_engine')])]"/>
+            <field name="public_categ_ids" eval="[(6, 0, [ref('web_category_engine')])]"/>
+            <field name="is_published">True</field>
+            <field name="available_in_pos">True</field>
+            <field name="list_price">650.00</field>
+            <field name="standard_price">450.00</field>
+            <field name="seller_ids" eval="[(0, 0, {'partner_id': ref('supplier_001'), 'min_qty': 1, 'price': 450.00})]"/>
+        </record>
+
+        <!-- Orderpoints for some new products -->
+        <record id="orderpoint_tire_irc" model="stock.warehouse.orderpoint">
+            <field name="product_id" search="[('default_code', '=', 'TIRE-IRC-001')]"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">5</field>
+            <field name="product_max_qty">30</field>
+        </record>
+
+        <record id="orderpoint_chain_did" model="stock.warehouse.orderpoint">
+            <field name="product_id" search="[('default_code', '=', 'CHN-DID-001')]"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">4</field>
+            <field name="product_max_qty">20</field>
+        </record>
+
+        <record id="orderpoint_belt_pcx" model="stock.warehouse.orderpoint">
+            <field name="product_id" search="[('default_code', '=', 'BLT-PCX-001')]"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="product_min_qty">3</field>
+            <field name="product_max_qty">15</field>
+        </record>
+    </data>
+</odoo>

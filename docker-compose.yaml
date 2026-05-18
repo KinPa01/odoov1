@@ -15,7 +15,7 @@ services:
       - USER=odoo
       - PASSWORD=odoo
       - ODOO_MASTER_PASS=admin
-
+    command: odoo --addons-path="/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"
   db:
     image: postgres:15
     environment:

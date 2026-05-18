@@ -14,7 +14,7 @@
 | 3 | **Inventory & Location** — คลัง, ชั้นวาง, Opening Stock | ✅ เสร็จแล้ว |
 | 4 | **POS & Payment Method** — จุดขาย, วิธีรับเงิน, Barcode | ✅ เสร็จแล้ว |
 | 5 | **User Roles & Access Rights** — Admin, Manager, Cashier, Stock Staff | ✅ เสร็จแล้ว |
-| 6 | **Website / eCommerce** — เปิดหลังสุด เมื่อ POS นิ่งแล้ว | 🔲 ทำภายหลัง |
+| 6 | **Website / eCommerce** — เปิดใช้งานเพื่อขายผ่านหน้าเว็บ | ✅ กำลังเริ่มใช้งาน |
 
 ---
 

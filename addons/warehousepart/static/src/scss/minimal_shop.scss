@@ -1,0 +1,161 @@
+/* Minimalist Shop Design for Ran Ahlai */
+
+/* Header Override */
+header#top {
+    background-color: #380b0b !important;
+    border-bottom: 3px solid #dca816;
+    
+    .navbar-brand {
+        color: white !important;
+        font-weight: 800;
+        font-size: 1.5rem;
+    }
+    
+    .nav-link {
+        color: #e5e7eb !important;
+        font-weight: 500;
+        &:hover { color: #dca816 !important; }
+    }
+    
+    /* Simulate the yellow signup button */
+    .nav-item a[href="/web/signup"], .nav-item a[href*="signup"] {
+        background-color: #dca816 !important;
+        color: #111 !important;
+        border-radius: 4px;
+        padding: 0.5rem 1.2rem !important;
+        font-weight: 700;
+        margin-left: 1rem;
+    }
+}
+
+.oe_website_sale {
+    /* Main Grid Adjustments */
+    .o_wsale_products_grid_table_wrapper {
+        background-color: #fafafa;
+        padding: 1rem;
+        
+        .oe_product {
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            
+            &:hover {
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                border-color: #d1d5db;
+                transform: translateY(-2px);
+            }
+            
+            .oe_product_image {
+                padding: 1.5rem;
+                background-color: #ffffff;
+            }
+            
+            .o_wsale_product_information {
+                background: transparent !important;
+                padding: 1.25rem;
+                border-top: 1px solid #f3f4f6;
+                
+                .o_wsale_products_item_title a {
+                    color: #111827;
+                    font-weight: 700;
+                    font-size: 0.95rem;
+                    text-decoration: none;
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    
+                    &:hover {
+                        color: #8b1515; /* Brand red */
+                    }
+                }
+                
+                .product_price {
+                    font-weight: 800;
+                    color: #8b1515;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+    
+    /* Left Sidebar Styling */
+    #products_grid_before {
+        border-right: none;
+        padding-right: 1.5rem;
+        padding-top: 1rem;
+        
+        h6 {
+            font-weight: 700;
+            color: #111827;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+        
+        .flex-column {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #f3f4f6;
+
+            .nav-item {
+                margin-bottom: 0.2rem;
+                
+                .nav-link {
+                    color: #4b5563;
+                    padding: 0.6rem 1rem;
+                    font-size: 0.9rem;
+                    border-radius: 6px;
+                    transition: all 0.15s ease;
+                    
+                    &.active {
+                        color: white;
+                        font-weight: 600;
+                        background: #8b1515;
+                    }
+                    
+                    &:hover:not(.active) {
+                        color: #111827;
+                        background: #f9fafb;
+                    }
+                }
+            }
+        }
+        
+        /* Search bar in sidebar if present */
+        .o_wsale_products_searchbar_form {
+            margin-bottom: 1.5rem;
+            
+            .input-group {
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                overflow: hidden;
+                
+                input {
+                    border: none;
+                    box-shadow: none;
+                    padding-left: 1rem;
+                    font-size: 0.9rem;
+                    
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+                
+                .btn {
+                    border: none;
+                    background: #8b1515;
+                    color: white;
+                    border-radius: 0 4px 4px 0;
+                    padding: 0 1rem;
+                    
+                    &:hover {
+                        background: #6b1010;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -7,6 +7,7 @@ class ProductTemplate(models.Model):
     # ─── Custom Fields for Spare Parts ────────────────────────────
     part_brand = fields.Char(string='ยี่ห้อ / Brand', help='ยี่ห้อของอะไหล่ชิ้นนี้')
     car_model = fields.Char(string='รุ่นรถ / Fitment', help='รุ่นรถที่สามารถนำอะไหล่นี้ไปใช้งานได้')
+    shelf_location = fields.Many2one('stock.location', string='ชั้นวาง (Shelf)', help='ตำแหน่งชั้นวางสินค้า', domain="[('usage', '=', 'internal')]")
     
     # ─── Webike Integration ───────────────────────────────────────
     webike_url = fields.Char(string='Webike URL')

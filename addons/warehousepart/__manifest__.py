@@ -5,12 +5,27 @@
     'category': 'Inventory',
     'summary': 'ปรับแต่งระบบ Odoo มาตรฐานเพื่อใช้เป็นร้านขายอะไหล่รถยนต์',
     'author': 'Ran Ahlai',
-    'depends': ['base', 'mail', 'product', 'point_of_sale', 'stock', 'purchase'],
+    'depends': [
+        'base', 
+        'mail', 
+        'product', 
+        'point_of_sale', 
+        'stock', 
+        'purchase',
+        'website_sale'
+    ],
     'data': [
         'views/spare_part_views.xml',
         'views/menu_views.xml',
-        'data/spare_part_demo.xml',
+        'views/website_templates.xml',
+        'data/ran_ahlai_master_data.xml',
+        'data/ran_ahlai_master_data_bulk.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'warehousepart/static/src/scss/minimal_shop.scss',
+        ],
+    },
     'demo': [],
     'installable': True,
     'application': True,

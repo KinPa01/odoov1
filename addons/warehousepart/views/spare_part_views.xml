@@ -13,6 +13,7 @@
                         <group string="สเปกและรุ่นรถ (Fitment)">
                             <field name="part_brand"/>
                             <field name="car_model"/>
+                            <field name="shelf_location" options="{'no_create': True, 'no_open': True}"/>
                         </group>
                         <group string="Webike Integration">
                             <field name="webike_url" widget="url"/>

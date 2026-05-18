@@ -31,6 +31,7 @@
               name="🏗️ คลังสินค้าและการจัดส่ง"
               parent="menu_warehousepart_root"
               action="stock.stock_picking_type_action"
+              groups="warehousepart.group_spare_manager"
               sequence="20"/>
 
     <!-- ══ POS & การขาย (ทางลัดไป POS ของ Odoo) ══ -->
@@ -45,6 +46,7 @@
               name="🛒 ระบบสั่งซื้อ (Purchase)"
               parent="menu_warehousepart_root"
               action="purchase.purchase_rfq"
+              groups="warehousepart.group_spare_manager"
               sequence="40"/>
 
     <!-- ══ ข้อมูลผู้ติดต่อ / Supplier ══ -->
@@ -52,5 +54,6 @@
               name="🤝 ลูกค้า &amp; ซัพพลายเออร์"
               parent="menu_warehousepart_root"
               action="base.action_partner_form"
+              groups="warehousepart.group_spare_manager"
               sequence="50"/>
 </odoo>

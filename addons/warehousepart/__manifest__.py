@@ -12,9 +12,14 @@
         'point_of_sale', 
         'stock', 
         'purchase',
-        'website_sale'
+        'website_sale',
+        'hr',
+        'pos_hr',
+        'account',
+        'l10n_th'
     ],
     'data': [
+        'security/spare_security.xml',
         'views/spare_part_views.xml',
         'views/menu_views.xml',
         'views/website_templates.xml',

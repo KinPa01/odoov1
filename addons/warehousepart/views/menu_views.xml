@@ -13,7 +13,11 @@
      <menuitem id="menu_spare_part_category" name="หมวดหมู่อะไหล่ (POS)" parent="menu_spare_parts_main" action="point_of_sale.product_pos_category_action" sequence="20"/>
 
      <!-- ══ คลังสินค้า (ทางลัดไป Inventory ของ Odoo) ══ -->
+     <menuitem id="menu_spare_quick_transfer" name="🚀 โอนย้ายอะไหล่ด่วน" parent="menu_warehousepart_root" action="action_spare_quick_transfer" groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" sequence="18"/>
+
      <menuitem id="menu_spare_inventory_shortcut" name="🏗️ คลังสินค้าและการจัดส่ง" parent="menu_warehousepart_root" action="stock.stock_picking_type_action" groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" sequence="20"/>
+
+     <menuitem id="menu_spare_delivery_carriers" name="🚚 วิธีการจัดส่งและติดตาม" parent="menu_warehousepart_root" action="delivery.action_delivery_carrier_form" groups="warehousepart.group_spare_manager" sequence="22"/>
 
      <!-- ══ การสั่งซื้อออนไลน์ (eCommerce) ══ -->
      <menuitem id="menu_spare_ecommerce_shortcut" name="🌐 คำสั่งซื้อออนไลน์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_cashier" sequence="25"/>

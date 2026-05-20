@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_spare_quick_transfer_inventory,spare.quick.transfer.inventory,model_spare_quick_transfer,warehousepart.group_spare_inventory,1,1,1,1
+access_spare_quick_transfer_line_inventory,spare.quick.transfer.line.inventory,model_spare_quick_transfer_line,warehousepart.group_spare_inventory,1,1,1,1

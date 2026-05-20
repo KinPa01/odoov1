@@ -51,3 +51,8 @@ package.json
 /man/
 /share/
 /src/
+
+# Large backup files
+*.sql
+*.dump
+backup_ran_ahlai_prod.sql

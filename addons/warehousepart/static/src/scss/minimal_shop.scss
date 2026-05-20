@@ -1,41 +1,248 @@
-/* Minimalist Shop Design for Ran Ahlai */
+/* Minimalist Shop Design for Ran Ahlai (Light Theme) */
+
+/* =============================================
+   HOMEPAGE - Warehouse Hero Classes
+   ============================================= */
+
+/* Wrap */
+.wh-wrap {
+    font-family: 'Inter', 'Roboto', sans-serif;
+    background-color: #ffffff;
+}
+
+/* ---- Hero Section ---- */
+.wh-hero {
+    position: relative;
+    padding: 120px 0px 80px 0px;
+    background-image: url('/warehousepart/static/src/img/auto_parts_store_bg.png');
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid #111827;
+    overflow: hidden;
+}
+
+.wh-hero-overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(17, 24, 39, 0.88); /* ปรับตัวเลข 0.88 นี้เพื่อให้ภาพจางลงหรือชัดขึ้น (0.0 - 1.0) */
+}
+
+.wh-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.wh-badge {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #e5e7eb;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.wh-hero-title {
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+}
+
+.wh-hero-accent {
+    color: #ffcc00;
+}
+
+.wh-hero-desc {
+    font-size: 1.2rem;
+    color: #d1d5db;
+    margin-bottom: 40px;
+    font-weight: 300;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+}
+
+.wh-hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.wh-btn-primary {
+    background-color: #ffcc00;
+    color: #111827;
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+        background-color: #f5c200;
+        color: #111827;
+        transform: translateY(-2px);
+    }
+}
+
+.wh-btn-secondary {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* ---- Features Section ---- */
+.wh-features {
+    padding: 80px 0px;
+    background-color: #ffffff;
+}
+
+.wh-feature-item {
+    padding: 0px 20px;
+}
+
+.wh-feature-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #111827;
+    opacity: 0.8;
+}
+
+.wh-feature-title {
+    color: #111827;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.wh-feature-desc {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0px;
+    line-height: 1.6;
+}
+
+/* ---- Category Bar ---- */
+.wh-category-bar {
+    padding: 40px 0px;
+    background-color: #f9fafb;
+    border-top: 1px solid #f3f4f6;
+}
+
+.wh-category-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #111827;
+    margin: 0px;
+}
+
+.wh-category-link {
+    color: #6b7280;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 2px;
+    transition: color 0.2s;
+
+    &:hover {
+        color: #111827;
+        border-bottom-color: #111827;
+    }
+}
 
 /* Header Override */
 header#top {
-    background-color: #380b0b !important;
-    border-bottom: 3px solid #dca816;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     
     .navbar-brand {
-        color: white !important;
+        color: #ffffff !important;
         font-weight: 800;
         font-size: 1.5rem;
     }
     
     .nav-link {
-        color: #e5e7eb !important;
+        color: rgba(255, 255, 255, 0.85) !important;
         font-weight: 500;
-        &:hover { color: #dca816 !important; }
+        &:hover, &.active { color: #ffffff !important; }
     }
     
-    /* Simulate the yellow signup button */
+    /* Simulate the signup button */
     .nav-item a[href="/web/signup"], .nav-item a[href*="signup"] {
-        background-color: #dca816 !important;
-        color: #111 !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
         border-radius: 4px;
         padding: 0.5rem 1.2rem !important;
-        font-weight: 700;
+        font-weight: 600;
         margin-left: 1rem;
+        transition: all 0.2s;
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
     }
 }
 
+/* Footer Override */
+footer {
+    background-color: #f9fafb !important;
+    border-top: 1px solid #f3f4f6 !important;
+    color: #4b5563 !important;
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #111827 !important;
+        font-weight: 700;
+    }
+    
+    a {
+        color: #6b7280 !important;
+        text-decoration: none;
+        transition: color 0.2s;
+        
+        &:hover {
+            color: #111827 !important;
+        }
+    }
+    
+    /* Copyright bar */
+    .o_footer_copyright {
+        background-color: #ffffff !important;
+        border-top: 1px solid #f3f4f6 !important;
+        color: #6b7280 !important;
+    }
+}
+
+/* Shop Overrides */
 .oe_website_sale {
     /* Main Grid Adjustments */
     .o_wsale_products_grid_table_wrapper {
-        background-color: #fafafa;
+        background-color: #fdfdfd;
         padding: 1rem;
         
         .oe_product {
-            border: 1px solid #eaeaea;
+            border: 1px solid #f3f4f6;
             border-radius: 8px;
             transition: all 0.2s ease;
             background: #ffffff;
@@ -43,8 +250,8 @@ header#top {
             overflow: hidden;
             
             &:hover {
-                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-                border-color: #d1d5db;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+                border-color: #e5e7eb;
                 transform: translateY(-2px);
             }
             
@@ -56,24 +263,24 @@ header#top {
             .o_wsale_product_information {
                 background: transparent !important;
                 padding: 1.25rem;
-                border-top: 1px solid #f3f4f6;
+                border-top: 1px solid #f9fafb;
                 
                 .o_wsale_products_item_title a {
                     color: #111827;
-                    font-weight: 700;
+                    font-weight: 600;
                     font-size: 0.95rem;
                     text-decoration: none;
                     display: block;
                     margin-bottom: 0.5rem;
                     
                     &:hover {
-                        color: #8b1515; /* Brand red */
+                        color: #4b5563; 
                     }
                 }
                 
                 .product_price {
-                    font-weight: 800;
-                    color: #8b1515;
+                    font-weight: 700;
+                    color: #111827;
                     font-size: 1.1rem;
                 }
             }
@@ -89,8 +296,8 @@ header#top {
         h6 {
             font-weight: 700;
             color: #111827;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
             padding-left: 0.5rem;
         }
         
@@ -104,7 +311,7 @@ header#top {
                 margin-bottom: 0.2rem;
                 
                 .nav-link {
-                    color: #4b5563;
+                    color: #6b7280;
                     padding: 0.6rem 1rem;
                     font-size: 0.9rem;
                     border-radius: 6px;
@@ -113,7 +320,7 @@ header#top {
                     &.active {
                         color: white;
                         font-weight: 600;
-                        background: #8b1515;
+                        background: #111827;
                     }
                     
                     &:hover:not(.active) {
@@ -129,7 +336,7 @@ header#top {
             margin-bottom: 1.5rem;
             
             .input-group {
-                border: 1px solid #d1d5db;
+                border: 1px solid #e5e7eb;
                 border-radius: 6px;
                 overflow: hidden;
                 
@@ -138,24 +345,27 @@ header#top {
                     box-shadow: none;
                     padding-left: 1rem;
                     font-size: 0.9rem;
+                    color: #111827;
                     
                     &:focus {
                         box-shadow: none;
+                        outline: none;
                     }
                 }
                 
                 .btn {
                     border: none;
-                    background: #8b1515;
-                    color: white;
+                    background: #f3f4f6;
+                    color: #111827;
                     border-radius: 0 4px 4px 0;
                     padding: 0 1rem;
                     
                     &:hover {
-                        background: #6b1010;
+                        background: #e5e7eb;
                     }
                 }
             }
         }
     }
 }
+

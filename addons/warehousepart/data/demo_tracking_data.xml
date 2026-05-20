@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. Create a Delivery Carrier (Kerry Express) -->
+    <record id="product_delivery_kerry" model="product.product">
+        <field name="name">ค่าจัดส่ง Kerry Express</field>
+        <field name="type">service</field>
+        <field name="list_price">50.0</field>
+    </record>
+
+    <record id="delivery_carrier_kerry" model="delivery.carrier">
+        <field name="name">Kerry Express</field>
+        <field name="product_id" ref="product_delivery_kerry"/>
+        <field name="delivery_type">fixed</field>
+        <field name="fixed_price">50.0</field>
+        <!-- The tracking URL format for Kerry Express -->
+        <!-- Odoo 19 doesn't use tracking_issue_url, we just leave it out. The user can configure it in the UI if needed -->
+        <field name="active" eval="True"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <!-- 2. Create a demo customer -->
+    <record id="demo_tracking_customer" model="res.partner">
+        <field name="name">คุณสมชาย ลูกค้าจำลอง</field>
+        <field name="phone">081-234-5678</field>
+        <field name="city">กรุงเทพมหานคร</field>
+    </record>
+
+    <!-- 3. Create a demo Stock Picking (Delivery Order) -->
+    <!-- We need to link it to the standard picking type 'outgoing' in standard warehouse -->
+    <record id="demo_delivery_order" model="stock.picking">
+        <field name="partner_id" ref="demo_tracking_customer"/>
+        <field name="picking_type_id" ref="stock.picking_type_out"/>
+        <field name="location_id" ref="stock.stock_location_stock"/>
+        <field name="location_dest_id" ref="stock.stock_location_customers"/>
+        <field name="carrier_id" ref="delivery_carrier_kerry"/>
+        <field name="carrier_tracking_ref">KERRY-123456789-TH</field>
+        <field name="state">assigned</field>
+    </record>
+
+    <!-- Add a product to the delivery order -->
+    <record id="demo_delivery_move" model="stock.move">
+        <field name="name">ตัวอย่างสินค้าส่งของ</field>
+        <field name="product_id" ref="warehousepart.product_motor_oil_synthetic"/>
+        <field name="product_uom_qty">1</field>
+        <field name="product_uom" ref="uom.product_uom_unit"/>
+        <field name="picking_id" ref="demo_delivery_order"/>
+        <field name="location_id" ref="stock.stock_location_stock"/>
+        <field name="location_dest_id" ref="stock.stock_location_customers"/>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_spare_quick_transfer_form" model="ir.ui.view">
+        <field name="name">spare.quick.transfer.form</field>
+        <field name="model">spare.quick.transfer</field>
+        <field name="arch" type="xml">
+            <form string="โอนย้ายอะไหล่ด่วน">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>โอนย้ายอะไหล่ด่วน</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="location_src_id" options="{'no_create': True}"/>
+                            <field name="location_dest_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="รายการสินค้าที่จะย้าย" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id" options="{'no_create': True}"/>
+                                    <field name="available_qty" readonly="1" force_save="1"/>
+                                    <field name="qty"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_transfer" string="ยืนยันการโอนย้าย" type="object" class="btn-primary" icon="fa-check"/>
+                    <button string="ยกเลิก" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spare_quick_transfer" model="ir.actions.act_window">
+        <field name="name">โอนย้ายอะไหล่ด่วน</field>
+        <field name="res_model">spare.quick.transfer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

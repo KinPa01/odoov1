@@ -16,19 +16,28 @@
         'hr',
         'pos_hr',
         'account',
-        'l10n_th'
+        'l10n_th',
+        'delivery'
     ],
     'data': [
         'security/spare_security.xml',
+        'security/ir.model.access.csv',
+        'views/spare_quick_transfer_views.xml',
         'views/spare_part_views.xml',
         'views/menu_views.xml',
         'views/website_templates.xml',
+        'views/report_templates.xml',
         'data/ran_ahlai_master_data.xml',
         'data/ran_ahlai_master_data_bulk.xml',
+        'data/website_pages.xml',
     ],
     'assets': {
         'web.assets_frontend': [
             'warehousepart/static/src/scss/minimal_shop.scss',
+        ],
+        'point_of_sale.assets_prod': [
+            'warehousepart/static/src/xml/pos_receipt.xml',
+            'warehousepart/static/src/js/pos_stock_hide.js',
         ],
     },
     'demo': [],

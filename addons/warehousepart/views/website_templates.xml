@@ -1,85 +1,433 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Override the default homepage -->
-    <template id="ran_ahlai_homepage" inherit_id="website.homepage" name="Ran Ahlai Homepage">
-        <xpath expr="//div[@id='wrap']" position="replace">
-            <div id="wrap" class="oe_structure oe_empty wh-wrap">
 
-                <!-- Hero Section -->
-                <section class="wh-hero">
-                    <div class="wh-hero-overlay"></div>
-                    <div class="container wh-hero-content">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <span class="wh-badge">ศูนย์รวมอะไหล่มอเตอร์ไซค์</span>
-
-                                <h1 class="wh-hero-title">
-                                    อะไหล่แท้ ราคาดี <span class="wh-hero-accent">ส่งทั่วไทย</span>
-                                </h1>
-
-                                <p class="wh-hero-desc">
-                                    อะไหล่แท้คุณภาพสูง คัดสรรอย่างพิถีพิถันเพื่อรถคันโปรดของคุณ พร้อมบริการจัดส่งทั่วประเทศอย่างรวดเร็ว
-                                </p>
-
-                                <div class="wh-hero-buttons">
-                                    <a href="/shop" class="btn wh-btn-primary">เริ่มค้นหาอะไหล่</a>
-                                    <a href="/shop" class="btn wh-btn-secondary">ดูหมวดหมู่ทั้งหมด</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Features Section -->
-                <section class="wh-features">
-                    <div class="container">
-                        <div class="row text-center">
-                            <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                <div class="wh-feature-item">
-                                    <div class="wh-feature-icon">✦</div>
-                                    <h5 class="wh-feature-title">อะไหล่แท้ 100%</h5>
-                                    <p class="wh-feature-desc">รับประกันคุณภาพทุกชิ้น ส่งตรงจากผู้ผลิตมาตรฐาน OEM</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                <div class="wh-feature-item">
-                                    <div class="wh-feature-icon">✺</div>
-                                    <h5 class="wh-feature-title">ส่งรวดเร็วทันใจ</h5>
-                                    <p class="wh-feature-desc">จัดส่งพัสดุทุกวันทำการ มั่นใจได้ว่าของถึงมือคุณใน 1-3 วัน</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-                                <div class="wh-feature-item">
-                                    <div class="wh-feature-icon">✧</div>
-                                    <h5 class="wh-feature-title">ราคาเป็นมิตร</h5>
-                                    <p class="wh-feature-desc">นำเข้าและจัดจำหน่ายโดยตรง ไม่ผ่านคนกลาง ได้ราคาที่ดีที่สุด</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6">
-                                <div class="wh-feature-item">
-                                    <div class="wh-feature-icon">❂</div>
-                                    <h5 class="wh-feature-title">ดูแลทุกขั้นตอน</h5>
-                                    <p class="wh-feature-desc">มีทีมงานผู้เชี่ยวชาญพร้อมให้คำปรึกษา แนะนำอะไหล่ที่ตรงรุ่น</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Category Section -->
-                <section class="wh-category-bar">
-                    <div class="container">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="wh-category-title">ค้นหาตามหมวดหมู่</h3>
-                            <a href="/shop" class="wh-category-link">ดูสินค้าทั้งหมด →</a>
-                        </div>
-                    </div>
-                </section>
-            </div>
+    <!-- ═══════════════════════════════════════════════════════════
+         1. INJECT GOOGLE FONTS INTO WEBSITE HEAD
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="ran_ahlai_google_fonts" inherit_id="website.layout" name="Ran Ahlai — Google Fonts">
+        <xpath expr="//head" position="inside">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"/>
         </xpath>
     </template>
 
-    <!-- Enable Categories Sidebar on Shop Page -->
+    <!-- ═══════════════════════════════════════════════════════════
+         2. HOMEPAGE OVERRIDE — DARK AUTOMOTIVE THEME
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="ran_ahlai_homepage" inherit_id="website.homepage" name="Ran Ahlai — Dark Homepage">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure oe_empty ra-wrap">
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           HERO SECTION                   ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-hero">
+                    <div class="ra-hero-content">
+                        <div class="container">
+                            <div class="row align-items-center">
+
+                                <!-- Left: Text Content -->
+                                <div class="col-lg-6 col-md-12">
+                                    <span class="ra-hero-badge">อะไหล่รถยนต์ พรีเมียม</span>
+
+                                    <h1 class="ra-hero-title">
+                                        อะไหล่แท้<br/>
+                                        <span>คุณภาพสูง</span>
+                                    </h1>
+
+                                    <p class="ra-hero-subtitle">ส่งตรงทั่วประเทศไทย</p>
+
+                                    <p class="ra-hero-desc">
+                                        รวบรวมอะไหล่รถยนต์แท้คุณภาพสูงจากผู้ผลิตมาตรฐาน OEM
+                                        พร้อมจัดส่งรวดเร็วทั่วประเทศ การันตีคุณภาพทุกชิ้น
+                                        โดยทีมผู้เชี่ยวชาญด้านอะไหล่มากกว่า 10 ปี
+                                    </p>
+
+                                    <div class="ra-hero-btns">
+                                        <a href="/shop" id="hero-shop-btn" class="ra-btn-red">ดูสินค้าทั้งหมด →</a>
+                                        <a href="/contactus" id="hero-contact-btn" class="ra-btn-outline">ติดต่อเรา</a>
+                                    </div>
+
+                                    <!-- Stats -->
+                                    <div class="ra-hero-stats">
+                                        <div class="ra-stat-item">
+                                            <div class="ra-stat-num">5,000+</div>
+                                            <div class="ra-stat-label">รายการสินค้า</div>
+                                        </div>
+                                        <div class="ra-stat-item">
+                                            <div class="ra-stat-num">50+</div>
+                                            <div class="ra-stat-label">แบรนด์ชั้นนำ</div>
+                                        </div>
+                                        <div class="ra-stat-item">
+                                            <div class="ra-stat-num">24h</div>
+                                            <div class="ra-stat-label">จัดส่งด่วน</div>
+                                        </div>
+                                        <div class="ra-stat-item">
+                                            <div class="ra-stat-num">10ปี+</div>
+                                            <div class="ra-stat-label">ประสบการณ์</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Decorative Visual -->
+                                <div class="col-lg-6 ra-hero-visual d-none d-lg-flex">
+                                    <div class="ra-hero-deco">
+                                        <div class="ra-hero-deco-ring"></div>
+                                        <div class="ra-hero-deco-center">⚙️</div>
+                                        <div class="ra-hero-deco-dot dot-1"></div>
+                                        <div class="ra-hero-deco-dot dot-2"></div>
+                                        <div class="ra-hero-deco-dot dot-3"></div>
+                                        <div class="ra-hero-deco-dot dot-4"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║         TRUST / FEATURES BAR             ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-features-bar">
+                    <div class="container-fluid px-0">
+                        <div class="row g-0">
+                            <div class="col-md-3 col-6">
+                                <div class="ra-feature-item">
+                                    <div class="ra-feature-icon">🔩</div>
+                                    <div class="ra-feature-text">
+                                        <p class="ra-feature-title">อะไหล่แท้ 100%</p>
+                                        <p class="ra-feature-desc">รับประกันจากผู้ผลิต OEM มาตรฐานสูง</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="ra-feature-item">
+                                    <div class="ra-feature-icon">🚚</div>
+                                    <div class="ra-feature-text">
+                                        <p class="ra-feature-title">ส่งด่วน 1-3 วัน</p>
+                                        <p class="ra-feature-desc">จัดส่งทั่วประเทศ Kerry Express</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="ra-feature-item">
+                                    <div class="ra-feature-icon">💳</div>
+                                    <div class="ra-feature-text">
+                                        <p class="ra-feature-title">ชำระหลายช่องทาง</p>
+                                        <p class="ra-feature-desc">โอน, บัตร, พร้อมเพย์, ผ่อน 0%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="ra-feature-item">
+                                    <div class="ra-feature-icon">🛡️</div>
+                                    <div class="ra-feature-text">
+                                        <p class="ra-feature-title">รับประกันสินค้า</p>
+                                        <p class="ra-feature-desc">คืนสินค้าภายใน 7 วัน หากผิดรุ่น</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           PROMO DUAL BANNERS             ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-promo-section">
+                    <div class="container">
+                        <div class="row g-4">
+
+                            <!-- Banner 1: Dark — Featured Oil -->
+                            <div class="col-md-6">
+                                <a href="/shop" class="ra-promo-card ra-promo-dark d-block text-decoration-none">
+                                    <div class="ra-promo-tag">⭐ สินค้าแนะนำ</div>
+                                    <h3 class="ra-promo-title">
+                                        น้ำมันเครื่อง<br/>
+                                        Synthetic พรีเมียม
+                                    </h3>
+                                    <p class="ra-promo-sub">
+                                        ประสิทธิภาพสูงสุด ปกป้องเครื่องยนต์ทุกสภาวะ
+                                        เหมาะสำหรับรถทุกประเภท
+                                    </p>
+                                    <span class="ra-promo-btn">ดูสินค้า →</span>
+                                </a>
+                            </div>
+
+                            <!-- Banner 2: Red — Brake System -->
+                            <div class="col-md-6">
+                                <a href="/shop" class="ra-promo-card ra-promo-red d-block text-decoration-none">
+                                    <div class="ra-promo-tag">🔥 ขายดี</div>
+                                    <h3 class="ra-promo-title">
+                                        ผ้าเบรก &amp;<br/>
+                                        จานเบรกคุณภาพสูง
+                                    </h3>
+                                    <p class="ra-promo-sub">
+                                        ปลอดภัยสูงสุด หยุดได้แม่นยำ ราคาถูกกว่าศูนย์
+                                    </p>
+                                    <span class="ra-promo-btn">SHOP NOW →</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           CATEGORIES GRID                ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-categories-section">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <span class="ra-section-badge">หมวดหมู่สินค้า</span>
+                            <h2 class="ra-section-title">เลือกตามประเภทอะไหล่</h2>
+                            <div class="ra-divider mx-auto"></div>
+                        </div>
+
+                        <div class="ra-cat-grid">
+                            <a href="/shop" class="ra-cat-card" id="cat-oil">
+                                <span class="ra-cat-icon">🛢️</span>
+                                <p class="ra-cat-name">น้ำมันเครื่อง</p>
+                                <p class="ra-cat-count">120+ รายการ</p>
+                            </a>
+                            <a href="/shop" class="ra-cat-card" id="cat-brake">
+                                <span class="ra-cat-icon">⚙️</span>
+                                <p class="ra-cat-name">ระบบเบรก</p>
+                                <p class="ra-cat-count">80+ รายการ</p>
+                            </a>
+                            <a href="/shop" class="ra-cat-card" id="cat-suspension">
+                                <span class="ra-cat-icon">🔧</span>
+                                <p class="ra-cat-name">โช้คอัพ</p>
+                                <p class="ra-cat-count">60+ รายการ</p>
+                            </a>
+                            <a href="/shop" class="ra-cat-card" id="cat-tire">
+                                <span class="ra-cat-icon">🔘</span>
+                                <p class="ra-cat-name">ยางรถยนต์</p>
+                                <p class="ra-cat-count">90+ รายการ</p>
+                            </a>
+                            <a href="/shop" class="ra-cat-card" id="cat-electrical">
+                                <span class="ra-cat-icon">💡</span>
+                                <p class="ra-cat-name">ไฟและไฟฟ้า</p>
+                                <p class="ra-cat-count">150+ รายการ</p>
+                            </a>
+                            <a href="/shop" class="ra-cat-card" id="cat-filter">
+                                <span class="ra-cat-icon">🌬️</span>
+                                <p class="ra-cat-name">ไส้กรอง</p>
+                                <p class="ra-cat-count">45+ รายการ</p>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           BEST SELLERS SECTION           ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-products-section">
+                    <div class="container">
+                        <div class="ra-section-header">
+                            <div>
+                                <span class="ra-section-badge">สินค้าขายดี</span>
+                                <h2 class="ra-section-title">Best Sellers</h2>
+                                <div class="ra-divider"></div>
+                            </div>
+                            <a href="/shop" class="ra-view-all">ดูสินค้าทั้งหมด →</a>
+                        </div>
+
+                        <!-- CTA to shop (product cards rendered by Odoo's shop page) -->
+                        <div class="row g-4 mb-4">
+                            <!-- Placeholder product cards -->
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">BEST SELLER</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
+                                        <span style="font-size:4rem;">🛢️</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">น้ำมันเครื่อง 10W-40 เกรด A</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 580</span>
+                                            <span class="ra-product-old-price">฿ 720</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">HOT</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
+                                        <span style="font-size:4rem;">⚙️</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">ผ้าเบรกหน้า Toyota Yaris</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 850</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
+                                        <span style="font-size:4rem;">🔧</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">โช้คอัพหน้า Honda City</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 2,200</span>
+                                            <span class="ra-product-old-price">฿ 2,800</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">SALE</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
+                                        <span style="font-size:4rem;">🌬️</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">ไส้กรองอากาศ Isuzu D-Max</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 320</span>
+                                            <span class="ra-product-old-price">฿ 450</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="/shop" id="see-all-products-btn" class="ra-btn-red" style="padding: 14px 48px; font-size: 1rem;">
+                                🛒 ดูสินค้าทั้งหมดในร้าน
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           FLASH SALE SECTION             ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-flash-section">
+                    <div class="container">
+                        <div class="ra-flash-header">
+                            <div class="ra-flash-label">⚡ Flash Sale</div>
+                            <div class="ra-countdown" id="ra-countdown">
+                                <div class="ra-countdown-item">
+                                    <span class="ra-count-num" id="ra-hours">08</span>
+                                    <span class="ra-count-label">ชั่วโมง</span>
+                                </div>
+                                <span class="ra-countdown-sep">:</span>
+                                <div class="ra-countdown-item">
+                                    <span class="ra-count-num" id="ra-mins">30</span>
+                                    <span class="ra-count-label">นาที</span>
+                                </div>
+                                <span class="ra-countdown-sep">:</span>
+                                <div class="ra-countdown-item">
+                                    <span class="ra-count-num" id="ra-secs">00</span>
+                                    <span class="ra-count-label">วินาที</span>
+                                </div>
+                            </div>
+                            <a href="/shop" class="ra-view-all" style="align-self: center;">ดูโปรทั้งหมด →</a>
+                        </div>
+
+                        <!-- Flash Sale product row -->
+                        <div class="row g-4">
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">-30%</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
+                                        <span style="font-size:3.5rem;">💡</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">ไฟหน้า LED H4 สว่างสูง</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 490</span>
+                                            <span class="ra-product-old-price">฿ 700</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">-25%</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
+                                        <span style="font-size:3.5rem;">🔋</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">แบตเตอรี่ 55Ah Yuasa</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 2,100</span>
+                                            <span class="ra-product-old-price">฿ 2,800</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">-20%</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
+                                        <span style="font-size:3.5rem;">🔩</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">หัวเทียน Denso Iridium</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 280</span>
+                                            <span class="ra-product-old-price">฿ 350</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
+                                    <span class="ra-product-badge">-35%</span>
+                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
+                                        <span style="font-size:3.5rem;">🚿</span>
+                                    </div>
+                                    <div class="ra-product-info">
+                                        <p class="ra-product-name">ใบปัดน้ำฝน Bosch 22"</p>
+                                        <div>
+                                            <span class="ra-product-price">฿ 195</span>
+                                            <span class="ra-product-old-price">฿ 300</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ╔══════════════════════════════════════════╗
+                     ║           BRAND LOGOS BAR                ║
+                     ╚══════════════════════════════════════════╝ -->
+                <section class="ra-brands-section">
+                    <div class="container">
+                        <p class="ra-brands-title">รองรับรถยนต์ยี่ห้อชั้นนำ</p>
+                        <div class="ra-brands-grid">
+                            <div class="ra-brand-badge">TOYOTA</div>
+                            <div class="ra-brand-badge">HONDA</div>
+                            <div class="ra-brand-badge">ISUZU</div>
+                            <div class="ra-brand-badge">MITSUBISHI</div>
+                            <div class="ra-brand-badge">NISSAN</div>
+                            <div class="ra-brand-badge">MAZDA</div>
+                            <div class="ra-brand-badge">FORD</div>
+                            <div class="ra-brand-badge">BMW</div>
+                            <div class="ra-brand-badge">MERCEDES</div>
+                            <div class="ra-brand-badge">SUZUKI</div>
+                            <div class="ra-brand-badge">CHEVROLET</div>
+                            <div class="ra-brand-badge">HYUNDAI</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div><!-- /ra-wrap -->
+        </xpath>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         3. SHOP PAGE — ENABLE CATEGORIES SIDEBAR
+         ═══════════════════════════════════════════════════════════ -->
     <record id="website_sale.products_categories" model="ir.ui.view">
         <field name="active" eval="True"/>
     </record>

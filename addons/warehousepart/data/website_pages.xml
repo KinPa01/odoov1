@@ -69,4 +69,178 @@
             </t>
         </field>
     </record>
+
+    <!-- Terms and Conditions Page -->
+    <record id="page_terms_conditions" model="website.page">
+        <field name="name">ข้อกำหนดและเงื่อนไขการใช้งาน</field>
+        <field name="url">/terms</field>
+        <field name="type">qweb</field>
+        <field name="key">warehousepart.terms_conditions</field>
+        <field name="is_published">True</field>
+        <field name="arch" type="xml">
+            <t name="ข้อกำหนดและเงื่อนไข" t-name="warehousepart.terms_conditions">
+                <t t-call="website.layout">
+                    <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif; background-color: #f9fafb;">
+
+                        <!-- Hero Banner -->
+                        <section style="background: linear-gradient(135deg, #111827 0%, #1f2937 60%, #8b1515 100%); padding: 72px 0 56px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(139,21,21,0.18) 0%, transparent 70%); pointer-events: none;"/>
+                            <div class="container">
+                                <div class="text-center">
+                                    <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
+                                        <span style="color: #fca5a5; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Legal</span>
+                                    </div>
+                                    <h1 style="color: #ffffff; font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;">ข้อกำหนดและเงื่อนไข</h1>
+                                    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">Terms &amp; Conditions — ร้านอาหลั่ย อะไหล่รถยนต์และมอเตอร์ไซต์</p>
+                                    <div style="margin-top: 24px; color: #6b7280; font-size: 0.82rem;">อัปเดตล่าสุด: มกราคม 2568</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Table of Contents -->
+                        <section style="background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 20px 0;">
+                            <div class="container">
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; align-items: center;">
+                                    <span style="color: #6b7280; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">สารบัญ:</span>
+                                    <a href="#section-1" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">1. การยอมรับเงื่อนไข</a>
+                                    <a href="#section-2" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">2. สินค้าและราคา</a>
+                                    <a href="#section-3" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">3. การสั่งซื้อ</a>
+                                    <a href="#section-4" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">4. การชำระเงิน</a>
+                                    <a href="#section-5" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">5. ความเป็นส่วนตัว</a>
+                                    <a href="#section-6" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">6. ติดต่อเรา</a>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main Content -->
+                        <section style="padding: 64px 0 80px;">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+
+                                        <!-- Section 1 -->
+                                        <div id="section-1" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">1</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การยอมรับข้อกำหนดและเงื่อนไข</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">การเข้าใช้งานเว็บไซต์ร้านอาหลั่ย (ranahlai.com) และการสั่งซื้อสินค้าใดๆ ถือว่าท่านได้อ่าน ทำความเข้าใจ และยอมรับข้อกำหนดและเงื่อนไขทั้งหมดที่ระบุไว้ในเอกสารนี้</p>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">หากท่านไม่ยอมรับข้อกำหนดใดๆ กรุณายุติการใช้งานเว็บไซต์ ทางร้านขอสงวนสิทธิ์ในการเปลี่ยนแปลงข้อกำหนดและเงื่อนไขนี้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า</p>
+                                        </div>
+
+                                        <!-- Section 2 -->
+                                        <div id="section-2" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">2</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">ข้อมูลสินค้าและราคา</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ทางร้านพยายามนำเสนอข้อมูลสินค้า รูปภาพ และราคาให้ถูกต้องและเป็นปัจจุบันที่สุด อย่างไรก็ตาม ราคาสินค้าอาจมีการเปลี่ยนแปลงตามต้นทุนและนโยบายของผู้ผลิต</p>
+                                            <div style="background: #fef2f2; border-left: 3px solid #8b1515; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 12px;">
+                                                <p style="color: #7f1d1d; font-size: 0.9rem; line-height: 1.6; margin: 0; font-weight: 500;">⚠️ รูปภาพสินค้าเป็นภาพประกอบเพื่อการอ้างอิงเท่านั้น ผลิตภัณฑ์จริงอาจมีความแตกต่างในรายละเอียดบางประการ</p>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">ราคาที่แสดงเป็นราคารวมภาษีมูลค่าเพิ่ม (VAT 7%) แล้ว ยกเว้นค่าจัดส่งที่คิดแยกต่างหากตามระยะทางและน้ำหนักสินค้า</p>
+                                        </div>
+
+                                        <!-- Section 3 -->
+                                        <div id="section-3" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">3</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การสั่งซื้อสินค้า</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 16px;">เมื่อท่านทำการสั่งซื้อสินค้า ระบบจะส่งอีเมลยืนยันการรับคำสั่งซื้อให้ท่านทราบ ซึ่งไม่ใช่การยืนยันว่าสินค้ามีในสต็อก ทางร้านขอสงวนสิทธิ์ในการยกเลิกหรือปฏิเสธคำสั่งซื้อในกรณีดังนี้:</p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin: 0;">
+                                                <li>สินค้าหมดสต็อกหรือถูกระงับการจำหน่าย</li>
+                                                <li>ข้อมูลการชำระเงินไม่สามารถยืนยันได้</li>
+                                                <li>พบข้อผิดพลาดในราคาสินค้าบนเว็บไซต์</li>
+                                                <li>พบพฤติกรรมที่ผิดปกติหรือน่าสงสัยในการสั่งซื้อ</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 4 -->
+                                        <div id="section-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">4</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การชำระเงิน</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 16px;">ทางร้านรับชำระเงินหลายช่องทาง ได้แก่:</p>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
+                                                    <span style="font-size: 1.3rem;">💵</span>
+                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">เงินสด (หน้าร้าน)</span>
+                                                </div>
+                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
+                                                    <span style="font-size: 1.3rem;">🏦</span>
+                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">โอนธนาคาร</span>
+                                                </div>
+                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
+                                                    <span style="font-size: 1.3rem;">📱</span>
+                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">QR Code / PromptPay</span>
+                                                </div>
+                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
+                                                    <span style="font-size: 1.3rem;">💳</span>
+                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">บัตรเครดิต/เดบิต</span>
+                                                </div>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">สินค้าจะถูกจัดเตรียมและจัดส่งหลังจากได้รับการยืนยันการชำระเงินเรียบร้อยแล้วเท่านั้น</p>
+                                        </div>
+
+                                        <!-- Section 5 -->
+                                        <div id="section-5" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">5</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">ความเป็นส่วนตัวและข้อมูลส่วนบุคคล</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ร้านอาหลั่ยให้ความสำคัญกับความเป็นส่วนตัวของลูกค้าอย่างสูงสุด ข้อมูลส่วนบุคคลที่ท่านให้ไว้ เช่น ชื่อ ที่อยู่ เบอร์โทรศัพท์ และอีเมล จะถูกใช้เพื่อประมวลผลคำสั่งซื้อ จัดส่งสินค้า และให้บริการหลังการขายเท่านั้น</p>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">ทางร้านจะไม่เปิดเผยหรือขายข้อมูลส่วนบุคคลของท่านให้แก่บุคคลที่สาม ยกเว้นในกรณีที่จำเป็นต่อการจัดส่งสินค้า (บริษัทขนส่ง) หรือตามที่กฎหมายกำหนด</p>
+                                        </div>
+
+                                        <!-- Section 6 -->
+                                        <div id="section-6" style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px;">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,21,21,0.4); border: 1px solid rgba(139,21,21,0.5); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fca5a5; font-weight: 700; font-size: 0.95rem;">6</span>
+                                                </div>
+                                                <h2 style="color: #ffffff; font-size: 1.3rem; font-weight: 700; margin: 0;">ติดต่อเรา</h2>
+                                            </div>
+                                            <p style="color: #9ca3af; line-height: 1.8; margin-bottom: 20px;">หากท่านมีคำถามหรือข้อสงสัยเกี่ยวกับข้อกำหนดและเงื่อนไขนี้ กรุณาติดต่อทีมงานของเรา:</p>
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <span style="color: #8b1515; font-size: 1.1rem;">📍</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">ร้านอาหลั่ย — อะไหล่รถยนต์และมอเตอร์ไซต์</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <span style="color: #8b1515; font-size: 1.1rem;">📞</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">02-XXX-XXXX</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <span style="color: #8b1515; font-size: 1.1rem;">✉️</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">contact@ranahlai.com</span>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+                                                <a href="/shop" style="display: inline-block; background: linear-gradient(135deg, #8b1515, #a01c1c); color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">กลับไปซื้อสินค้า →</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
 </odoo>

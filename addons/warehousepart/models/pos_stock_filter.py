@@ -31,10 +31,13 @@ class ProductTemplatePos(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config_id):
-        """เพิ่ม qty_available เพื่อให้ POS Frontend ใช้กรองสินค้า real-time"""
+        """เพิ่ม qty_available และ virtual_available เพื่อให้ POS Frontend ใช้ตรวจสต็อก"""
         fields = super()._load_pos_data_fields(config_id)
         if 'qty_available' not in fields:
             fields.append('qty_available')
+        # virtual_available = qty_available - reserved (รวม web orders ที่ pending delivery)
+        if 'virtual_available' not in fields:
+            fields.append('virtual_available')
         return fields
 
     @api.model
@@ -88,6 +91,8 @@ class ProductTemplatePos(models.Model):
             updates.append({
                 'id': tmpl.id,
                 'qty_available': tmpl.qty_available,
+                # virtual_available = qty_available - reserved (หักของที่ web/SO จอง)
+                'virtual_available': tmpl.virtual_available,
             })
 
         if not updates:
@@ -184,3 +189,24 @@ class StockQuant(models.Model):
         templates._notify_pos_stock_change()
         return res
 
+
+class StockMove(models.Model):
+    """
+    Hook บน stock.move เพื่อแจ้ง POS ทันทีเมื่อ virtual_available เปลี่ยน
+    เช่น เมื่อเว็บ confirm order → stock reserved → virtual_available ลด
+    ไม่ต้องรอ validate delivery (qty_available เปลี่ยน)
+    """
+    _inherit = 'stock.move'
+
+    def write(self, vals):
+        res = super().write(vals)
+        # เมื่อ state เปลี่ยน (reserved, done, cancel) → virtual_available เปลี่ยน
+        if 'state' in vals and vals['state'] in ('assigned', 'done', 'cancel'):
+            templates = self.filtered(
+                lambda m: m.product_id and m.product_id.is_storable
+            ).mapped('product_id.product_tmpl_id').filtered(
+                lambda t: t.available_in_pos
+            )
+            if templates:
+                templates._notify_pos_stock_change()
+        return res

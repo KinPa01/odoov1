@@ -1,0 +1,55 @@
+/* warehousepart/static/src/scss/pos_custom.scss
+ * POS UI Enhancements — Low Stock Alert & Category Color Accents
+ */
+
+/* ── CATEGORY BUTTONS ─────────────────────────────────────────
+ * Odoo POS already handles color via o_colorlist_item_color_X.
+ * We just add hover animation + ensure the "none" (uncolored)
+ * category buttons look great in a modern style.
+ */
+.category-button {
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+
+    &:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Uncolored (default) category button styling */
+    &.o_colorlist_item_color_none {
+        background: #1e293b !important;
+        color: #f1f5f9 !important;
+        border-color: #334155 !important;
+
+        &:hover {
+            background: #334155 !important;
+            border-color: #e63946 !important;
+            color: #fff !important;
+        }
+    }
+
+    /* Active/selected category — highlight red */
+    &.active, &:active {
+        border-color: #e63946 !important;
+        box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.35) !important;
+    }
+}
+
+/* ── LOW STOCK BADGE ──────────────────────────────────────────
+ * The badge is injected by pos_enhancements.xml as a
+ * position-absolute span inside the ProductCard <article>.
+ * These extra rules ensure it looks sharp.
+ */
+.product.position-relative {
+    /* Pulse animation for low-stock products */
+    .low-stock-badge {
+        animation: ra-pulse 2s infinite;
+    }
+}
+
+@keyframes ra-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.75; }
+}

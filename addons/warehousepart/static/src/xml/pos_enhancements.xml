@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!--
+        Low Stock Alert badge on ProductCard
+        — แสดงป้าย "เหลือ X ชิ้น!" สีส้มบนรูปสินค้า
+          เมื่อ qty_available > 0 แต่ <= 5
+    -->
+    <t t-name="warehousepart.ProductCard" t-inherit="point_of_sale.ProductCard" t-inherit-mode="extension">
+        <!-- Inject badge inside the article, position-absolute top-left -->
+        <xpath expr="//article" position="inside">
+            <span t-if="props.product and props.product.is_storable and props.product.virtual_available &gt; 0 and props.product.virtual_available &lt;= 5" class="position-absolute top-0 start-0 m-1 px-2 py-1 rounded fw-bolder shadow-sm" style="background:#f59e0b;color:#fff;font-size:0.7rem;z-index:10;line-height:1.2;">
+                ⚠ เหลือ                <t t-esc="props.product.virtual_available"/>
+ ชิ้น!
+            </span>
+        </xpath>
+    </t>
+</templates>

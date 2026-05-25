@@ -29,15 +29,19 @@
         'views/report_templates.xml',
         'data/ran_ahlai_master_data.xml',
         'data/ran_ahlai_master_data_bulk.xml',
+        'data/demo_tracking_data.xml',
         'data/website_pages.xml',
     ],
     'assets': {
         'web.assets_frontend': [
             'warehousepart/static/src/scss/minimal_shop.scss',
+            'warehousepart/static/src/js/website_frontend.js',
         ],
         'point_of_sale.assets_prod': [
             'warehousepart/static/src/xml/pos_receipt.xml',
             'warehousepart/static/src/js/pos_stock_hide.js',
+            'warehousepart/static/src/xml/pos_enhancements.xml',
+            'warehousepart/static/src/scss/pos_custom.scss',
         ],
     },
     'demo': [],

@@ -39,8 +39,7 @@
 
     <!-- Add a product to the delivery order -->
     <record id="demo_delivery_move" model="stock.move">
-        <field name="name">ตัวอย่างสินค้าส่งของ</field>
-        <field name="product_id" ref="warehousepart.product_motor_oil_synthetic"/>
+        <field name="product_id" ref="warehousepart.product_oil_10w40"/>
         <field name="product_uom_qty">1</field>
         <field name="product_uom" ref="uom.product_uom_unit"/>
         <field name="picking_id" ref="demo_delivery_order"/>

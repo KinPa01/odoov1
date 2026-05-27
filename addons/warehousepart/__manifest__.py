@@ -13,6 +13,7 @@
         'stock', 
         'purchase',
         'website_sale',
+        'website',
         'hr',
         'pos_hr',
         'account',
@@ -24,6 +25,7 @@
         'security/ir.model.access.csv',
         'views/spare_quick_transfer_views.xml',
         'views/spare_part_views.xml',
+        'views/homepage_category_views.xml',
         'views/menu_views.xml',
         'views/website_templates.xml',
         'views/report_templates.xml',
@@ -31,6 +33,8 @@
         'data/ran_ahlai_master_data_bulk.xml',
         'data/demo_tracking_data.xml',
         'data/website_pages.xml',
+        'data/flash_sale_data.xml',
+        'views/stock_overview_views.xml',
     ],
     'assets': {
         'web.assets_frontend': [

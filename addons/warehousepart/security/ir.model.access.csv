@@ -1,3 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_spare_quick_transfer_inventory,spare.quick.transfer.inventory,model_spare_quick_transfer,warehousepart.group_spare_inventory,1,1,1,1
 access_spare_quick_transfer_line_inventory,spare.quick.transfer.line.inventory,model_spare_quick_transfer_line,warehousepart.group_spare_inventory,1,1,1,1
+access_flash_sale_user,warehousepart.flash.sale.user,model_warehousepart_flash_sale,,1,0,0,0
+access_flash_sale_manager,warehousepart.flash.sale.manager,model_warehousepart_flash_sale,base.group_system,1,1,1,1
+access_homepage_category_user,warehousepart.homepage.category.user,model_warehousepart_homepage_category,,1,0,0,0
+access_homepage_category_manager,warehousepart.homepage.category.manager,model_warehousepart_homepage_category,base.group_system,1,1,1,1
+access_homepage_product_user,warehousepart.homepage.product.user,model_warehousepart_homepage_product,,1,0,0,0
+access_homepage_product_manager,warehousepart.homepage.product.manager,model_warehousepart_homepage_product,base.group_system,1,1,1,1

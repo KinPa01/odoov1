@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════
+         FLASH SALE CONFIG — FORM VIEW (updated)
+         รองรับเลือกสินค้าโดยตรง + Tag fallback
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_flash_sale_form" model="ir.ui.view">
+        <field name="name">warehousepart.flash.sale.form</field>
+        <field name="model">warehousepart.flash.sale</field>
+        <field name="arch" type="xml">
+            <form string="ตั้งค่า Flash Sale">
+                <header>
+                    <button name="action_update_discount"
+                            string="⚡ อัปเดตส่วนลดทันที"
+                            type="object"
+                            class="btn-primary"
+                            help="อัปเดต Pricelist ทั้งระบบ — ลูกค้าจะเห็นราคาใหม่ทันที"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="เช่น Flash Sale ประจำสัปดาห์"/></h1>
+                    </div>
+
+                    <group col="2">
+                        <group string="ตั้งค่าส่วนลด">
+                            <field name="discount_percent"
+                                   help="เปอร์เซ็นต์ส่วนลดที่หักจากราคาปกติ"/>
+                            <field name="max_display_products"
+                                   help="แสดงสูงสุดกี่ชิ้นบนหน้าแรก (สุ่มใหม่ทุก 8 ชั่วโมง)"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="สถิติ">
+                            <field name="total_product_count" readonly="1"/>
+                            <div class="alert alert-info" role="alert" colspan="2">
+                                <strong>รอบ Flash Sale:</strong> สุ่มสินค้าใหม่ทุก <strong>8 ชั่วโมง</strong>
+                                — กด "อัปเดตส่วนลดทันที" เพื่อบังคับอัปเดตราคา
+                            </div>
+                        </group>
+                    </group>
+
+                    <!-- ── เลือกสินค้าโดยตรง ── -->
+                    <notebook>
+                        <page string="⭐ เลือกสินค้า Flash Sale (แนะนำ)" name="direct_products">
+                            <div class="alert alert-success" role="alert">
+                                <strong>วิธีใช้:</strong>
+                                เพิ่มสินค้าที่ต้องการลดราคาที่นี่โดยตรง
+                                ระบบจะสุ่มแสดง <strong><field name="max_display_products" readonly="1" nolabel="1"/></strong> ชิ้น
+                                จากรายการนี้บนหน้าแรกทุก 8 ชั่วโมง
+                            </div>
+                            <field name="flash_product_ids"
+                                   widget="many2many_tags"
+                                   options="{'no_create': True}"
+                                   domain="[('is_published','=',True),('active','=',True)]"
+                                   string="สินค้าที่เข้าร่วม Flash Sale"/>
+                            <field name="flash_product_ids"
+                                   mode="list"
+                                   nolabel="1">
+                                <list editable="bottom" string="รายการสินค้า Flash Sale">
+                                    <field name="name" string="ชื่อสินค้า"/>
+                                    <field name="list_price" string="ราคาปกติ" widget="monetary"/>
+                                    <field name="categ_id" string="หมวดหมู่"/>
+                                    <field name="qty_available" string="สต๊อก" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="🏷️ หรือใช้ Tag (เลือกอัตโนมัติ)" name="tag_mode">
+                            <div class="alert alert-warning" role="alert">
+                                <strong>หมายเหตุ:</strong>
+                                ถ้าเลือกสินค้าโดยตรงในแท็บแรกแล้ว Tab นี้จะถูกข้ามไป (ใช้รายการโดยตรงแทน)
+                            </div>
+                            <group>
+                                <field name="tag_id"
+                                       options="{'no_create': False}"
+                                       help="สินค้าที่ติด Tag นี้จะเข้าร่วม Flash Sale โดยอัตโนมัติ"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         FLASH SALE — LIST VIEW
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_flash_sale_list" model="ir.ui.view">
+        <field name="name">warehousepart.flash.sale.list</field>
+        <field name="model">warehousepart.flash.sale</field>
+        <field name="arch" type="xml">
+            <list string="ตั้งค่า Flash Sale"
+                  decoration-success="active"
+                  decoration-muted="not active">
+                <field name="name"/>
+                <field name="discount_percent" string="ส่วนลด (%)"/>
+                <field name="total_product_count" string="สินค้าทั้งหมด" readonly="1"/>
+                <field name="max_display_products" string="แสดงสูงสุด"/>
+                <field name="active" widget="boolean_toggle"/>
+                <button name="action_update_discount" string="⚡ อัปเดต"
+                        type="object" class="btn-sm btn-primary"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         FEATURED PRODUCTS (BEST SELLERS) — LIST VIEW
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_homepage_product_list" model="ir.ui.view">
+        <field name="name">warehousepart.homepage.product.list</field>
+        <field name="model">warehousepart.homepage.product</field>
+        <field name="arch" type="xml">
+            <list string="สินค้าแนะนำ (Best Sellers)"
+                  editable="bottom"
+                  decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="product_tmpl_id"
+                       string="สินค้า"
+                       domain="[('is_published','=',True),('active','=',True)]"
+                       options="{'no_create': True}"/>
+                <field name="product_name" string="ชื่อสินค้า" readonly="1" optional="show"/>
+                <field name="product_price" string="ราคา" readonly="1" optional="show" widget="monetary"/>
+                <field name="badge_text" string="ป้าย (Badge)" placeholder="BEST SELLER"/>
+                <field name="badge_color" string="สีป้าย" widget="radio" options="{'horizontal': True}"/>
+                <field name="active" string="แสดง" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         FEATURED PRODUCTS — FORM VIEW
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_homepage_product_form" model="ir.ui.view">
+        <field name="name">warehousepart.homepage.product.form</field>
+        <field name="model">warehousepart.homepage.product</field>
+        <field name="arch" type="xml">
+            <form string="สินค้าแนะนำ">
+                <sheet>
+                    <group col="2">
+                        <group string="สินค้า">
+                            <field name="product_tmpl_id"
+                                   domain="[('is_published','=',True),('active','=',True)]"
+                                   options="{'no_create': True}"/>
+                            <field name="product_price" readonly="1" widget="monetary"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="ป้ายกำกับ (Badge)">
+                            <field name="badge_text" placeholder="เช่น BEST SELLER, HOT, NEW, SALE"/>
+                            <field name="badge_color" widget="radio"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         HOMEPAGE CATEGORY — FORM VIEW
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_homepage_category_form" model="ir.ui.view">
+        <field name="name">warehousepart.homepage.category.form</field>
+        <field name="model">warehousepart.homepage.category</field>
+        <field name="arch" type="xml">
+            <form string="หมวดหมู่หน้าแรก">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="ชื่อหมวดหมู่"/>
+                        <h1>
+                            <field name="name" placeholder="เช่น น้ำมันเครื่อง, ระบบเบรก ..."/>
+                        </h1>
+                    </div>
+                    <group col="2">
+                        <group string="การแสดงผล">
+                            <field name="icon" widget="char"
+                                   help="ใส่ emoji เช่น 🛢️ ⚙️ 🔧 🔘 💡 🌬️ 🔋 🚿"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="เชื่อมโยงสินค้า">
+                            <field name="website_categ_id"
+                                   options="{'no_create': True}"
+                                   help="เลือกหมวดหมู่ website_sale เพื่อ filter สินค้า"/>
+                            <field name="product_count" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         HOMEPAGE CATEGORY — LIST VIEW
+         ═══════════════════════════════════════════════════ -->
+    <record id="view_homepage_category_list" model="ir.ui.view">
+        <field name="name">warehousepart.homepage.category.list</field>
+        <field name="model">warehousepart.homepage.category</field>
+        <field name="arch" type="xml">
+            <list string="หมวดหมู่บนหน้าแรก" editable="bottom"
+                  decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="icon" string="ไอคอน" optional="show"/>
+                <field name="name" string="ชื่อหมวดหมู่"/>
+                <field name="website_categ_id" string="หมวดหมู่เว็บ"/>
+                <field name="product_count" string="จำนวนสินค้า" readonly="1"/>
+                <field name="active" string="แสดงบนหน้าแรก" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         ACTIONS
+         ═══════════════════════════════════════════════════ -->
+    <record id="action_homepage_product" model="ir.actions.act_window">
+        <field name="name">สินค้าแนะนำ (Best Sellers)</field>
+        <field name="res_model">warehousepart.homepage.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                เพิ่มสินค้าแนะนำบนหน้าแรก
+            </p>
+            <p>
+                สินค้าที่เพิ่มที่นี่จะแสดงในส่วน <strong>Best Sellers</strong> บนหน้าแรกเว็บ
+                — ลากเพื่อเรียงลำดับ, ใส่ป้าย Badge ได้
+            </p>
+        </field>
+    </record>
+
+    <record id="action_homepage_category" model="ir.actions.act_window">
+        <field name="name">จัดการหมวดหมู่หน้าแรก</field>
+        <field name="res_model">warehousepart.homepage.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                เพิ่มหมวดหมู่สินค้าบนหน้าแรกเว็บไซต์
+            </p>
+        </field>
+    </record>
+
+    <record id="action_flash_sale_config" model="ir.actions.act_window">
+        <field name="name">ตั้งค่า Flash Sale</field>
+        <field name="res_model">warehousepart.flash.sale</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ตั้งค่า Flash Sale ครั้งแรก
+            </p>
+        </field>
+    </record>
+
+</odoo>

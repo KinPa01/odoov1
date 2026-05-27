@@ -10,21 +10,96 @@
         <field name="arch" type="xml">
             <t name="นโยบายการจัดส่ง" t-name="warehousepart.shipping_policy">
                 <t t-call="website.layout">
-                    <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif;">
-                        <section class="pt64 pb64" style="background-color: #fdfdfd; border-bottom: 1px solid #f3f4f6;">
+                    <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif; background-color: #f9fafb;">
+
+                        <!-- Hero Banner -->
+                        <section style="background: linear-gradient(135deg, #111827 0%, #1f2937 60%, #8b1515 100%); padding: 72px 0 56px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(139,21,21,0.18) 0%, transparent 70%); pointer-events: none;"/>
+                            <div class="container">
+                                <div class="text-center">
+                                    <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
+                                        <span style="color: #fca5a5; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Shipping &amp; Delivery</span>
+                                    </div>
+                                    <h1 style="color: #ffffff; font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;">นโยบายการจัดส่งสินค้า</h1>
+                                    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">ข้อมูลเกี่ยวกับการจัดส่ง รอบส่ง และค่าบริการ — ร้านอาหลั่ย</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main Content -->
+                        <section style="padding: 64px 0 80px;">
                             <div class="container">
                                 <div class="row justify-content-center">
-                                    <div class="col-lg-8 bg-white p-5 rounded" style="border: 1px solid #f3f4f6;">
-                                        <h1 class="text-center mb-4" style="color: #111827; font-weight: 700; letter-spacing: -0.5px;">นโยบายการจัดส่งสินค้า</h1>
-                                        <div style="width: 40px; height: 3px; background-color: #e5e7eb; margin: 0 auto 30px auto;"></div>
-                                        <h4 class="mt-4" style="color: #111827; font-weight: 600; font-size: 1.1rem;">1. ระยะเวลาการจัดส่ง</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">เราจัดส่งอะไหล่ด้วยความรวดเร็ว โดยตัดรอบทุกๆ 14:00 น. ของทุกวันทำการ (จันทร์ - เสาร์) สินค้าจะถูกจัดส่งภายใน 1-3 วันทำการขึ้นอยู่กับพื้นที่ปลายทาง</p>
-                                        
-                                        <h4 class="mt-5" style="color: #111827; font-weight: 600; font-size: 1.1rem;">2. ผู้ให้บริการขนส่ง</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">ร้านอาหลั่ยใช้บริการขนส่งที่ได้มาตรฐาน เช่น Kerry Express, Flash Express เพื่อให้คุณมั่นใจว่าสินค้าจะถึงมืออย่างปลอดภัย</p>
-                                        
-                                        <h4 class="mt-5" style="color: #111827; font-weight: 600; font-size: 1.1rem;">3. การตรวจสอบสถานะ</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">เมื่อสินค้าถูกจัดส่งแล้ว คุณจะได้รับหมายเลขติดตาม (Tracking Number) ทางอีเมล และสามารถตรวจสอบได้ที่เมนู "ประวัติการสั่งซื้อ" ในบัญชีของคุณ</p>
+                                    <div class="col-lg-8">
+
+                                        <!-- Section 1 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">⏱️</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">1. รอบการจัดส่งและระยะเวลา</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">เราให้ความสำคัญกับความรวดเร็วในการจัดส่งเพื่อให้ท่านได้รับอะไหล่ทันใช้งาน ทางร้านมีรอบการจัดส่งทุกวันทำการ (วันจันทร์ - วันเสาร์)</p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 0;">
+                                                <li>
+                                                    <strong>ตัดรอบการจัดส่ง:</strong> เวลา 14:00 น. ของทุกวัน (คำสั่งซื้อที่ยืนยันการชำระเงินหลัง 14:00 น. จะถูกจัดส่งในวันทำการถัดไป)</li>
+                                                <li>
+                                                    <strong>กรุงเทพฯ และปริมณฑล:</strong> ได้รับสินค้าภายใน 1-2 วันทำการ</li>
+                                                <li>
+                                                    <strong>ต่างจังหวัด:</strong> ได้รับสินค้าภายใน 2-3 วันทำการ (ขึ้นอยู่กับพื้นที่ห่างไกล)</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 2 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">🚚</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">2. ผู้ให้บริการและค่าจัดส่ง</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ทางร้านใช้บริการขนส่งเอกชนที่ได้มาตรฐานและมีความเชี่ยวชาญ เพื่อความปลอดภัยของสินค้า เช่น                                                <strong>Kerry Express</strong> และ                                                <strong>Flash Express</strong>
+                                            </p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 0;">
+                                                <li>
+                                                    <strong>ค่าจัดส่งเริ่มต้น:</strong> คำนวณตามน้ำหนักและขนาดของสินค้า โดยระบบจะแจ้งค่าจัดส่งที่ชัดเจนในหน้าชำระเงิน (Checkout)</li>
+                                                <li>
+                                                    <strong>โปรโมชั่นจัดส่งฟรี:</strong> สำหรับคำสั่งซื้อที่มีมูลค่ารวมเกิน 5,000 บาทขึ้นไป (อาจมีการเปลี่ยนแปลงตามโปรโมชั่นรายเดือน)</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 3 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">📦</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">3. ข้อควรปฏิบัติเมื่อรับสินค้า</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">เพื่อรักษาสิทธิ์ของท่านในกรณีสินค้าสูญหายหรือเสียหายจากการขนส่ง กรุณาปฏิบัติตามคำแนะนำดังนี้:</p>
+                                            <div style="background: #fef2f2; border-left: 3px solid #8b1515; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 12px;">
+                                                <p style="color: #7f1d1d; font-size: 0.9rem; line-height: 1.6; margin: 0; font-weight: 500;">📹                                                    <strong>กรุณาถ่ายวิดีโอ (VDO) อย่างต่อเนื่อง</strong> ขณะทำการเปิดกล่องพัสดุและตรวจสอบสินค้า เพื่อใช้เป็นหลักฐานประกอบการเคลม หากไม่มีหลักฐานวิดีโอ ทางร้านขอสงวนสิทธิ์ในการรับเคลมทุกกรณี
+                                                </p>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">หากพบความผิดปกติของกล่องพัสดุ เช่น กล่องฉีกขาด ยุบตัวรุนแรง หรือมีรอยแกะ ท่านมีสิทธิ์ปฏิเสธการรับสินค้าจากพนักงานขนส่งได้ทันที</p>
+                                        </div>
+
+                                        <!-- Section 4 -->
+                                        <div style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px;">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,21,21,0.4); border: 1px solid rgba(139,21,21,0.5); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fca5a5; font-weight: 700; font-size: 1.2rem;">🔍</span>
+                                                </div>
+                                                <h2 style="color: #ffffff; font-size: 1.3rem; font-weight: 700; margin: 0;">4. การติดตามสถานะการจัดส่ง</h2>
+                                            </div>
+                                            <p style="color: #9ca3af; line-height: 1.8; margin-bottom: 20px;">เมื่อพัสดุถูกจัดส่งเรียบร้อยแล้ว ท่านจะได้รับอีเมลแจ้งเตือนพร้อม                                                <strong>หมายเลขติดตามพัสดุ (Tracking Number)</strong>
+                                            </p>
+                                            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+                                                <a href="/my/orders" style="display: inline-block; background: linear-gradient(135deg, #8b1515, #a01c1c); color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">ตรวจสอบสถานะสินค้า →</a>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -45,21 +120,105 @@
         <field name="arch" type="xml">
             <t name="นโยบายการคืนสินค้า" t-name="warehousepart.return_policy">
                 <t t-call="website.layout">
-                    <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif;">
-                        <section class="pt64 pb64" style="background-color: #fdfdfd; border-bottom: 1px solid #f3f4f6;">
+                    <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif; background-color: #f9fafb;">
+
+                        <!-- Hero Banner -->
+                        <section style="background: linear-gradient(135deg, #111827 0%, #1f2937 60%, #8b1515 100%); padding: 72px 0 56px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(139,21,21,0.18) 0%, transparent 70%); pointer-events: none;"/>
+                            <div class="container">
+                                <div class="text-center">
+                                    <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
+                                        <span style="color: #fca5a5; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Returns &amp; Refunds</span>
+                                    </div>
+                                    <h1 style="color: #ffffff; font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;">นโยบายการคืนสินค้าและการคืนเงิน</h1>
+                                    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">ข้อกำหนดในการเคลมสินค้า การเปลี่ยนคืน และการรับประกัน — ร้านอาหลั่ย</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main Content -->
+                        <section style="padding: 64px 0 80px;">
                             <div class="container">
                                 <div class="row justify-content-center">
-                                    <div class="col-lg-8 bg-white p-5 rounded" style="border: 1px solid #f3f4f6;">
-                                        <h1 class="text-center mb-4" style="color: #111827; font-weight: 700; letter-spacing: -0.5px;">นโยบายการคืนสินค้า</h1>
-                                        <div style="width: 40px; height: 3px; background-color: #e5e7eb; margin: 0 auto 30px auto;"></div>
-                                        <h4 class="mt-4" style="color: #111827; font-weight: 600; font-size: 1.1rem;">1. เงื่อนไขการรับคืนสินค้า</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">ร้านอาหลั่ยยินดีรับคืนสินค้าหรือเปลี่ยนสินค้าใหม่ภายใน 7 วัน นับจากวันที่ได้รับสินค้า เฉพาะกรณีที่สินค้าชำรุดจากการขนส่ง หรือทางร้านจัดส่งอะไหล่ผิดรุ่นเท่านั้น</p>
-                                        
-                                        <h4 class="mt-5" style="color: #111827; font-weight: 600; font-size: 1.1rem;">2. สภาพสินค้าที่รับคืน</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">สินค้าจะต้องอยู่ในสภาพเดิม ไม่ผ่านการใช้งาน บรรจุภัณฑ์ต้องสมบูรณ์ และห้ามแกะซีล (สำหรับอะไหล่ระบบไฟฟ้า)</p>
-                                        
-                                        <h4 class="mt-5" style="color: #111827; font-weight: 600; font-size: 1.1rem;">3. ขั้นตอนการแจ้งส่งคืน</h4>
-                                        <p style="color: #4b5563; line-height: 1.6;">กรุณาติดต่อทีมงานของเราผ่านเมนู "ติดต่อเรา" หรือโทรศัพท์ พร้อมแจ้งหมายเลขคำสั่งซื้อและแนบรูปถ่ายสินค้าที่มีปัญหา ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมงเพื่อแจ้งขั้นตอนถัดไป</p>
+                                    <div class="col-lg-8">
+
+                                        <!-- Section 1 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">🔄</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">1. เงื่อนไขการรับเปลี่ยน/คืนสินค้า</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ร้านอาหลั่ยยินดีรับคืนสินค้าหรือเปลี่ยนสินค้าใหม่                                                <strong>ภายใน 7 วัน</strong> นับจากวันที่ลูกค้ารับพัสดุ โดยรองรับเฉพาะกรณีดังต่อไปนี้เท่านั้น:
+                                            </p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 0;">
+                                                <li>ทางร้านจัดส่งสินค้า                                                    <strong>ผิดรุ่น ผิดประเภท หรือผิดสเปค</strong>
+                                                </li>
+                                                <li>สินค้า                                                    <strong>ชำรุด เสียหาย</strong> จากกระบวนการขนส่ง (ต้องมีวิดีโอเปิดกล่องยืนยัน)
+                                                </li>
+                                                <li>สินค้าพบ                                                    <strong>ข้อบกพร่องจากการผลิต (Defect)</strong> ตามระยะเวลาการรับประกันของแต่ละแบรนด์
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 2 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">🛡️</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">2. สภาพสินค้าที่สามารถคืนได้</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">สินค้าที่จะส่งคืนกลับมายังร้าน จะต้องมีสภาพตามเงื่อนไขดังต่อไปนี้ทุกประการ:</p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 12px;">
+                                                <li>สินค้าต้องอยู่ใน                                                    <strong>สภาพเดิมสมบูรณ์ 100%</strong> ไม่ผ่านการนำไปประกอบ ซักล้าง ติดตั้ง หรือดัดแปลงใดๆ
+                                                </li>
+                                                <li>บรรจุภัณฑ์ (กล่องสินค้า, ป้าย Tag, สติ๊กเกอร์บาร์โค้ด) ต้องอยู่ครบถ้วน ไม่ฉีกขาด หรือเปรอะเปื้อนคราบน้ำมัน</li>
+                                                <li>
+                                                    <strong>อะไหล่ระบบไฟฟ้าทุกชนิด:</strong> ห้ามแกะซีลพลาสติกโดยเด็ดขาด หากแกะซีลแล้วทางร้านขอสงวนสิทธิ์ไม่รับเปลี่ยนคืนทุกกรณี
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 3 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">💸</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">3. ค่าใช้จ่ายในการจัดส่งคืน และ การคืนเงิน</h2>
+                                            </div>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 16px;">
+                                                <li>
+                                                    <strong>กรณีความผิดของทางร้าน (ส่งผิด / ของพัง):</strong> ทางร้านจะรับผิดชอบค่าใช้จ่ายในการจัดส่งกลับทั้งหมด
+                                                </li>
+                                                <li>
+                                                    <strong>กรณีลูกค้าสั่งผิดรุ่น (และอยู่ในเงื่อนไขให้เปลี่ยนได้):</strong> ลูกค้าจะเป็นผู้รับผิดชอบค่าส่งกลับและค่าส่งรอบใหม่
+                                                </li>
+                                            </ul>
+                                            <div style="background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb; padding: 16px;">
+                                                <h4 style="margin-top: 0; font-size: 1rem; color: #111827;">ระยะเวลาดำเนินการคืนเงิน (Refund Process)</h4>
+                                                <p style="margin: 0; font-size: 0.95rem; color: #4b5563; line-height: 1.6;">เมื่อทางร้านได้รับสินค้าคืนและตรวจสอบสภาพเรียบร้อยแล้ว หากถูกต้องตามเงื่อนไข จะทำการคืนเงินกลับไปยังช่องทางชำระเงินเดิมของลูกค้า (หรือโอนเข้าบัญชีธนาคาร) ภายใน                                                    <strong>3-7 วันทำการ</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Section 4 -->
+                                        <div style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px;">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,21,21,0.4); border: 1px solid rgba(139,21,21,0.5); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fca5a5; font-weight: 700; font-size: 1.2rem;">📞</span>
+                                                </div>
+                                                <h2 style="color: #ffffff; font-size: 1.3rem; font-weight: 700; margin: 0;">4. ขั้นตอนการแจ้งส่งคืน</h2>
+                                            </div>
+                                            <p style="color: #9ca3af; line-height: 1.8; margin-bottom: 20px;">หากต้องการส่งเคลมหรือคืนสินค้า กรุณาติดต่อแอดมินพร้อม                                                <strong>1) หมายเลขคำสั่งซื้อ 2) รูปถ่าย/วิดีโอจุดที่มีปัญหา</strong>
+                                            </p>
+                                            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+                                                <a href="/contactus" style="display: inline-block; background: linear-gradient(135deg, #8b1515, #a01c1c); color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">ติดต่อแอดมิน เพื่อทำเรื่องเคลม →</a>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -216,15 +375,15 @@
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                                 <div style="display: flex; align-items: center; gap: 12px;">
                                                     <span style="color: #8b1515; font-size: 1.1rem;">📍</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">ร้านอาหลั่ย — อะไหล่รถยนต์และมอเตอร์ไซต์</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">บริษัท ร้านอาหลั่ย (เดโม่) จำกัด — 123 ถนนสุขุมวิท กรุงเทพมหานคร 10110</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 12px;">
                                                     <span style="color: #8b1515; font-size: 1.1rem;">📞</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">02-XXX-XXXX</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">02-123-4567, 089-123-4567</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 12px;">
                                                     <span style="color: #8b1515; font-size: 1.1rem;">✉️</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">contact@ranahlai.com</span>
+                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">support@ranahlai-demo.com</span>
                                                 </div>
                                             </div>
                                             <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- noupdate=0: สามารถถูกเขียนทับตอนอัปเกรดได้ -->
+    <data noupdate="0">
+
+        <!-- ══════════════════════════════════════════════════════════
+             1. PRODUCT TAG - แท็กเดียวสำหรับ Flash Sale
+             Admin แค่ใส่แท็กนี้ให้สินค้าที่ต้องการ
+             ══════════════════════════════════════════════════════════ -->
+        <record id="tag_flash_sale_main" model="product.tag">
+            <field name="name">⚡ Flash Sale</field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════════════
+             2. FLASH SALE CONFIG - ตั้งค่าส่วนลด
+             ══════════════════════════════════════════════════════════ -->
+        <record id="flash_sale_config_main" model="warehousepart.flash.sale">
+            <field name="name">ตั้งค่า Flash Sale ปัจจุบัน</field>
+            <field name="tag_id" ref="tag_flash_sale_main"/>
+            <field name="discount_percent">20.0</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════════════
+             3. ใส่แท็กตัวอย่างให้สินค้าบางชิ้น
+             ══════════════════════════════════════════════════════════ -->
+        <record id="product_oil_10w40" model="product.template">
+            <field name="product_tag_ids" eval="[(4, ref('tag_flash_sale_main'))]"/>
+        </record>
+        <record id="product_brk_vios" model="product.template">
+            <field name="product_tag_ids" eval="[(4, ref('tag_flash_sale_main'))]"/>
+        </record>
+
+    </data>
+
+    <!-- noupdate=1: Cron job จะไม่ถูกรีเซ็ตเวลาอัปเกรด -->
+    <data noupdate="1">
+        <!-- ══════════════════════════════════════════════════════════
+             4. CRON JOB - อัปเดตส่วนลดทุกๆ 1 ชั่วโมง
+             (เผื่อแอดมินลืมกดอัปเดตหลังจากใส่/ถอดแท็กสินค้า)
+             ══════════════════════════════════════════════════════════ -->
+        <record id="ir_cron_flash_sale_update" model="ir.cron">
+            <field name="name">Flash Sale — อัปเดตส่วนลดอัตโนมัติ (ทุก 1 ชั่วโมง)</field>
+            <field name="model_id" search="[('model', '=', 'warehousepart.flash.sale')]"/>
+            <field name="state">code</field>
+            <field name="code">model.action_update_discount()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+
+</odoo>

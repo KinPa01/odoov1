@@ -32,7 +32,7 @@
                                     <span class="ra-hero-badge">อะไหล่รถยนต์ พรีเมียม</span>
 
                                     <h1 class="ra-hero-title">
-                                        อะไหล่แท้<br/>
+                                        อะไหล่แท้                                        <br/>
                                         <span>คุณภาพสูง</span>
                                     </h1>
 
@@ -69,19 +69,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Right: Decorative Visual -->
-                                <div class="col-lg-6 ra-hero-visual d-none d-lg-flex">
-                                    <div class="ra-hero-deco">
-                                        <div class="ra-hero-deco-ring"></div>
-                                        <div class="ra-hero-deco-center">⚙️</div>
-                                        <div class="ra-hero-deco-dot dot-1"></div>
-                                        <div class="ra-hero-deco-dot dot-2"></div>
-                                        <div class="ra-hero-deco-dot dot-3"></div>
-                                        <div class="ra-hero-deco-dot dot-4"></div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -145,7 +132,7 @@
                                 <a href="/shop" class="ra-promo-card ra-promo-dark d-block text-decoration-none">
                                     <div class="ra-promo-tag">⭐ สินค้าแนะนำ</div>
                                     <h3 class="ra-promo-title">
-                                        น้ำมันเครื่อง<br/>
+                                        น้ำมันเครื่อง                                        <br/>
                                         Synthetic พรีเมียม
                                     </h3>
                                     <p class="ra-promo-sub">
@@ -180,43 +167,24 @@
                      ╚══════════════════════════════════════════╝ -->
                 <section class="ra-categories-section">
                     <div class="container">
-                        <div class="text-center mb-5">
-                            <span class="ra-section-badge">หมวดหมู่สินค้า</span>
-                            <h2 class="ra-section-title">เลือกตามประเภทอะไหล่</h2>
-                            <div class="ra-divider mx-auto"></div>
+                        <div class="ra-section-header">
+                            <div>
+                                <span class="ra-section-badge">หมวดหมู่สินค้า</span>
+                                <h2 class="ra-section-title">เลือกตามประเภทอะไหล่</h2>
+                                <div class="ra-divider"></div>
+                            </div>
+                            <a href="/shop" class="ra-view-all">ดูทั้งหมด →</a>
                         </div>
 
-                        <div class="ra-cat-grid">
-                            <a href="/shop" class="ra-cat-card" id="cat-oil">
-                                <span class="ra-cat-icon">🛢️</span>
-                                <p class="ra-cat-name">น้ำมันเครื่อง</p>
-                                <p class="ra-cat-count">120+ รายการ</p>
-                            </a>
-                            <a href="/shop" class="ra-cat-card" id="cat-brake">
-                                <span class="ra-cat-icon">⚙️</span>
-                                <p class="ra-cat-name">ระบบเบรก</p>
-                                <p class="ra-cat-count">80+ รายการ</p>
-                            </a>
-                            <a href="/shop" class="ra-cat-card" id="cat-suspension">
-                                <span class="ra-cat-icon">🔧</span>
-                                <p class="ra-cat-name">โช้คอัพ</p>
-                                <p class="ra-cat-count">60+ รายการ</p>
-                            </a>
-                            <a href="/shop" class="ra-cat-card" id="cat-tire">
-                                <span class="ra-cat-icon">🔘</span>
-                                <p class="ra-cat-name">ยางรถยนต์</p>
-                                <p class="ra-cat-count">90+ รายการ</p>
-                            </a>
-                            <a href="/shop" class="ra-cat-card" id="cat-electrical">
-                                <span class="ra-cat-icon">💡</span>
-                                <p class="ra-cat-name">ไฟและไฟฟ้า</p>
-                                <p class="ra-cat-count">150+ รายการ</p>
-                            </a>
-                            <a href="/shop" class="ra-cat-card" id="cat-filter">
-                                <span class="ra-cat-icon">🌬️</span>
-                                <p class="ra-cat-name">ไส้กรอง</p>
-                                <p class="ra-cat-count">45+ รายการ</p>
-                            </a>
+                        <!-- JS จะ render หมวดหมู่จาก /homepage/categories API -->
+                        <div class="ra-cat-grid" id="ra-cat-grid">
+                            <!-- Skeleton loaders แสดงขณะโหลด -->
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
+                            <div class="ra-cat-card ra-cat-skeleton"><span class="ra-skeleton-icon"></span><span class="ra-skeleton-line"></span><span class="ra-skeleton-line ra-skeleton-short"></span></div>
                         </div>
                     </div>
                 </section>
@@ -228,80 +196,20 @@
                     <div class="container">
                         <div class="ra-section-header">
                             <div>
-                                <span class="ra-section-badge">สินค้าขายดี</span>
+                                <span class="ra-section-badge">สินค้าแนะนำ</span>
                                 <h2 class="ra-section-title">Best Sellers</h2>
                                 <div class="ra-divider"></div>
                             </div>
                             <a href="/shop" class="ra-view-all">ดูสินค้าทั้งหมด →</a>
                         </div>
 
-                        <!-- CTA to shop (product cards rendered by Odoo's shop page) -->
-                        <div class="row g-4 mb-4">
-                            <!-- Placeholder product cards -->
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">BEST SELLER</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
-                                        <span style="font-size:4rem;">🛢️</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">น้ำมันเครื่อง 10W-40 เกรด A</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 580</span>
-                                            <span class="ra-product-old-price">฿ 720</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">HOT</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
-                                        <span style="font-size:4rem;">⚙️</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">ผ้าเบรกหน้า Toyota Yaris</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 850</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
-                                        <span style="font-size:4rem;">🔧</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">โช้คอัพหน้า Honda City</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 2,200</span>
-                                            <span class="ra-product-old-price">฿ 2,800</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">SALE</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:32px;">
-                                        <span style="font-size:4rem;">🌬️</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">ไส้กรองอากาศ Isuzu D-Max</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 320</span>
-                                            <span class="ra-product-old-price">฿ 450</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <a href="/shop" id="see-all-products-btn" class="ra-btn-red" style="padding: 14px 48px; font-size: 1rem;">
-                                🛒 ดูสินค้าทั้งหมดในร้าน
-                            </a>
+                        <!-- JS render จาก /homepage/best-sellers API -->
+                        <div class="row g-4" id="ra-best-sellers-grid">
+                            <!-- Skeleton loaders -->
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
                         </div>
                     </div>
                 </section>
@@ -311,89 +219,44 @@
                      ╚══════════════════════════════════════════╝ -->
                 <section class="ra-flash-section">
                     <div class="container">
-                        <div class="ra-flash-header">
-                            <div class="ra-flash-label">⚡ Flash Sale</div>
-                            <div class="ra-countdown" id="ra-countdown">
-                                <div class="ra-countdown-item">
-                                    <span class="ra-count-num" id="ra-hours">08</span>
-                                    <span class="ra-count-label">ชั่วโมง</span>
-                                </div>
-                                <span class="ra-countdown-sep">:</span>
-                                <div class="ra-countdown-item">
-                                    <span class="ra-count-num" id="ra-mins">30</span>
-                                    <span class="ra-count-label">นาที</span>
-                                </div>
-                                <span class="ra-countdown-sep">:</span>
-                                <div class="ra-countdown-item">
-                                    <span class="ra-count-num" id="ra-secs">00</span>
-                                    <span class="ra-count-label">วินาที</span>
+                        <div class="ra-section-header align-items-end">
+                            <div>
+                                <span class="ra-flash-label" id="ra-flash-label">⚡ FLASH SALE</span>
+                                <h2 class="ra-section-title d-flex align-items-center gap-2 gap-md-3 flex-wrap">
+                                    <span>Flash Sale</span>
+                                    <div class="ra-countdown ms-1 ms-md-2" id="ra-countdown">
+                                        <div class="ra-countdown-item">
+                                            <span class="ra-count-num" id="ra-hours">--</span>
+                                            <span class="ra-count-label">ชั่วโมง</span>
+                                        </div>
+                                        <span class="ra-countdown-sep">:</span>
+                                        <div class="ra-countdown-item">
+                                            <span class="ra-count-num" id="ra-mins">--</span>
+                                            <span class="ra-count-label">นาที</span>
+                                        </div>
+                                        <span class="ra-countdown-sep">:</span>
+                                        <div class="ra-countdown-item">
+                                            <span class="ra-count-num" id="ra-secs">--</span>
+                                            <span class="ra-count-label">วินาที</span>
+                                        </div>
+                                    </div>
+                                </h2>
+                                <div class="ra-divider"></div>
+                                <!-- Progress bar: แสดงเวลาที่เหลือในรอบ Flash Sale -->
+                                <div class="ra-flash-progress-wrap" style="margin-top:6px;">
+                                    <div id="ra-flash-progress" class="ra-flash-progress-bar" style="width:100%;"></div>
                                 </div>
                             </div>
-                            <a href="/shop" class="ra-view-all" style="align-self: center;">ดูโปรทั้งหมด →</a>
+                            <a href="/shop" class="ra-view-all">ดูโปรทั้งหมด →</a>
                         </div>
 
-                        <!-- Flash Sale product row -->
-                        <div class="row g-4">
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">-30%</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
-                                        <span style="font-size:3.5rem;">💡</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">ไฟหน้า LED H4 สว่างสูง</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 490</span>
-                                            <span class="ra-product-old-price">฿ 700</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">-25%</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
-                                        <span style="font-size:3.5rem;">🔋</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">แบตเตอรี่ 55Ah Yuasa</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 2,100</span>
-                                            <span class="ra-product-old-price">฿ 2,800</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">-20%</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
-                                        <span style="font-size:3.5rem;">🔩</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">หัวเทียน Denso Iridium</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 280</span>
-                                            <span class="ra-product-old-price">฿ 350</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-3">
-                                <a href="/shop" class="ra-product-card d-block text-decoration-none" style="position:relative;">
-                                    <span class="ra-product-badge">-35%</span>
-                                    <div class="ra-product-img-wrap" style="text-align:center; padding:24px;">
-                                        <span style="font-size:3.5rem;">🚿</span>
-                                    </div>
-                                    <div class="ra-product-info">
-                                        <p class="ra-product-name">ใบปัดน้ำฝน Bosch 22"</p>
-                                        <div>
-                                            <span class="ra-product-price">฿ 195</span>
-                                            <span class="ra-product-old-price">฿ 300</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                        <!-- Flash Sale product grid — JS renders real products from API -->
+                        <div class="row g-4" id="ra-flash-grid">
+                            <!-- Skeleton loaders แสดงขณะโหลดข้อมูล Flash Sale -->
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
+                            <div class="col-6 col-md-3"><div class="ra-product-card ra-product-skeleton"><div class="ra-sku-img-skeleton"></div><div class="ra-sku-name-skeleton"></div><div class="ra-sku-price-skeleton"></div></div></div>
                         </div>
                     </div>
                 </section>
@@ -421,7 +284,7 @@
                     </div>
                 </section>
 
-            </div><!-- /ra-wrap -->
+            </div>            <!-- /ra-wrap -->
         </xpath>
     </template>
 
@@ -432,4 +295,192 @@
         <field name="active" eval="True"/>
     </record>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         4. PORTAL MY ORDERS — SHOPEE-LIKE TABS
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="portal_my_orders_shopee_tabs" inherit_id="sale.portal_my_orders" name="Shopee-Like Order Tabs">
+        <xpath expr="//t[@t-call='portal.portal_searchbar']" position="after">
+            <div class="ra-order-tabs-container mb-4 mt-3 bg-white rounded shadow-sm">
+                <ul class="nav nav-tabs ra-order-tabs d-flex justify-content-between border-0 text-center" role="tablist">
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'all' and 'active' or ''}" href="/my/orders?tab=all">
+                            ทั้งหมด
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'to_pay' and 'active' or ''}" href="/my/orders?tab=to_pay">
+                            ที่ต้องชำระ 
+                            <span t-if="tab_counts and tab_counts.get('to_pay', 0) > 0" class="badge rounded-pill bg-danger">
+                                <t t-esc="tab_counts['to_pay']"/>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'to_ship' and 'active' or ''}" href="/my/orders?tab=to_ship">
+                            ที่ต้องจัดส่ง
+                            <span t-if="tab_counts and tab_counts.get('to_ship', 0) > 0" class="badge rounded-pill bg-danger">
+                                <t t-esc="tab_counts['to_ship']"/>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'to_receive' and 'active' or ''}" href="/my/orders?tab=to_receive">
+                            ที่ต้องได้รับ
+                            <span t-if="tab_counts and tab_counts.get('to_receive', 0) > 0" class="badge rounded-pill bg-danger">
+                                <t t-esc="tab_counts['to_receive']"/>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'completed' and 'active' or ''}" href="/my/orders?tab=completed">
+                            สำเร็จแล้ว
+                            <span t-if="tab_counts and tab_counts.get('completed', 0) > 0" class="badge rounded-pill bg-success">
+                                <t t-esc="tab_counts['completed']"/>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <a t-attf-class="nav-link #{current_tab == 'cancelled' and 'active' or ''}" href="/my/orders?tab=cancelled">
+                            ยกเลิกแล้ว
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-if='orders']" position="replace">
+            <t t-if="orders">
+                <div class="ra-order-list d-flex flex-column gap-3 mt-3">
+                    <t t-foreach="orders" t-as="order">
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <!-- Card Header -->
+                            <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center pt-3 pb-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-danger rounded-pill" style="font-size: 0.75rem;">ร้านแนะนำดีเยี่ยม</span>
+                                    <span class="fw-bold text-dark">
+                                        <t t-esc="order.company_id.name or 'ร้านอาหลั่ย'"/>
+                                    </span>
+                                </div>
+                                <div class="text-end fw-bold" style="color: #dc3545; font-size: 0.9rem;">
+                                    <t t-if="order.delivery_status == 'full' and not order.customer_received">
+                                        รอการยืนยัน
+                                    </t>
+                                    <t t-elif="order.customer_received">
+                                        สำเร็จ
+                                    </t>
+                                    <t t-else="">
+                                        <span t-if="order.state == 'cancel'">ยกเลิก</span>
+                                        <span t-elif="order.delivery_status == 'pending'">ที่ต้องจัดส่ง</span>
+                                        <span t-elif="order.delivery_status == 'partial'">ทยอยจัดส่ง</span>
+                                        <span t-elif="order.state in ['draft', 'sent']">ที่ต้องชำระ</span>
+                                        <span t-else="">รอดำเนินการ</span>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Card Body (First Product) -->
+                            <t t-set="first_line" t-value="order.order_line[0] if order.order_line else None"/>
+                            <div class="card-body bg-light border-bottom py-3">
+                                <a t-attf-href="/my/orders/#{order.id}" class="text-decoration-none text-dark">
+                                    <t t-if="first_line">
+                                        <div class="d-flex gap-3">
+                                            <div class="flex-shrink-0">
+                                                <img t-if="first_line.product_id.image_128" t-attf-src="data:image/png;base64,#{first_line.product_id.image_128}" class="rounded border bg-white" style="width: 80px; height: 80px; object-fit: cover;"/>
+                                                <div t-else="" class="rounded border bg-white d-flex justify-content-center align-items-center" style="width: 80px; height: 80px;">
+                                                    <i class="fa fa-image text-muted fa-2x"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="mb-1 text-truncate" style="max-width: 60%; font-size: 0.95rem;">
+                                                        <t t-esc="first_line.name"/>
+                                                    </h6>
+                                                    <div class="text-end">
+                                                        <span class="fw-bold">฿                                                            <t t-esc="'{0:,.2f}'.format(first_line.price_unit)"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-end text-muted small">
+                                                    <span t-if="first_line.product_id.product_template_attribute_value_ids">
+                                                        <t t-esc="', '.join(first_line.product_id.product_template_attribute_value_ids.mapped('name'))"/>
+                                                    </span>
+                                                    <span t-else=""></span>
+                                                    <span>x<t t-esc="int(first_line.product_uom_qty)"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </a>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="card-footer bg-white border-top-0 pt-3 pb-3">
+                                <div class="d-flex justify-content-end align-items-center mb-3" style="font-size: 0.95rem;">
+                                    <span class="text-dark me-2">สินค้ารวม                                        <t t-esc="len(order.order_line)"/>
+ รายการ:</span>
+                                    <span class="fs-5 fw-bold" style="color: #dc3545;">฿                                        <t t-esc="'{0:,.2f}'.format(order.amount_total)"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a t-attf-href="/my/orders/#{order.id}" class="btn btn-outline-secondary bg-white text-dark" style="border-radius: 4px; border-color: #ddd; font-size: 0.9rem;">ดูรายละเอียด</a>
+
+                                    <t t-if="order.delivery_status == 'full' and not order.customer_received">
+                                        <form t-attf-action="/my/orders/receive/#{order.id}" method="post" style="margin:0;">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <button type="submit" class="btn text-white" style="background: #dc3545; border-radius: 4px; font-size: 0.9rem;">ฉันได้ตรวจสอบและยอมรับสินค้า</button>
+                                        </form>
+                                    </t>
+                                    <t t-elif="order.customer_received">
+                                        <!-- Optionally link to shop or repurchase logic -->
+                                        <a href="/shop" class="btn text-white" style="background: #dc3545; border-radius: 4px; font-size: 0.9rem;">ซื้ออีกครั้ง</a>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <style>
+                    .ra-order-list .card {
+                        transition: transform 0.2s ease-in-out;
+                    }
+                    .ra-order-list .card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+                    }
+                    .ra-order-tabs .nav-link {
+                        color: #555;
+                        border-bottom: 2px solid transparent !important;
+                        border-radius: 0;
+                    }
+                    .ra-order-tabs .nav-link.active {
+                        color: #dc3545 !important;
+                        border-bottom: 2px solid #dc3545 !important;
+                        font-weight: 600;
+                    }
+                </style>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         OUT OF STOCK RIBBON INJECTION
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="products_item_out_of_stock_ribbon" inherit_id="website_sale.products_item" name="Out of Stock Ribbon">
+        <xpath expr="//t[@t-if='show_ribbons']" position="before">
+            <t t-if="product.is_storable and product.sudo().qty_available &lt;= 0">
+                <div class="ra-out-of-stock-ribbon">
+                    <span>หมดชั่วคราว</span>
+                </div>
+            </t>
+            <t t-elif="product.is_storable and product.sudo().qty_available &gt; 0 and product.sudo().qty_available &lt;= (product.available_threshold or 5)">
+                <div class="ra-low-stock-ribbon">
+                    <span>ใกล้หมด</span>
+                </div>
+            </t>
+        </xpath>
+    </template>
 </odoo>
+

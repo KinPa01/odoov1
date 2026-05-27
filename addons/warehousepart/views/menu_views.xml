@@ -26,7 +26,15 @@
 
      <menuitem id="menu_spare_paid_orders" name="ออเดอร์ที่ยืนยันแล้ว (Orders)" parent="menu_spare_ecommerce_shortcut" action="website_sale.action_orders_ecommerce" sequence="20"/>
 
-     <!-- ══ POS & การขาย (ทางลัดไป POS ของ Odoo) ══ -->
+     <!-- ══ จัดการหน้าเว็บไซต์ ══ -->
+     <menuitem id="menu_website_management" name="🖥️ จัดการหน้าเว็บไซต์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="27"/>
+
+     <menuitem id="menu_homepage_featured_products" name="⭐ สินค้าแนะนำ (Best Sellers)" parent="menu_website_management" action="warehousepart.action_homepage_product" sequence="5"/>
+
+     <menuitem id="menu_homepage_categories" name="📂 หมวดหมู่หน้าแรก" parent="menu_website_management" action="warehousepart.action_homepage_category" sequence="10"/>
+
+     <menuitem id="menu_flash_sale_config" name="⚡ ตั้งค่า Flash Sale" parent="menu_website_management" action="warehousepart.action_flash_sale_config" sequence="20"/>
+
      <menuitem id="menu_spare_pos_shortcut" name="🖥️ ระบบขายหน้าร้าน (POS)" parent="menu_warehousepart_root" action="point_of_sale.action_pos_config_kanban" groups="warehousepart.group_spare_cashier" sequence="30"/>
 
      <!-- ══ การจัดซื้อ (ทางลัดไป Purchase ของ Odoo) ══ -->

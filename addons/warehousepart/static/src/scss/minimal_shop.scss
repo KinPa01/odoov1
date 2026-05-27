@@ -19,9 +19,9 @@
     --ra-red-glow: rgba(230, 57, 70, 0.2);
     --ra-red-bg: rgba(230, 57, 70, 0.1);
 
-    --ra-text: #eef0f6;
-    --ra-text-sub: #9aa3b5;
-    --ra-text-muted: #5a6478;
+    --ra-text: #ffffff;
+    --ra-text-sub: #ffffff;
+    --ra-text-muted: #e2e5eb;
 
     --ra-font: 'Sarabun', 'Inter', sans-serif;
     --ra-radius: 8px;
@@ -812,6 +812,24 @@ header.o_header_standard {
     z-index: 2;
 }
 
+.ra-flash-out-stock {
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #555;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 40px;
+    transform: rotate(45deg);
+    z-index: 3;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+    text-align: center;
+    pointer-events: none;
+}
+
+
 .ra-product-img-wrap,
 .oe_website_sale .oe_product .oe_product_image {
     background: var(--ra-elevated) !important;
@@ -933,7 +951,153 @@ header.o_header_standard {
     color: var(--ra-red);
 }
 
-/* ── BRANDS BAR ─────────────────────────────────────────────── */
+/* Flash Sale — Progress Bar */
+.ra-flash-progress-wrap {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 400px;
+}
+
+.ra-flash-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #e63946, #ff6b35);
+    border-radius: 2px;
+    transition: width 1s linear, background 0.5s ease;
+}
+
+/* Flash Sale — Countdown Urgency State */
+.ra-countdown-urgent {
+    animation: ra-urgent-pulse 0.8s ease-in-out infinite alternate;
+    border-color: var(--ra-red) !important;
+
+    .ra-count-num {
+        color: #ff2233 !important;
+    }
+}
+
+.ra-label-urgent {
+    animation: ra-urgent-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes ra-urgent-pulse {
+    from { box-shadow: none; }
+    to   { box-shadow: 0 0 12px rgba(230, 57, 70, 0.6); }
+}
+
+@keyframes ra-urgent-glow {
+    from { box-shadow: 0 0 0 rgba(230, 57, 70, 0); }
+    to   { box-shadow: 0 0 20px rgba(230, 57, 70, 0.8); }
+}
+
+/* Flash Sale — slot change burst animation */
+.ra-flash-burst {
+    animation: ra-burst-flash 0.6s ease-out;
+}
+
+@keyframes ra-burst-flash {
+    0%   { transform: scale(1);    filter: brightness(1); }
+    40%  { transform: scale(1.08); filter: brightness(1.5); }
+    100% { transform: scale(1);    filter: brightness(1); }
+}
+
+@keyframes ra-pulse-bar {
+    from { opacity: 1; }
+    to   { opacity: 0.5; }
+}
+
+/* ── SKELETON LOADERS ───────────────────────────────────────── */
+@keyframes ra-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+%skeleton-base {
+    background: linear-gradient(
+        90deg,
+        var(--ra-elevated) 25%,
+        rgba(255, 255, 255, 0.06) 50%,
+        var(--ra-elevated) 75%
+    );
+    background-size: 200% 100%;
+    animation: ra-shimmer 1.6s ease-in-out infinite;
+    border-radius: 6px;
+}
+
+/* Category card skeleton */
+.ra-cat-skeleton {
+    pointer-events: none;
+    cursor: default;
+    border-color: transparent !important;
+    background: var(--ra-surface) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+    }
+
+    .ra-skeleton-icon {
+        @extend %skeleton-base;
+        display: block;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+    }
+
+    .ra-skeleton-line {
+        @extend %skeleton-base;
+        display: block;
+        width: 75%;
+        height: 12px;
+    }
+
+    .ra-skeleton-short {
+        width: 48%;
+        height: 10px;
+    }
+}
+
+/* Product card skeleton */
+.ra-product-skeleton {
+    pointer-events: none;
+    background: var(--ra-card) !important;
+    border: 1px solid var(--ra-border) !important;
+    border-radius: var(--ra-radius-lg) !important;
+    overflow: hidden;
+
+    &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .ra-sku-img-skeleton {
+        @extend %skeleton-base;
+        height: 160px;
+        border-radius: 0;
+    }
+
+    .ra-sku-name-skeleton {
+        @extend %skeleton-base;
+        margin: 18px 20px 8px;
+        height: 14px;
+        border-radius: 6px;
+    }
+
+    .ra-sku-price-skeleton {
+        @extend %skeleton-base;
+        margin: 0 20px 20px;
+        height: 20px;
+        width: 50%;
+        border-radius: 6px;
+    }
+}
+
 .ra-brands-section {
     padding: 50px 0;
     background: var(--ra-bg);
@@ -1801,4 +1965,89 @@ main,
     .ra-stat-num {
         font-size: 1.5rem;
     }
+}
+
+/* ── CONTRAST OVERRIDES FOR READING ─────────────────────────── */
+/* Extremely aggressive footer text override */
+footer,
+#footer,
+.o_footer,
+.template_footer_default,
+[data-name="footer"] {
+    background-color: var(--ra-bg) !important;
+    color: #ffffff !important;
+
+    /* Force ALL text, links, spans, items inside footer to be bright white */
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6,
+    p, span, li, ul, div, td, th, label, small, a {
+        color: #ffffff !important;
+    }
+
+    a,
+    .nav-link,
+    .btn-link,
+    .text-muted,
+    .text-500,
+    .text-600,
+    .text-light {
+        color: #ffffff !important;
+        opacity: 0.95 !important;
+        
+        &:hover {
+            color: var(--ra-red) !important;
+            opacity: 1 !important;
+            text-decoration: underline !important;
+        }
+    }
+}
+
+/* Old prices global override */
+.text-muted,
+.ra-product-old-price,
+del,
+s {
+    color: #e2e5eb !important;
+    opacity: 0.85 !important;
+}
+
+/* Hide native Odoo product ribbons */
+.o_ribbon,
+.o_ribbons,
+.o_ribbon_left,
+.o_ribbon_right,
+.o_ribbon_right_bg {
+    display: none !important;
+}
+
+/* Custom Modern Stock Badges */
+.ra-out-of-stock-ribbon,
+.ra-low-stock-ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    pointer-events: none;
+
+    span {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #ffffff !important;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+}
+
+.ra-out-of-stock-ribbon span {
+    background: linear-gradient(135deg, #e63946, #c1121f) !important;
+    border: 1px solid rgba(230, 57, 70, 0.4);
+}
+
+.ra-low-stock-ribbon span {
+    background: linear-gradient(135deg, #ff9f1c, #ff6b35) !important;
+    border: 1px solid rgba(255, 159, 28, 0.4);
 }

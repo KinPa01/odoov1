@@ -57,67 +57,67 @@
         <!-- ══════ กำหนด UoM + Packaging ต่อสินค้า ══════ -->
 
         <!-- น้ำมันเครื่อง 10W-40: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data.product_oil_10w40" model="product.template">
+        <record id="product_oil_10w40" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
         <record id="uom_pkg_oil_10w40" model="product.packaging">
             <field name="name">ลัง (6 ขวด)</field>
-            <field name="product_id" ref="ran_ahlai_master_data.product_oil_10w40"/>
+            <field name="product_id" ref="product_oil_10w40"/>
             <field name="qty">6</field>
             <field name="barcode">PKG-OIL-10W40</field>
         </record>
 
         <!-- ผ้าเบรกหน้า Vios: ขาย=ชิ้น | ซื้อ=ชุด (4 ชิ้น) -->
-        <record id="ran_ahlai_master_data.product_brk_vios" model="product.template">
+        <record id="product_brk_vios" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_set"/>
         </record>
         <record id="uom_pkg_brk_vios" model="product.packaging">
             <field name="name">ชุด (4 ชิ้น)</field>
-            <field name="product_id" ref="ran_ahlai_master_data.product_brk_vios"/>
+            <field name="product_id" ref="product_brk_vios"/>
             <field name="qty">4</field>
             <field name="barcode">PKG-BRK-VIOS</field>
         </record>
 
         <!-- กรองน้ำมัน Honda: ขาย=ชิ้น | ซื้อ=กล่อง (12 ชิ้น) -->
-        <record id="ran_ahlai_master_data.product_fil_honda" model="product.template">
+        <record id="product_fil_honda" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
         <record id="uom_pkg_fil_honda" model="product.packaging">
             <field name="name">กล่อง (12 ชิ้น)</field>
-            <field name="product_id" ref="ran_ahlai_master_data.product_fil_honda"/>
+            <field name="product_id" ref="product_fil_honda"/>
             <field name="qty">12</field>
             <field name="barcode">PKG-FIL-HONDA</field>
         </record>
 
         <!-- แบตเตอรี่ NS60: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data.product_bat_ns60" model="product.template">
+        <record id="product_bat_ns60" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
         <record id="uom_pkg_bat_ns60" model="product.packaging">
             <field name="name">กล่อง (1 ชิ้น)</field>
-            <field name="product_id" ref="ran_ahlai_master_data.product_bat_ns60"/>
+            <field name="product_id" ref="product_bat_ns60"/>
             <field name="qty">1</field>
             <field name="barcode">PKG-BAT-NS60</field>
         </record>
 
         <!-- ลูกหมากปีกนก Vigo: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data.product_sus_vigo" model="product.template">
+        <record id="product_sus_vigo" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
         <record id="uom_pkg_sus_vigo" model="product.packaging">
             <field name="name">กล่อง (1 ชิ้น)</field>
-            <field name="product_id" ref="ran_ahlai_master_data.product_sus_vigo"/>
+            <field name="product_id" ref="product_sus_vigo"/>
             <field name="qty">1</field>
             <field name="barcode">PKG-SUS-VIGO</field>
         </record>
 
         <!-- ยางนอก IRC: ขาย=เส้น | ซื้อ=กล่อง (4 เส้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_tire_irc_7090" model="product.template">
+        <record id="product_tire_irc_7090" model="product.template">
             <field name="uom_id" ref="uom_strand"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -129,7 +129,7 @@
         </record>
 
         <!-- ยางนอก Michelin City Grip: ขาย=เส้น | ซื้อ=กล่อง (4 เส้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_tire_mic_9090" model="product.template">
+        <record id="product_tire_mic_9090" model="product.template">
             <field name="uom_id" ref="uom_strand"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -141,7 +141,7 @@
         </record>
 
         <!-- ผ้าเบรกหน้า NMAX: ขาย=ชิ้น | ซื้อ=ชุด (4 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_brk_nmax" model="product.template">
+        <record id="product_brk_nmax" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_set"/>
         </record>
@@ -153,7 +153,7 @@
         </record>
 
         <!-- ผ้าเบรกหลัง PCX: ขาย=ชิ้น | ซื้อ=ชุด (4 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_brk_pcx" model="product.template">
+        <record id="product_brk_pcx" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_set"/>
         </record>
@@ -165,7 +165,7 @@
         </record>
 
         <!-- แบต YUASA: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_bat_yuasa" model="product.template">
+        <record id="product_bat_yuasa" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -177,7 +177,7 @@
         </record>
 
         <!-- หัวเทียน NGK: ขาย=ชิ้น | ซื้อ=กล่อง (10 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_spk_ngk" model="product.template">
+        <record id="product_spk_ngk" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -189,7 +189,7 @@
         </record>
 
         <!-- สายพาน Honda PCX: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_belt_pcx" model="product.template">
+        <record id="product_belt_pcx" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -201,7 +201,7 @@
         </record>
 
         <!-- สายพาน Yamaha Aerox: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_belt_aerox" model="product.template">
+        <record id="product_belt_aerox" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -213,7 +213,7 @@
         </record>
 
         <!-- น้ำมันเครื่อง Castrol: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data_bulk.product_oil_castrol" model="product.template">
+        <record id="product_oil_castrol" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
@@ -225,7 +225,7 @@
         </record>
 
         <!-- น้ำมันเครื่อง Shell: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data_bulk.product_oil_shell" model="product.template">
+        <record id="product_oil_shell" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
@@ -237,7 +237,7 @@
         </record>
 
         <!-- น้ำมันเครื่อง Mobil 1: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data_bulk.product_oil_mobil" model="product.template">
+        <record id="product_oil_mobil" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
@@ -249,7 +249,7 @@
         </record>
 
         <!-- น้ำมันเครื่อง Valvoline: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data_bulk.product_oil_valvoline" model="product.template">
+        <record id="product_oil_valvoline" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
@@ -261,7 +261,7 @@
         </record>
 
         <!-- น้ำมันเครื่อง PTT: ขาย=ขวด | ซื้อ=ลัง (6 ขวด) -->
-        <record id="ran_ahlai_master_data_bulk.product_oil_ptt" model="product.template">
+        <record id="product_oil_ptt" model="product.template">
             <field name="uom_id" ref="uom_bottle"/>
             <field name="uom_po_id" ref="uom_crate"/>
         </record>
@@ -273,7 +273,7 @@
         </record>
 
         <!-- ยางรถยนต์ Bridgestone: ขาย=เส้น | ซื้อ=กล่อง (4 เส้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_tire_bridge" model="product.template">
+        <record id="product_tire_bridge" model="product.template">
             <field name="uom_id" ref="uom_strand"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -285,7 +285,7 @@
         </record>
 
         <!-- ยางรถยนต์ Michelin Primacy 4: ขาย=เส้น | ซื้อ=กล่อง (4 เส้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_tire_mic_car" model="product.template">
+        <record id="product_tire_mic_car" model="product.template">
             <field name="uom_id" ref="uom_strand"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -297,7 +297,7 @@
         </record>
 
         <!-- กรองอากาศ Wave: ขาย=ชิ้น | ซื้อ=กล่อง (12 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_fil_wave" model="product.template">
+        <record id="product_fil_wave" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -309,7 +309,7 @@
         </record>
 
         <!-- กรองอากาศ XMAX: ขาย=ชิ้น | ซื้อ=กล่อง (12 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_fil_xmax" model="product.template">
+        <record id="product_fil_xmax" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -321,7 +321,7 @@
         </record>
 
         <!-- โซ่สเตอร์ DID: ขาย=ชิ้น | ซื้อ=กล่อง (1 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_chain_did_428" model="product.template">
+        <record id="product_chain_did_428" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>
@@ -333,7 +333,7 @@
         </record>
 
         <!-- หลอดไฟ Osram: ขาย=ชิ้น | ซื้อ=กล่อง (10 ชิ้น) -->
-        <record id="ran_ahlai_master_data_bulk.product_led_osram" model="product.template">
+        <record id="product_led_osram" model="product.template">
             <field name="uom_id" ref="uom_piece"/>
             <field name="uom_po_id" ref="uom_box"/>
         </record>

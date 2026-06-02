@@ -19,7 +19,7 @@
             point_of_sale.pos_config_main = POS Config ที่ติดตั้งมากับ Odoo โดย default
             warehouse_id → POS จะดึงสต็อกจากคลังหน้าร้าน (POS/Stock)
         -->
-        <record id="point_of_sale.pos_config_main" model="pos.config">
+        <record id="point_of_sale.pos_config_retail" model="pos.config">
             <field name="name">ร้านอาหลั่ย — หน้าร้าน</field>
             <field name="warehouse_id" ref="warehouse_pos"/>
         </record>

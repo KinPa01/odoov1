@@ -21,6 +21,7 @@
         'delivery'
     ],
     'data': [
+        'data/warehouse_setup.xml',
         'security/spare_security.xml',
         'security/ir.model.access.csv',
         'views/spare_quick_transfer_views.xml',
@@ -35,6 +36,7 @@
         'data/website_pages.xml',
         'data/flash_sale_data.xml',
         'views/stock_overview_views.xml',
+        'data/pos_config_setup.xml',
     ],
     'assets': {
         'web.assets_frontend': [

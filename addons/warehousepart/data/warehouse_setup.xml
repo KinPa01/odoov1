@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+        ══════════════════════════════════════════════════════════════
+        ร้านอาหลั่ย — Warehouse Setup
+        ══════════════════════════════════════════════════════════════
+        โครงสร้าง 3 คลัง:
+
+            📦 คลังใหญ่อาหลั่ย (WH)   ← รับของจากซัพพลายเออร์
+                ↓
+            ├── 🛒 คลังหน้าร้าน (POS)  ← POS หยิบสต็อกที่นี่
+            └── 🌐 คลังออนไลน์ (WEB)   ← eCommerce หยิบสต็อกที่นี่
+
+        noupdate="1" → ถ้า upgrade module จะไม่เขียนทับ (ปลอดภัย)
+        ══════════════════════════════════════════════════════════════
+        -->
+
+        <!-- ─── 1. คลังหลัก: เปลี่ยนชื่อ WH ที่มีอยู่แล้ว ──────────────────── -->
+        <record id="stock.warehouse0" model="stock.warehouse">
+            <field name="name">คลังใหญ่อาหลั่ย</field>
+        </record>
+
+        <!-- ─── 2. คลังหน้าร้าน (POS) ──────────────────────────────────────── -->
+        <record id="warehouse_pos" model="stock.warehouse">
+            <field name="name">คลังหน้าร้าน</field>
+            <field name="code">POS</field>
+        </record>
+
+        <!-- ─── 3. คลังออนไลน์ (Web eCommerce) ─────────────────────────────── -->
+        <record id="warehouse_web" model="stock.warehouse">
+            <field name="name">คลังออนไลน์</field>
+            <field name="code">WEB</field>
+        </record>
+
+    </data>
+</odoo>

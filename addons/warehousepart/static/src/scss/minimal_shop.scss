@@ -2051,3 +2051,282 @@ s {
     background: linear-gradient(135deg, #ff9f1c, #ff6b35) !important;
     border: 1px solid rgba(255, 159, 28, 0.4);
 }
+
+/* ── UNIFIED SHOP SORT & FILTER BUTTON GROUP ────────────────── */
+.ra-unified-toolbar.btn-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    background-color: var(--ra-surface) !important;
+    border: 1px solid var(--ra-border) !important;
+    border-radius: var(--ra-radius) !important;
+    overflow: hidden !important;
+    height: 42px !important;
+    transition: var(--ra-transition) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+
+    &:hover {
+        border-color: var(--ra-red) !important;
+        box-shadow: 0 0 10px var(--ra-red-glow) !important;
+    }
+
+    /* Inner items reset */
+    .dropdown_sorty_by,
+    button[data-bs-target="#o_wsale_offcanvas"],
+    .btn[data-bs-target="#o_wsale_offcanvas"] {
+        margin: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        height: 100% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .dropdown_sorty_by {
+        border-right: 1px solid var(--ra-border) !important;
+    }
+
+    .dropdown_sorty_by > a.dropdown-toggle.btn,
+    button[data-bs-target="#o_wsale_offcanvas"],
+    .btn[data-bs-target="#o_wsale_offcanvas"] {
+        padding: 8px 16px !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+        color: var(--ra-text) !important;
+        height: 100% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        transition: var(--ra-transition) !important;
+        text-decoration: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Hover states for inner buttons */
+    .dropdown_sorty_by > a.dropdown-toggle.btn:hover,
+    .dropdown_sorty_by > a.dropdown-toggle.btn[aria-expanded="true"],
+    button[data-bs-target="#o_wsale_offcanvas"]:hover,
+    button[data-bs-target="#o_wsale_offcanvas"]:focus {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        color: #fff !important;
+    }
+}
+
+/* Sort dropdown adjustments */
+.dropdown_sorty_by > a.dropdown-toggle.btn {
+    span, small {
+        color: var(--ra-text) !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+    }
+    small {
+        opacity: 0.75;
+    }
+    i, .fa {
+        font-size: 0.82rem !important;
+        margin-left: 2px !important;
+        color: var(--ra-red) !important;
+    }
+}
+
+/* Dropdown menu items styling */
+.dropdown_sorty_by .dropdown-menu {
+    background: var(--ra-elevated) !important;
+    border: 1px solid var(--ra-border) !important;
+    box-shadow: var(--ra-shadow-dark) !important;
+    border-radius: var(--ra-radius) !important;
+    margin-top: 6px !important;
+    padding: 6px 0 !important;
+}
+
+.dropdown_sorty_by .dropdown-item {
+    color: var(--ra-text-sub) !important;
+    font-size: 0.88rem !important;
+    padding: 10px 18px !important;
+    font-weight: 500 !important;
+    transition: var(--ra-transition) !important;
+}
+
+.dropdown_sorty_by .dropdown-item:hover,
+.dropdown_sorty_by .dropdown-item.active {
+    background: var(--ra-red) !important;
+    color: #fff !important;
+}
+
+/* Filter icon & badge styling */
+.ra-unified-toolbar button[data-bs-target="#o_wsale_offcanvas"] i,
+.ra-unified-toolbar button[data-bs-target="#o_wsale_offcanvas"] svg,
+.ra-unified-toolbar .btn[data-bs-target="#o_wsale_offcanvas"] i,
+.ra-unified-toolbar .btn[data-bs-target="#o_wsale_offcanvas"] svg {
+    color: var(--ra-red) !important;
+    font-size: 0.95rem !important;
+}
+
+.ra-unified-toolbar button[data-bs-target="#o_wsale_offcanvas"] small,
+.ra-unified-toolbar .btn[data-bs-target="#o_wsale_offcanvas"] small {
+    color: var(--ra-text) !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+}
+
+/* =================================================================
+   Odoo Portal / My Account Page Stylings (Dark Theme Compatibility)
+   ================================================================= */
+.o_portal_wrap, 
+.o_portal_container, 
+.o_portal_my_home, 
+.o_portal_docs,
+.o_portal,
+.o_portal_sidebar {
+    
+    // 1. ลิงก์และกรอบข้อความในหน้า Portal
+    a, 
+    .o_portal_doc_link, 
+    .list-group-item,
+    .list-group-item-action {
+        color: #ffffff !important;
+        text-decoration: none !important;
+        background-color: transparent !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        transition: var(--ra-transition) !important;
+
+        &:hover {
+            color: var(--ra-red) !important;
+            background-color: rgba(255, 255, 255, 0.02) !important;
+            border-color: var(--ra-red-glow) !important;
+            
+            h3, h4, h5, h6, span, strong, p, small {
+                color: var(--ra-red-light) !important;
+            }
+        }
+    }
+
+    // 2. ชื่อเรื่องเมนูต่างๆ เช่น "คำสั่งซื้อของคุณ"
+    h3, h4, h5, h6, 
+    .list-group-item-heading,
+    span.o_portal_doc_title,
+    .o_portal_doc_title,
+    strong {
+        color: #ffffff !important;
+        transition: var(--ra-transition) !important;
+    }
+
+    // 3. คำอธิบายย่อย เช่น "ติดตาม ดู หรือชำระเงิน..."
+    p, 
+    small, 
+    .text-muted, 
+    .text-secondary,
+    .o_portal_doc_desc {
+        color: #a0aec0 !important;
+        font-weight: 400 !important;
+        transition: var(--ra-transition) !important;
+    }
+
+    // 4. การ์ดและกล่องข้อมูล
+    .card, 
+    .list-group {
+        background-color: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+    }
+
+    .card-header, 
+    .card-footer {
+        background-color: rgba(255, 255, 255, 0.02) !important;
+        border-bottom: 1px solid var(--ra-border) !important;
+        color: #ffffff !important;
+    }
+
+    // 5. ตารางประวัติคำสั่งซื้อ / ใบแจ้งหนี้
+    .table {
+        color: #ffffff !important;
+        background-color: transparent !important;
+
+        thead {
+            tr {
+                background-color: rgba(255, 255, 255, 0.04) !important;
+                border-bottom: 2px solid var(--ra-border) !important;
+                th {
+                    color: #ffffff !important;
+                    font-weight: 600 !important;
+                    border-top: none !important;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid var(--ra-border) !important;
+                background-color: transparent !important;
+                transition: var(--ra-transition) !important;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.02) !important;
+                }
+
+                td {
+                    color: #e2e5eb !important;
+                    vertical-align: middle !important;
+                    
+                    a {
+                        color: #ffffff !important;
+                        &:hover {
+                            color: var(--ra-red) !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 6. Breadcrumb นำทาง
+    .breadcrumb {
+        background-color: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius) !important;
+        padding: 10px 16px !important;
+
+        .breadcrumb-item {
+            color: #a0aec0 !important;
+            
+            a {
+                color: #ffffff !important;
+                &:hover {
+                    color: var(--ra-red) !important;
+                }
+            }
+
+            &.active {
+                color: var(--ra-red-light) !important;
+            }
+
+            + .breadcrumb-item::before {
+                color: rgba(255, 255, 255, 0.3) !important;
+            }
+        }
+    }
+
+    // 7. sidebar ด้านขวา (รายละเอียดผู้ใช้)
+    #portal_sidebar_bg,
+    .o_portal_sidebar {
+        background-color: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        color: #ffffff !important;
+        
+        .card {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+}
+
+

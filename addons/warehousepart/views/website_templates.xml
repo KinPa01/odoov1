@@ -482,5 +482,38 @@
             </t>
         </xpath>
     </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         UNIFIED SHOP SORT & FILTER BUTTON GROUP
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="products_sort_filter_unified" inherit_id="website_sale.products" name="Unified Sort &amp; Filter Button Group">
+        <!-- Target the sort dropdown and filter button and wrap them in a btn-group -->
+        <xpath expr="//t[@t-if=&quot;is_view_active('website_sale.sort')&quot;]" position="replace">
+            <div class="btn-group ra-unified-toolbar shadow-sm">
+                <t t-if="is_view_active('website_sale.sort')" t-call="website_sale.sort"/>
+                <button
+                    t-if="wsale_has_filters_btn"
+                    t-attf-class="btn btn-{{navClass}} position-relative {{not wsale_has_filters_btn_lg and 'd-lg-none'}} text-nowrap"
+                    title="Filters"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#o_wsale_offcanvas"
+                >
+                    <i class="oi oi-settings-adjust" role="img"/>
+                    <small class="ms-1 d-none d-md-inline-block">Filters</small>
+                    <span
+                        t-if="isFilteringByPrice or attrib_set or tags"
+                        t-attf-class="position-absolute top-0 start-100 translate-middle border border-{{navClass}} rounded-circle bg-danger p-1"
+                    >
+                        <span class="visually-hidden">filters active</span>
+                    </span>
+                </button>
+            </div>
+        </xpath>
+        <!-- Deactivate or delete the original standalone filter button so it doesn't duplicate! -->
+        <xpath expr="//button[@t-if='wsale_has_filters_btn']" position="replace">
+            <!-- Standalone button removed because it is now merged inside the btn-group above -->
+        </xpath>
+    </template>
 </odoo>
+
 

@@ -11,9 +11,9 @@
  */
 
 // ── CONSTANTS ─────────────────────────────────────────────────────
-const SLOT_SECS      = 8 * 3600;       // 8 ชั่วโมง
+const SLOT_SECS = 8 * 3600;       // 8 ชั่วโมง
 const EPOCH_START_TS = 1748217600;     // 2025-05-26 00:00:00 UTC
-const REFRESH_MS     = 5 * 60 * 1000; // refresh ทุก 5 นาที
+const REFRESH_MS = 5 * 60 * 1000; // refresh ทุก 5 นาที
 
 // ── HELPERS ───────────────────────────────────────────────────────
 function formatPrice(num) {
@@ -32,11 +32,11 @@ function escHtml(str) {
 function pad(n) { return String(n).padStart(2, '0'); }
 
 function getSlotInfo() {
-    const nowSec     = Math.floor(Date.now() / 1000);
-    const elapsed    = nowSec - EPOCH_START_TS;
-    const slotIndex  = Math.floor(elapsed / SLOT_SECS);
+    const nowSec = Math.floor(Date.now() / 1000);
+    const elapsed = nowSec - EPOCH_START_TS;
+    const slotIndex = Math.floor(elapsed / SLOT_SECS);
     const secsInSlot = elapsed % SLOT_SECS;
-    const secsLeft   = SLOT_SECS - secsInSlot;
+    const secsLeft = SLOT_SECS - secsInSlot;
     return { slotIndex, secsLeft };
 }
 
@@ -70,7 +70,7 @@ async function initBestSellers() {
             return;
         }
 
-        grid.style.opacity   = '0';
+        grid.style.opacity = '0';
         grid.style.transform = 'translateY(8px)';
         grid.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
 
@@ -95,7 +95,7 @@ async function initBestSellers() {
                 </div>
             `).join('');
 
-            grid.style.opacity   = '1';
+            grid.style.opacity = '1';
             grid.style.transform = 'translateY(0)';
             initProductCardPulse();
             initScrollRevealFor(grid.querySelectorAll('.ra-product-card'));
@@ -122,7 +122,7 @@ async function initHomepageCategories() {
         }
 
         grid.style.transition = 'opacity 0.3s ease';
-        grid.style.opacity    = '0';
+        grid.style.opacity = '0';
 
         setTimeout(() => {
             grid.innerHTML = data.categories.map((cat, i) => `
@@ -145,7 +145,7 @@ function renderFallbackCategories(grid) {
     const defs = [
         { icon: '🛢️', name: 'น้ำมันเครื่อง', url: '/shop/category/นามนเครอง-1' },
         { icon: '⚙️', name: 'ระบบเบรก', url: '/shop/category/ระบบเบรก-2' },
-        { icon: '🔧', name: 'โช้คอัพ',  url: '/shop/category/ชวงลาง-5' },
+        { icon: '🔧', name: 'โช้คอัพ', url: '/shop/category/ชวงลาง-5' },
         { icon: '🔘', name: 'ยางรถยนต์', url: '/shop/category/ยางลอ-6' },
         { icon: '💡', name: 'ไฟและไฟฟ้า', url: '/shop/category/ระบบไฟฟา-8' },
         { icon: '💨', name: 'ไส้กรอง', url: '/shop/category/กรองกากาศ-10' },
@@ -154,7 +154,6 @@ function renderFallbackCategories(grid) {
         <a href="${d.url}" class="ra-cat-card">
             <span class="ra-cat-icon">${d.icon}</span>
             <p class="ra-cat-name">${d.name}</p>
-            <p class="ra-cat-count">ดูสินค้า</p>
         </a>
     `).join('');
     grid.style.opacity = '1';
@@ -165,12 +164,12 @@ function renderFallbackCategories(grid) {
 // ─────────────────────────────────────────────────────────────────
 async function initFlashSale() {
     const hoursEl = document.getElementById('ra-hours');
-    const minsEl  = document.getElementById('ra-mins');
-    const secsEl  = document.getElementById('ra-secs');
-    const grid    = document.getElementById('ra-flash-grid');
+    const minsEl = document.getElementById('ra-mins');
+    const secsEl = document.getElementById('ra-secs');
+    const grid = document.getElementById('ra-flash-grid');
     if (!hoursEl || !minsEl || !secsEl || !grid) return;
 
-    let lastSlot  = -1;
+    let lastSlot = -1;
     let isLoading = false;
 
     async function loadProducts() {
@@ -178,14 +177,14 @@ async function initFlashSale() {
         isLoading = true;
 
         grid.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        grid.style.opacity    = '0';
-        grid.style.transform  = 'translateY(10px)';
+        grid.style.opacity = '0';
+        grid.style.transform = 'translateY(10px)';
 
         const data = await apiFetch('/flash-sale/data');
 
         setTimeout(() => {
             renderFlashProducts(grid, data);
-            grid.style.opacity   = '1';
+            grid.style.opacity = '1';
             grid.style.transform = 'translateY(0)';
             isLoading = false;
             initProductCardPulse();
@@ -199,8 +198,8 @@ async function initFlashSale() {
         const s = secsLeft % 60;
 
         hoursEl.textContent = pad(h);
-        minsEl.textContent  = pad(m);
-        secsEl.textContent  = pad(s);
+        minsEl.textContent = pad(m);
+        secsEl.textContent = pad(s);
 
         updateProgressBar(secsLeft);
 
@@ -293,15 +292,15 @@ function initScrollRevealFor(targets) {
 
     targets.forEach((el, i) => {
         if (el.classList.contains('ra-cat-skeleton') || el.classList.contains('ra-product-skeleton')) return;
-        el.style.opacity    = '0';
-        el.style.transform  = 'translateY(20px)';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
         el.style.transition = `opacity 0.5s ease ${(i % 6) * 0.07}s, transform 0.5s ease ${(i % 6) * 0.07}s`;
     });
 
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) {
-                e.target.style.opacity   = '1';
+                e.target.style.opacity = '1';
                 e.target.style.transform = 'translateY(0)';
                 obs.unobserve(e.target);
             }
@@ -366,9 +365,9 @@ function initSmoothScroll() {
             if (!href || href === '#' || href === '#!') return;
             try {
                 const target = document.querySelector(href);
-                if (target) { 
-                    e.preventDefault(); 
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             } catch (err) {
                 // Ignore invalid selector errors

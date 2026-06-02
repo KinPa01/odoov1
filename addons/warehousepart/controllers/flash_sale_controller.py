@@ -60,7 +60,7 @@ class FlashSaleController(http.Controller):
         FlashSale = request.env['warehousepart.flash.sale'].sudo()
         config = FlashSale.search([('active', '=', True)], limit=1)
 
-        if not config or not config.tag_id:
+        if not config:
             payload = {
                 'expires_at': expires_at,
                 'slot_index': slot_index,
@@ -72,12 +72,8 @@ class FlashSaleController(http.Controller):
 
         max_display = int(config.max_display_products or 4)
 
-        # ดึงสินค้าทั้งหมดที่มี tag Flash Sale
-        all_templates = request.env['product.template'].sudo().search([
-            ('product_tag_ids', 'in', [config.tag_id.id]),
-            ('is_published', '=', True),
-            ('active', '=', True),
-        ])
+        # ดึงสินค้าทั้งหมดที่มีใน Flash Sale (รองรับทั้งระบบเลือกสินค้าเอง และระบบใช้ Tag)
+        all_templates = config._get_flash_templates()
 
         # สุ่มโดยใช้ slot_index เป็น seed — รอบเดียวกัน = สินค้าชุดเดิม
         shuffled = _shuffle_with_seed(list(all_templates), seed=slot_index)

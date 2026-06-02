@@ -15,25 +15,19 @@
 
         <record id="uom_piece" model="uom.uom">
             <field name="name">ชิ้น</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 
         <record id="uom_strand" model="uom.uom">
             <field name="name">เส้น</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 
         <record id="uom_bottle" model="uom.uom">
             <field name="name">ขวด</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 
@@ -41,25 +35,22 @@
 
         <record id="uom_box" model="uom.uom">
             <field name="name">กล่อง</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_uom_id" ref="uom_piece"/>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 
         <record id="uom_crate" model="uom.uom">
             <field name="name">ลัง</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_uom_id" ref="uom_bottle"/>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 
         <record id="uom_set" model="uom.uom">
             <field name="name">ชุด</field>
-            <field name="category_id" ref="uom.product_uom_categ_unit"/>
-            <field name="factor">1.0</field>
-            <field name="uom_type">bigger</field>
+            <field name="relative_uom_id" ref="uom_piece"/>
+            <field name="relative_factor">1.0</field>
             <field name="rounding">1.000</field>
         </record>
 

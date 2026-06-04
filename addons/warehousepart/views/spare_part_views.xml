@@ -20,6 +20,15 @@
                             <field name="webike_sku"/>
                         </group>
                     </group>
+                    <!-- ─── สต็อกคลังหน้าร้าน (Real-time) ─────────────────────── -->
+                    <group string="🏪 สต็อกคลังหน้าร้าน">
+                        <group>
+                            <field name="qty_pos_warehouse"
+                                   string="🏪 คลังหน้าร้าน (POS)"
+                                   readonly="1"
+                                   help="จำนวนสินค้าในคลังหน้าร้าน — POS จะดึงสต็อกจากคลังนี้"/>
+                        </group>
+                    </group>
                 </page>
             </xpath>
         </field>

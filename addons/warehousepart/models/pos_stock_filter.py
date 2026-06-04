@@ -16,15 +16,26 @@ class ProductTemplatePos(models.Model):
 
     def _get_pos_stock_tmpl_ids(self, company_id):
         """
-        คืน set ของ product_tmpl_id ที่มีสต็อก > 0 ใน internal locations
+        คืน set ของ product_tmpl_id ที่มีสต็อก > 0
+        เฉพาะใน คลังหน้าร้าน (warehouse code = 'POS') เท่านั้น
+        ป้องกันสต็อกจากคลัง ONLINE หรือคลังอื่นหลุดเข้ามาใน POS
         """
         self.env.cr.execute("""
             SELECT DISTINCT pp.product_tmpl_id
             FROM stock_quant sq
             JOIN stock_location sl ON sq.location_id = sl.id
             JOIN product_product pp ON sq.product_id = pp.id
+            JOIN stock_warehouse sw ON (
+                sl.parent_path LIKE (
+                    SELECT sl2.parent_path || '%%'
+                    FROM stock_location sl2
+                    WHERE sl2.id = sw.lot_stock_id
+                )
+                OR sl.id = sw.lot_stock_id
+            )
             WHERE sl.usage = 'internal'
               AND sq.quantity > 0
+              AND sw.code = 'POS'
               AND (sl.company_id = %s OR sl.company_id IS NULL)
         """, (company_id,))
         return {row[0] for row in self.env.cr.fetchall()}
@@ -53,10 +64,10 @@ class ProductTemplatePos(models.Model):
         # เรียก parent ก่อน (ให้ Odoo โหลดสินค้าตามปกติ)
         products_data = super()._load_pos_data_search_read(data, config)
 
-        # ดึง tmpl_ids ที่มีสต็อก > 0
+        # ดึง tmpl_ids ที่มีสต็อก > 0 ใน คลังหน้าร้าน (POS) เท่านั้น
         tmpl_ids_with_stock = self._get_pos_stock_tmpl_ids(config.company_id.id)
         _logger.info(
-            "WAREHOUSEPART: Found %d product templates with stock > 0",
+            "WAREHOUSEPART: Found %d product templates with stock > 0 in POS warehouse",
             len(tmpl_ids_with_stock)
         )
 
@@ -79,6 +90,7 @@ class ProductTemplatePos(models.Model):
         """
         ส่ง websocket / bus notification ไปยัง POS session ที่เปิดอยู่ทั้งหมด
         เพื่อให้อัปเดตสต็อก real-time โดยไม่ต้อง reload หน้าจอ
+        ส่งเฉพาะยอด คลังหน้าร้าน (POS warehouse) ป้องกัน POS เห็นยอดรวมที่ผิด
         """
         sessions = self.env['pos.session'].search([('state', '=', 'opened')])
         if not sessions:
@@ -88,11 +100,15 @@ class ProductTemplatePos(models.Model):
         for tmpl in self:
             if not tmpl.available_in_pos or not tmpl.is_storable:
                 continue
+            # ดึงยอดเฉพาะคลังหน้าร้าน (POS) — ไม่รวมคลัง ONLINE
+            pos_qty = self.env['product.template'].get_warehouse_stock(
+                tmpl.id, 'POS'
+            )
             updates.append({
                 'id': tmpl.id,
-                'qty_available': tmpl.qty_available,
-                # virtual_available = qty_available - reserved (หักของที่ web/SO จอง)
-                'virtual_available': tmpl.virtual_available,
+                # ส่งยอด POS warehouse ให้ frontend ใช้แสดงและตรวจสอบ
+                'qty_available': pos_qty,
+                'virtual_available': pos_qty,  # ใช้ยอดเดียวกัน (POS ไม่ต้องเห็น reserved ของ online)
             })
 
         if not updates:
@@ -100,13 +116,15 @@ class ProductTemplatePos(models.Model):
 
         for session in sessions:
             try:
-                _logger.info("WAREHOUSEPART: Notifying POS session %s of stock updates for %d templates", session.name, len(updates))
+                _logger.info(
+                    "WAREHOUSEPART: Notifying POS session %s of POS-warehouse stock updates for %d templates",
+                    session.name, len(updates)
+                )
                 session._notify('PRODUCT_STOCK_UPDATE', {
                     'updates': updates
                 })
             except Exception as e:
                 _logger.error("WAREHOUSEPART: Failed to notify POS session: %s", e)
-
 
 
 class PosOrderStockCheck(models.Model):

@@ -5,5 +5,31 @@
         <record id="stock.stock_picking_type_action" model="ir.actions.act_window">
             <field name="context">{'search_default_groupby_warehouse_id': 1}</field>
         </record>
+
+        <!--
+        ══════════════════════════════════════════════════════════════
+        Product List View: แสดงสต็อกแยกตาม คลังหน้าร้าน / คลังออนไลน์
+        ══════════════════════════════════════════════════════════════
+        -->
+        <record id="view_product_template_list_warehouse_stock" model="ir.ui.view">
+            <field name="name">product.template.list.warehouse.stock</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <!-- แทรกคอลัมน์สต็อกแยกคลังต่อท้าย list -->
+                <xpath expr="//list/field[@name='qty_available']" position="after">
+                    <field name="qty_pos_warehouse"
+                           string="🏪 หน้าร้าน"
+                           optional="show"
+                           readonly="1"
+                           decoration-danger="qty_pos_warehouse == 0"
+                           decoration-warning="qty_pos_warehouse &lt; 3"
+                           decoration-success="qty_pos_warehouse &gt;= 3"/>
+                </xpath>
+            </field>
+        </record>
+
+
     </data>
 </odoo>
+

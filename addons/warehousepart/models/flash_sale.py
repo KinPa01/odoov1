@@ -26,7 +26,18 @@ class FlashSaleSession(models.Model):
     _name = 'warehousepart.flash.sale'
     _description = 'Flash Sale Configuration'
 
+    @api.model
+    def _default_tag_id(self):
+        return self.env['product.tag'].search([('name', 'ilike', 'Flash Sale')], limit=1)
+
     name = fields.Char(string='ชื่อ Flash Sale', required=True)
+
+    mode = fields.Selection([
+        ('auto', 'ดึงสินค้าจาก Tag อัตโนมัติ (Auto)'),
+        ('all', 'สุ่มสินค้าทั้งหมดในระบบ (Random All)'),
+        ('manual', 'เลือกสินค้าโดยตรงรายชิ้น (Manual)')
+    ], string='โหมดเลือกสินค้า', default='auto', required=True,
+       help='Auto: ดึงสินค้าที่มี Tag แคมเปญโดยอัตโนมัติ / Random All: สุ่มสินค้าทุกอย่างในระบบ / Manual: เลือกสินค้าด้วยตนเองในตาราง')
 
     # ── โหมด 1: เลือกสินค้าโดยตรง ──────────────────────────────
     flash_product_ids = fields.Many2many(
@@ -39,11 +50,12 @@ class FlashSaleSession(models.Model):
         help='เลือกสินค้าที่ต้องการลดราคาโดยตรง — ถ้าเลือกไว้จะใช้แทน Tag'
     )
 
-    # ── โหมด 2: ใช้ Tag (Fallback) ──────────────────────────────
+    # ── โหมด 2: ใช้ Tag ──────────────────────────────
     tag_id = fields.Many2one(
         'product.tag',
-        string='Product Tag (ถ้าไม่เลือกสินค้าเอง)',
-        help='ถ้าไม่ได้เลือกสินค้าโดยตรง จะใช้สินค้าที่มี Tag นี้แทน'
+        string='Product Tag (คัดเลือกอัตโนมัติ)',
+        help='สินค้าที่มี Tag นี้จะเข้าร่วม Flash Sale โดยอัตโนมัติ',
+        default=_default_tag_id
     )
 
     discount_percent = fields.Float(string='ส่วนลด (%)', default=20.0)
@@ -61,26 +73,55 @@ class FlashSaleSession(models.Model):
         store=False,
     )
 
-    @api.depends('flash_product_ids', 'tag_id')
+    # Computed: แสดงรายการสินค้าทั้งหมดใน Flash Sale แบบ Read-only
+    display_product_ids = fields.Many2many(
+        'product.template',
+        string='สินค้าที่เข้าร่วม Flash Sale',
+        compute='_compute_display_product_ids',
+        help='แสดงรายการสินค้าที่เข้าร่วมโครงการทั้งหมดตามโหมดที่เลือก'
+    )
+
+    @api.depends('flash_product_ids', 'tag_id', 'mode')
     def _compute_total_product_count(self):
         for rec in self:
             templates = rec._get_flash_templates()
             rec.total_product_count = len(templates)
 
+    @api.depends('flash_product_ids', 'tag_id', 'mode')
+    def _compute_display_product_ids(self):
+        for rec in self:
+            rec.display_product_ids = rec._get_flash_templates()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for rec in records:
+            if rec.active:
+                rec.action_update_discount()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        if any(f in vals for f in ['active', 'mode', 'flash_product_ids', 'tag_id', 'discount_percent']):
+            self.action_update_discount()
+        return res
+
     def _get_flash_templates(self):
         """
-        ดึงสินค้า Flash Sale ทั้งหมด:
-        - ถ้า flash_product_ids มีข้อมูล → ใช้รายการนั้น
-        - ถ้าไม่มี → ดึงสินค้าที่ติด tag_id
+        ดึงสินค้า Flash Sale ทั้งหมดตามโหมดที่เลือก
         """
-        if self.flash_product_ids:
-            # กรองเฉพาะสินค้าที่ยังเปิดอยู่
+        if self.mode == 'manual' and self.flash_product_ids:
             return self.flash_product_ids.filtered(
                 lambda t: t.active and t.is_published
             )
-        elif self.tag_id:
+        elif self.mode == 'auto' and self.tag_id:
             return self.env['product.template'].search([
                 ('product_tag_ids', 'in', [self.tag_id.id]),
+                ('is_published', '=', True),
+                ('active', '=', True),
+            ])
+        elif self.mode == 'all':
+            return self.env['product.template'].search([
                 ('is_published', '=', True),
                 ('active', '=', True),
             ])
@@ -101,11 +142,40 @@ class FlashSaleSession(models.Model):
         # 2. ค้นหาการตั้งค่าที่ active
         config = self.search([('active', '=', True)], limit=1)
         if not config:
-            _logger.info('FlashSale: ไม่พบการตั้งค่า')
+            _logger.info('FlashSale: ไม่พบการตั้งค่าที่เปิดใช้งาน -> ลบ tag ออกจากสินค้าทั้งหมด')
+            # ลบ tag ออกจากสินค้าทั้งหมดหากไม่มีแคมเปญ active
+            all_configs = self.search([])
+            for fs in all_configs:
+                if fs.tag_id:
+                    tagged_templates = self.env['product.template'].search([('product_tag_ids', 'in', [fs.tag_id.id])])
+                    if tagged_templates:
+                        tagged_templates.write({'product_tag_ids': [(3, fs.tag_id.id)]})
             return
 
         # 3. ดึงสินค้า Flash Sale
         templates = config._get_flash_templates()
+
+        # Sync tags if tag_id is set
+        if config.tag_id:
+            tag_id = config.tag_id.id
+            if config.mode == 'manual':
+                # ค้นหาคำที่ติด tag นี้อยู่เดิม
+                tagged_templates = self.env['product.template'].search([('product_tag_ids', 'in', [tag_id])])
+                # สินค้าที่ต้องติด tag เพิ่ม
+                to_tag = templates - tagged_templates
+                if to_tag:
+                    to_tag.write({'product_tag_ids': [(4, tag_id)]})
+                # สินค้าที่ต้องเอา tag ออก
+                to_untag = tagged_templates - templates
+                if to_untag:
+                    to_untag.write({'product_tag_ids': [(3, tag_id)]})
+            elif config.mode == 'auto':
+                # ในโหมด auto, สินค้าที่มี tag คือ templates อยู่แล้ว ไม่ต้องเปลี่ยน tag
+                pass
+            elif config.mode == 'all':
+                # ในโหมด all, อาจจะไม่ต้องติด tag ทุกตัวในระบบเพื่อเลี่ยงความช้า
+                pass
+
         if not templates:
             _logger.info('FlashSale: ไม่มีสินค้าใน Flash Sale')
             return

@@ -1,27 +1,46 @@
 # -*- coding: utf-8 -*-
+import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
+
 
 class SpareQuickTransfer(models.TransientModel):
     _name = 'spare.quick.transfer'
     _description = 'Wizard สำหรับโอนย้ายอะไหล่ด่วน'
 
     def _default_location_src(self):
-        # พยายามหา Internal Location ตัวแรกเป็นค่าเริ่มต้น
-        return self.env['stock.location'].search([('usage', '=', 'internal')], limit=1)
+        """ต้นทาง: lot_stock ของคลังใหญ่อาหลั่ย (WH) → รับของจากซัพพลายเออร์"""
+        wh = self.env['stock.warehouse'].search(
+            [('code', '=', 'WH')], limit=1
+        ) or self.env['stock.warehouse'].browse(
+            self.env.ref('stock.warehouse0').id
+        )
+        return wh.lot_stock_id if wh else self.env['stock.location'].search(
+            [('usage', '=', 'internal')], limit=1
+        )
+
+    def _default_location_dest(self):
+        """ปลายทาง: lot_stock ของคลังหน้าร้าน (POS) — default workflow เติมของหน้าร้าน"""
+        wh = self.env['stock.warehouse'].search(
+            [('code', '=', 'POS')], limit=1
+        )
+        return wh.lot_stock_id if wh else False
 
     location_src_id = fields.Many2one(
         'stock.location',
         string='คลังต้นทาง',
         required=True,
         domain=[('usage', '=', 'internal')],
-        default=_default_location_src
+        default=_default_location_src,
     )
     location_dest_id = fields.Many2one(
         'stock.location',
         string='คลังปลายทาง',
         required=True,
-        domain=[('usage', '=', 'internal')]
+        domain=[('usage', '=', 'internal')],
+        default=_default_location_dest,
     )
     line_ids = fields.One2many(
         'spare.quick.transfer.line',

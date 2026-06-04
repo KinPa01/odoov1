@@ -247,7 +247,7 @@
                                     <div id="ra-flash-progress" class="ra-flash-progress-bar" style="width:100%;"></div>
                                 </div>
                             </div>
-                            <a href="/shop" class="ra-view-all">ดูโปรทั้งหมด →</a>
+                            <a href="/shop" id="ra-flash-view-all" class="ra-view-all">ดูโปรทั้งหมด →</a>
                         </div>
 
                         <!-- Flash Sale product grid — JS renders real products from API -->
@@ -379,7 +379,8 @@
                             </div>
 
                             <!-- Card Body (First Product) -->
-                            <t t-set="first_line" t-value="order.order_line[0] if order.order_line else None"/>
+                            <t t-set="prod_lines" t-value="order.order_line.filtered(lambda l: not l.is_delivery and not l.display_type)"/>
+                            <t t-set="first_line" t-value="prod_lines[0] if prod_lines else None"/>
                             <div class="card-body bg-light border-bottom py-3">
                                 <a t-attf-href="/my/orders/#{order.id}" class="text-decoration-none text-dark">
                                     <t t-if="first_line">
@@ -417,8 +418,7 @@
                             <!-- Card Footer -->
                             <div class="card-footer bg-white border-top-0 pt-3 pb-3">
                                 <div class="d-flex justify-content-end align-items-center mb-3" style="font-size: 0.95rem;">
-                                    <span class="text-dark me-2">สินค้ารวม                                        <t t-esc="len(order.order_line)"/>
- รายการ:</span>
+                                    <span class="text-dark me-2">สินค้ารวม <t t-esc="int(sum(prod_lines.mapped('product_uom_qty')))"/> ชิ้น:</span>
                                     <span class="fs-5 fw-bold" style="color: #dc3545;">฿                                        <t t-esc="'{0:,.2f}'.format(order.amount_total)"/>
                                     </span>
                                 </div>
@@ -480,6 +480,15 @@
                     <span>ใกล้หมด</span>
                 </div>
             </t>
+            <!-- ⚡ Flash Sale Badge -->
+            <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
+            <t t-if="active_flash_sale and active_flash_sale.tag_id">
+                <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
+                    <div class="ra-flash-sale-badge">
+                        <span>⚡ Flash Sale -<t t-esc="int(active_flash_sale.discount_percent)"/>%</span>
+                    </div>
+                </t>
+            </t>
         </xpath>
     </template>
 
@@ -512,6 +521,31 @@
         <!-- Deactivate or delete the original standalone filter button so it doesn't duplicate! -->
         <xpath expr="//button[@t-if='wsale_has_filters_btn']" position="replace">
             <!-- Standalone button removed because it is now merged inside the btn-group above -->
+        </xpath>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PRODUCT DETAIL PAGE — FLASH SALE BANNER INJECTION
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="product_flash_sale_banner" inherit_id="website_sale.product" name="Product Flash Sale Banner">
+        <xpath expr="//div[@id='product_details']/*[1]" position="before">
+            <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
+            <t t-if="active_flash_sale and active_flash_sale.tag_id">
+                <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
+                    <div class="ra-flash-detail-banner mb-4 p-3 rounded d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, rgba(230,57,70,0.15), rgba(255,107,53,0.15)); border: 1px solid rgba(230, 57, 70, 0.3); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.1);">
+                        <div class="d-flex align-items-center gap-3">
+                            <span style="font-size: 1.5rem;">⚡</span>
+                            <div>
+                                <h6 class="mb-0 text-white fw-bold" style="letter-spacing: 0.5px; font-size: 0.95rem;">แคมเปญ FLASH SALE กำลังดำเนินอยู่!</h6>
+                                <p class="mb-0 fw-bold" style="font-size: 0.8rem; color: #ff8b8b;">สินค้านี้ได้รับส่วนลดพิเศษ <t t-esc="int(active_flash_sale.discount_percent)"/>% ทันที</p>
+                            </div>
+                        </div>
+                        <span class="badge p-2 text-white fw-bold" style="background: #e63946; font-size: 0.85rem; border-radius: 4px; box-shadow: 0 2px 8px rgba(230,57,70,0.4);">
+                            ลด <t t-esc="int(active_flash_sale.discount_percent)"/>%
+                        </span>
+                    </div>
+                </t>
+            </t>
         </xpath>
     </template>
 </odoo>

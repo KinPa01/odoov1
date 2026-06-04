@@ -17,7 +17,7 @@ class CustomCustomerPortal(CustomerPortal):
             partner = request.env.user.partner_id
             
             # Base domain for the user
-            base_domain = [('message_partner_ids', 'child_of', [partner.commercial_partner_id.id])]
+            base_domain = [('partner_id', 'child_of', [partner.commercial_partner_id.id])]
             
             tab = kwargs.get('tab', 'all')
             if tab == 'to_pay':

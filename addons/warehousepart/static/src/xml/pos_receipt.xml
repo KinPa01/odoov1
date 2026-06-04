@@ -4,20 +4,25 @@
     <!-- Odoo 19: structure uses ReceiptHeader, pos-receipt-amount, before-footer, after-footer -->
     <t t-name="warehousepart.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
 
-        <!-- Inject Ran Ahlai header BEFORE the main pos-receipt div content (at the very top) -->
-        <xpath expr="//div[hasclass('pos-receipt')]" position="inside">
-            <div class="ran-ahlai-pos-header" style="text-align: center; margin-bottom: 12px; border-bottom: 2px dashed #8b1515; padding-bottom: 10px;">
-                <h2 style="color: #8b1515; font-weight: 900; margin: 0; font-size: 24px; letter-spacing: -0.5px;">ร้านอาหลั่ย</h2>
-                <div style="color: #111; font-size: 13px; font-weight: bold; margin-top: 3px;">อะไหล่แท้ ราคาดี ส่งทั่วไทย</div>
+        <!-- Inject Ran Ahlai header BEFORE the standard ReceiptHeader (at the very top) -->
+        <xpath expr="//ReceiptHeader" position="before">
+            <div class="ran-ahlai-pos-header">
+                <h2>ร้านอาหลั่ย</h2>
+                <div class="ran-ahlai-pos-slogan">อะไหล่แท้ ราคาดี ส่งทั่วไทย</div>
+                <div class="ran-ahlai-pos-info">
+                    <div>เลขประจำตัวผู้เสียภาษี: <t t-esc="order.company.vat || '0105561000000'"/></div>
+                    <div>โทร: <t t-esc="order.company.phone || '02-123-4567'"/></div>
+                </div>
+                <div class="receipt-divider"></div>
             </div>
         </xpath>
 
         <!-- Inject thank-you footer INSIDE before-footer div (safe hook in Odoo 19) -->
         <xpath expr="//div[hasclass('before-footer')]" position="inside">
-            <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #333; border-top: 1px dashed #ccc; padding-top: 12px;">
-                <div style="font-weight: 900; color: #8b1515; font-size: 14px; margin-bottom: 4px;">ขอบคุณที่ใช้บริการร้านอาหลั่ย</div>
-                <div>สินค้าทุกชิ้นรับประกันคุณภาพตามมาตรฐานผู้ผลิต</div>
-                <div style="margin-top: 4px; font-weight: bold;">FB: ร้านอาหลั่ย | Line: @RanAhlai</div>
+            <div class="ran-ahlai-pos-footer">
+                <div class="footer-thankyou">ขอบคุณที่ใช้บริการร้านอาหลั่ย</div>
+                <div class="footer-sub">สินค้าทุกชิ้นรับประกันคุณภาพตามมาตรฐานผู้ผลิต</div>
+                <div class="footer-social">FB: ร้านอาหลั่ย | Line: @RanAhlai</div>
             </div>
         </xpath>
 

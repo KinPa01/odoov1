@@ -53,3 +53,141 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.75; }
 }
+
+/* ── POS RECEIPTS BEAUTIFICATION ────────────────────────────── */
+.pos-receipt {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-size: 13px !important;
+    color: #2c3e50 !important;
+    line-height: 1.4 !important;
+
+    /* Top Brand Header styling */
+    .ran-ahlai-pos-header {
+        text-align: center !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 5px !important;
+
+        h2 {
+            font-size: 26px !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.5px !important;
+            color: #8b1515 !important; /* Brand Red */
+            margin: 0 0 2px 0 !important;
+            line-height: 1.2 !important;
+        }
+        .ran-ahlai-pos-slogan {
+            font-size: 12px !important;
+            color: #dca816 !important; /* Brand Gold */
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            margin-bottom: 6px !important;
+        }
+        .ran-ahlai-pos-info {
+            font-size: 11px !important;
+            color: #666 !important;
+            line-height: 1.3 !important;
+        }
+    }
+
+    /* Receipt dividers */
+    .receipt-divider {
+        border-top: 1px dashed #ccc !important;
+        margin: 8px 0 !important;
+        height: 0 !important;
+    }
+
+    /* Order lines spacing and font styling */
+    .orderline {
+        padding: 5px 0 !important;
+        border-bottom: 1px dotted #eeeeee !important;
+        
+        .product-name {
+            font-weight: 600 !important;
+            color: #1a1a1a !important;
+            white-space: normal !important;
+            
+            .qty {
+                color: #8b1515 !important; /* Highlight qty in brand red */
+                margin-right: 6px !important;
+            }
+        }
+        
+        .product-price {
+            font-weight: 600 !important;
+            color: #1a1a1a !important;
+        }
+        
+        .info-list {
+            color: #7f8c8d !important;
+            font-size: 11px !important;
+            margin-top: 2px !important;
+            
+            .price-per-unit {
+                color: #7f8c8d !important;
+            }
+        }
+    }
+
+    /* Total amount block */
+    .pos-receipt-amount.receipt-total {
+        font-size: 18px !important;
+        font-weight: 800 !important;
+        color: #8b1515 !important;
+        border-top: 2px dashed #8b1515 !important;
+        border-bottom: 2px dashed #8b1515 !important;
+        padding: 8px 0 !important;
+        margin: 12px 0 !important;
+        text-transform: uppercase !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Regular total/tax labels */
+    .pos-receipt-taxes, .receipt-rounding, .receipt-to-pay, .paymentlines, .receipt-change {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        margin-top: 4px !important;
+        
+        &.receipt-change {
+            font-weight: bold !important;
+            color: #27ae60 !important; /* Green for change */
+        }
+    }
+    
+    /* Footer information */
+    .ran-ahlai-pos-footer {
+        text-align: center !important;
+        margin-top: 15px !important;
+        padding-top: 12px !important;
+        border-top: 1px dashed #ccc !important;
+        
+        .footer-thankyou {
+            font-weight: 800 !important;
+            color: #8b1515 !important;
+            font-size: 14px !important;
+            margin-bottom: 4px !important;
+        }
+        
+        .footer-sub {
+            font-size: 11px !important;
+            color: #666 !important;
+            margin-bottom: 6px !important;
+            line-height: 1.3 !important;
+        }
+        
+        .footer-social {
+            font-size: 11px !important;
+            font-weight: bold !important;
+            background-color: #f9f9f9 !important;
+            border: 1px solid #eee !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+            padding: 4px 8px !important;
+            color: #333 !important;
+            margin-top: 4px !important;
+        }
+    }
+}
+

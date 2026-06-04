@@ -4,11 +4,10 @@
 
         <!--
         ══════════════════════════════════════════════════════════════
-        ร้านอาหลั่ย — POS & Website Warehouse Binding
+        ร้านอาหลั่ย — POS Warehouse Binding
         ══════════════════════════════════════════════════════════════
         ผูก:
           • POS Config หลัก → คลังหน้าร้าน (POS)
-          • Website หลัก     → คลังออนไลน์ (WEB)
 
         ต้อง load หลัง warehouse_setup.xml เสมอ
         ══════════════════════════════════════════════════════════════
@@ -22,15 +21,6 @@
         <record id="point_of_sale.pos_config_retail" model="pos.config">
             <field name="name">ร้านอาหลั่ย — หน้าร้าน</field>
             <field name="warehouse_id" ref="warehouse_pos"/>
-        </record>
-
-        <!-- ─── Website: ผูกกับคลังออนไลน์ ─────────────────────────────────── -->
-        <!--
-            website.default_website = Website หลักของ Odoo
-            warehouse_id → eCommerce จะแสดงสต็อกจากคลังออนไลน์ (WEB/Stock)
-        -->
-        <record id="website.default_website" model="website">
-            <field name="warehouse_id" ref="warehouse_web"/>
         </record>
 
     </data>

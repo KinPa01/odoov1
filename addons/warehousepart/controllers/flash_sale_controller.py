@@ -86,9 +86,16 @@ class FlashSaleController(http.Controller):
             sale_price = round(original_price * (1.0 - discount_pct / 100.0), 2)
 
             try:
-                in_stock = tmpl.qty_available > 0
+                # ใช้คลังที่ตั้งค่าไว้ใน Website → Settings → Warehouse
+                online_wh = request.website.warehouse_id
+                online_qty = request.env['product.template'].get_warehouse_stock_by_id(
+                    tmpl.id, online_wh.id if online_wh else False
+                )
+                in_stock = online_qty > 0
+                qty_online = online_qty
             except Exception:
                 in_stock = True
+                qty_online = None
 
             products.append({
                 'id': tmpl.id,
@@ -100,6 +107,7 @@ class FlashSaleController(http.Controller):
                 'discount_pct': int(discount_pct),
                 'brand': getattr(tmpl, 'part_brand', '') or '',
                 'in_stock': in_stock,
+                'qty_online': qty_online,  # จำนวนในคลังออนไลน์ (None = ไม่รู้)
             })
 
         payload = {
@@ -109,6 +117,7 @@ class FlashSaleController(http.Controller):
             'discount_pct': int(config.discount_percent),
             'total_products': len(all_templates),
             'products': products,
+            'tag_id': config.tag_id.id if config.tag_id else False,
         }
         return _json_response(payload)
 
@@ -176,9 +185,16 @@ class FlashSaleController(http.Controller):
                 continue
 
             try:
-                in_stock = tmpl.qty_available > 0
+                # ใช้คลังที่ตั้งค่าไว้ใน Website → Settings → Warehouse
+                online_wh = request.website.warehouse_id
+                online_qty = request.env['product.template'].get_warehouse_stock_by_id(
+                    tmpl.id, online_wh.id if online_wh else False
+                )
+                in_stock = online_qty > 0
+                qty_online = online_qty
             except Exception:
                 in_stock = True
+                qty_online = None
 
             # Badge color mapping to CSS class
             color_map = {
@@ -196,10 +212,33 @@ class FlashSaleController(http.Controller):
                 'badge_text': item.badge_text or '',
                 'badge_color': badge_color,
                 'in_stock': in_stock,
+                'qty_online': qty_online,  # จำนวนในคลังออนไลน์
                 'sequence': item.sequence,
             })
 
         return _json_response({'products': result, 'count': len(result)})
+
+    @http.route('/api/warehouse-stock/<int:product_tmpl_id>', type='http', auth='public', website=True, csrf=False)
+    def warehouse_stock(self, product_tmpl_id, **kw):
+        """
+        JSON API: ดูสต็อกแยกตามคลังของ product
+        GET /api/warehouse-stock/42
+        Response: { "product_id": 42, "pos_qty": 6.0, "online_qty": 4.0 }
+        """
+        try:
+            Product = request.env['product.template']
+            pos_qty = Product.get_warehouse_stock(product_tmpl_id, 'POS')
+            online_qty = Product.get_warehouse_stock(product_tmpl_id, 'ONLIN')
+            tmpl = request.env['product.template'].sudo().browse(product_tmpl_id)
+            return _json_response({
+                'product_id': product_tmpl_id,
+                'product_name': tmpl.name if tmpl.exists() else '',
+                'pos_qty': pos_qty,      # สต็อกหน้าร้าน
+                'online_qty': online_qty, # สต็อกออนไลน์
+                'total_qty': pos_qty + online_qty,
+            })
+        except Exception as e:
+            return _json_response({'error': str(e)})
 
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────

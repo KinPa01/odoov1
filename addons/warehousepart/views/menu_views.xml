@@ -19,22 +19,6 @@
 
      <menuitem id="menu_spare_delivery_carriers" name="🚚 วิธีการจัดส่งและติดตาม" parent="menu_warehousepart_root" action="delivery.action_delivery_carrier_form" groups="warehousepart.group_spare_manager" sequence="22"/>
 
-     <!-- ══ การสั่งซื้อออนไลน์ (eCommerce) ══ -->
-     <menuitem id="menu_spare_ecommerce_shortcut" name="🌐 คำสั่งซื้อออนไลน์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_cashier" sequence="25"/>
-
-     <menuitem id="menu_spare_unpaid_orders" name="ออเดอร์รอชำระเงิน (Unpaid)" parent="menu_spare_ecommerce_shortcut" action="website_sale.action_unpaid_orders_ecommerce" sequence="10"/>
-
-     <menuitem id="menu_spare_paid_orders" name="ออเดอร์ที่ยืนยันแล้ว (Orders)" parent="menu_spare_ecommerce_shortcut" action="website_sale.action_orders_ecommerce" sequence="20"/>
-
-     <!-- ══ จัดการหน้าเว็บไซต์ ══ -->
-     <menuitem id="menu_website_management" name="🖥️ จัดการหน้าเว็บไซต์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="27"/>
-
-     <menuitem id="menu_homepage_featured_products" name="⭐ สินค้าแนะนำ (Best Sellers)" parent="menu_website_management" action="warehousepart.action_homepage_product" sequence="5"/>
-
-     <menuitem id="menu_homepage_categories" name="📂 หมวดหมู่หน้าแรก" parent="menu_website_management" action="warehousepart.action_homepage_category" sequence="10"/>
-
-     <menuitem id="menu_flash_sale_config" name="⚡ ตั้งค่า Flash Sale" parent="menu_website_management" action="warehousepart.action_flash_sale_config" sequence="20"/>
-
      <menuitem id="menu_spare_pos_shortcut" name="🖥️ ระบบขายหน้าร้าน (POS)" parent="menu_warehousepart_root" action="point_of_sale.action_pos_config_kanban" groups="warehousepart.group_spare_cashier" sequence="30"/>
 
      <!-- ══ การจัดซื้อ (ทางลัดไป Purchase ของ Odoo) ══ -->
@@ -60,4 +44,13 @@
      <menuitem id="menu_spare_customers" name="ลูกค้า (Customers)" parent="menu_spare_contacts_main" action="action_spare_customers" sequence="10"/>
 
      <menuitem id="menu_spare_suppliers" name="ซัพพลายเออร์ (Suppliers)" parent="menu_spare_contacts_main" action="action_spare_suppliers" sequence="20"/>
+
+     <!-- ══ จัดการเว็บไซต์ ══ -->
+     <menuitem id="menu_spare_website_main" name="🌐 จัดการหน้าเว็บไซต์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="60"/>
+
+     <menuitem id="menu_spare_flash_sale" name="⚡ ตั้งค่า Flash Sale" parent="menu_spare_website_main" action="action_flash_sale_config" sequence="10"/>
+
+     <menuitem id="menu_spare_homepage_product" name="⭐ สินค้าแนะนำหน้าแรก" parent="menu_spare_website_main" action="action_homepage_product" sequence="20"/>
+
+     <menuitem id="menu_spare_homepage_category" name="📁 จัดการหมวดหมู่หน้าแรก" parent="menu_spare_website_main" action="action_homepage_category" sequence="30"/>
 </odoo>

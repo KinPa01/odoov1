@@ -188,6 +188,16 @@ async function initFlashSale() {
             grid.style.transform = 'translateY(0)';
             isLoading = false;
             initProductCardPulse();
+
+            // Dynamic update of "ดูโปรทั้งหมด →" link
+            const viewAllBtn = document.getElementById('ra-flash-view-all');
+            if (viewAllBtn) {
+                if (data && data.tag_id) {
+                    viewAllBtn.href = `/shop?tags=${data.tag_id}`;
+                } else {
+                    viewAllBtn.href = `/shop`;
+                }
+            }
         }, 400);
     }
 

@@ -390,6 +390,88 @@ function initSmoothScroll() {
 // INIT — รองรับทั้ง DOM โหลดแล้ว และยังไม่โหลด
 // แก้ปัญหา: Odoo JS module โหลดหลัง DOMContentLoaded ไปแล้ว
 // ─────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────
+// 6. PRODUCT PAGE COUNTDOWN TIMER (Flash Sale banner บน /shop/product/...)
+// ─────────────────────────────────────────────────────────────────
+function initProductPageCountdown() {
+    const countdownEl = document.querySelector('.ra-product-countdown');
+    if (!countdownEl) return;
+
+    const remaining = parseInt(countdownEl.dataset.remaining || '0', 10);
+    if (!remaining || remaining <= 0) return;
+
+    const hoursEl = countdownEl.querySelector('.ra-pcd-hours');
+    const minsEl = countdownEl.querySelector('.ra-pcd-mins');
+    const secsEl = countdownEl.querySelector('.ra-pcd-secs');
+    if (!hoursEl || !minsEl || !secsEl) return;
+
+    let secondsLeft = remaining;
+
+    function tick() {
+        if (secondsLeft <= 0) {
+            // แคมเปญหมดเวลา → ซ่อน banner
+            const banner = countdownEl.closest('.ra-flash-detail-banner');
+            if (banner) {
+                banner.style.transition = 'opacity 1s ease';
+                banner.style.opacity = '0';
+                setTimeout(() => banner.remove(), 1000);
+            }
+            return;
+        }
+
+        const h = Math.floor(secondsLeft / 3600);
+        const m = Math.floor((secondsLeft % 3600) / 60);
+        const s = secondsLeft % 60;
+
+        hoursEl.textContent = pad(h);
+        minsEl.textContent = pad(m);
+        secsEl.textContent = pad(s);
+
+        secondsLeft--;
+    }
+
+    tick();
+    setInterval(tick, 1000);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 7. NO-IMAGE FALLBACK — แก้สินค้าที่ขึ้นกล่องดำ
+// ─────────────────────────────────────────────────────────────────
+function initNoImageFallback() {
+    // ตรวจสอบทุก img บนหน้าร้านค้า ถ้า error ให้แสดง 🔧
+    document.querySelectorAll(
+        '.oe_product_image img, .ra-product-img-wrap img, .ra-sku-img img'
+    ).forEach(img => {
+        if (!img._fallbackInit) {
+            img._fallbackInit = true;
+            img.addEventListener('error', () => {
+                img.style.display = 'none';
+                // หา sibling span หรือสร้างใหม่
+                let fallback = img.nextElementSibling;
+                if (!fallback || !fallback.classList.contains('ra-img-fallback')) {
+                    fallback = document.createElement('span');
+                    fallback.className = 'ra-img-fallback';
+                    fallback.style.cssText = `
+                        display:flex; align-items:center; justify-content:center;
+                        font-size:2.5rem; min-height:120px; width:100%;
+                        background:linear-gradient(135deg,rgba(30,33,44,1),rgba(20,23,32,1));
+                        border-radius:4px;
+                    `;
+                    fallback.textContent = '🔧';
+                    img.parentNode.insertBefore(fallback, img.nextSibling);
+                }
+                fallback.style.display = 'flex';
+            });
+
+            // กรณี src ว่างหรือไม่มี src
+            if (!img.getAttribute('src') || img.getAttribute('src') === '') {
+                img.dispatchEvent(new Event('error'));
+            }
+        }
+    });
+}
+
 function initAll() {
     initBestSellers();
     initHomepageCategories();
@@ -399,6 +481,9 @@ function initAll() {
     initNavbarShrink();
     initProductCardPulse();
     initSmoothScroll();
+    // เพิ่มใหม่
+    initProductPageCountdown();
+    initNoImageFallback();
 }
 
 // ✅ ตรวจสอบ readyState ก่อน — ถ้า DOM โหลดแล้วให้รันทันที

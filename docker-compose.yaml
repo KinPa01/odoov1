@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   web:
-    image: odoo:19.0
+    build: .
+    image: odoo-ranahla:19.0
     depends_on:
       - db
     ports:
@@ -15,7 +16,12 @@ services:
       - USER=odoo
       - PASSWORD=odoo
       - ODOO_MASTER_PASS=admin
-    command: odoo --addons-path="/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"
+    command: >
+      odoo
+      --addons-path="/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"
+      --dev=xml
+      --limit-time-cpu=600
+      --limit-time-real=1200
   db:
     image: postgres:15
     environment:

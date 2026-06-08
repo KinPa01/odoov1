@@ -4,9 +4,14 @@ Ran Ahlai — Flash Sale Model (Odoo 19 compatible)
 รองรับ 2 โหมด:
   1. เลือกสินค้าโดยตรง (flash_product_ids) — Admin เลือกรายสินค้า
   2. ใช้ Tag (tag_id) — สินค้าที่ติด tag อัตโนมัติ
+เพิ่มเติม:
+  - start_date / end_date — กำหนดช่วงเวลาแคมเปญ
+  - Auto-expire via Cron — หยุดแคมเปญอัตโนมัติเมื่อหมดเวลา
+  - Stock Alert Email — แจ้งเตือน Admin เมื่อสต็อกใกล้หมด
 """
 
 from odoo import models, fields, api
+from datetime import datetime
 import logging
 import random
 
@@ -66,6 +71,30 @@ class FlashSaleSession(models.Model):
     )
     active = fields.Boolean(default=True)
 
+    # ── วันเวลาแคมเปญ ──────────────────────────────────────────
+    start_date = fields.Datetime(
+        string='เริ่มต้นแคมเปญ',
+        help='วันเวลาที่ Flash Sale เริ่มต้น (ถ้าว่าง = เริ่มทันที)'
+    )
+    end_date = fields.Datetime(
+        string='สิ้นสุดแคมเปญ',
+        help='วันเวลาที่ Flash Sale สิ้นสุด — ระบบจะปิดแคมเปญอัตโนมัติ'
+    )
+
+    # Computed: เช็กว่าแคมเปญ active และอยู่ในช่วงเวลาที่กำหนดหรือไม่
+    is_running = fields.Boolean(
+        string='กำลังดำเนินอยู่',
+        compute='_compute_is_running',
+        store=False,
+    )
+
+    # Computed: เวลาที่เหลือ (วินาที) สำหรับ Countdown Timer
+    remaining_seconds = fields.Integer(
+        string='เวลาที่เหลือ (วินาที)',
+        compute='_compute_remaining_seconds',
+        store=False,
+    )
+
     # Computed: แสดงจำนวนสินค้าทั้งหมดใน Flash Sale
     total_product_count = fields.Integer(
         string='จำนวนสินค้าทั้งหมดใน Flash Sale',
@@ -91,6 +120,28 @@ class FlashSaleSession(models.Model):
     def _compute_display_product_ids(self):
         for rec in self:
             rec.display_product_ids = rec._get_flash_templates()
+
+    @api.depends('active', 'start_date', 'end_date')
+    def _compute_is_running(self):
+        now = fields.Datetime.now()
+        for rec in self:
+            if not rec.active:
+                rec.is_running = False
+                continue
+            started = (not rec.start_date) or (rec.start_date <= now)
+            not_ended = (not rec.end_date) or (rec.end_date > now)
+            rec.is_running = started and not_ended
+
+    @api.depends('end_date')
+    def _compute_remaining_seconds(self):
+        now = fields.Datetime.now()
+        for rec in self:
+            if rec.end_date and rec.end_date > now:
+                delta = rec.end_date - now
+                rec.remaining_seconds = int(delta.total_seconds())
+            else:
+                # ถ้าไม่ set end_date ให้ใช้ 8 ชั่วโมงเป็น default (รอบ flash)
+                rec.remaining_seconds = 8 * 3600
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -198,6 +249,117 @@ class FlashSaleSession(models.Model):
             'FlashSale: อัปเดตส่วนลด %.1f%% ให้กับ %d สินค้า ลงใน %d Pricelists',
             config.discount_percent, len(templates), len(all_pricelists)
         )
+
+    @api.model
+    def _cron_check_flash_sale_expiry(self):
+        """
+        Cron Job: ตรวจสอบ Flash Sale ที่หมดเวลา แล้วปิดอัตโนมัติ
+        ตั้ง Scheduled Action ให้รันทุก 30 นาที
+        """
+        now = fields.Datetime.now()
+        expired = self.search([
+            ('active', '=', True),
+            ('end_date', '!=', False),
+            ('end_date', '<=', now),
+        ])
+        if expired:
+            _logger.info('FlashSale Cron: พบแคมเปญหมดเวลา %d รายการ กำลังปิด...', len(expired))
+            expired.write({'active': False})
+            expired.action_update_discount()
+            # แจ้งเตือน Admin
+            for rec in expired:
+                rec._notify_flash_sale_expired()
+
+    def _notify_flash_sale_expired(self):
+        """ส่งอีเมลแจ้ง Admin เมื่อ Flash Sale หมดเวลา"""
+        self.ensure_one()
+        admin_users = self.env.ref('base.group_system', raise_if_not_found=False)
+        if not admin_users:
+            return
+        try:
+            template = self.env.ref(
+                'warehousepart.email_template_flash_sale_expired',
+                raise_if_not_found=False
+            )
+            if template:
+                template.send_mail(self.id, force_send=True)
+        except Exception as e:
+            _logger.error('FlashSale: ไม่สามารถส่งอีเมลแจ้งเตือนได้: %s', e)
+
+    @api.model
+    def _cron_check_stock_alerts(self):
+        """
+        Cron Job: ตรวจสอบสินค้าที่สต็อกใกล้หมด แล้วส่งอีเมลแจ้ง Admin
+        ตั้ง Scheduled Action ให้รันทุกวัน
+        """
+        # ดึง threshold จาก field available_threshold ที่กำหนดในแต่ละสินค้า (default = 5)
+        low_stock_products = self.env['product.template'].search([
+            ('is_storable', '=', True),
+            ('is_published', '=', True),
+            ('active', '=', True),
+        ])
+
+        alerts = []
+        for tmpl in low_stock_products:
+            threshold = getattr(tmpl, 'available_threshold', 5) or 5
+            qty = tmpl.sudo().qty_available
+            if 0 < qty <= threshold:
+                alerts.append({
+                    'name': tmpl.name,
+                    'qty': qty,
+                    'threshold': threshold,
+                    'id': tmpl.id,
+                })
+
+        if not alerts:
+            _logger.info('StockAlert Cron: ไม่มีสินค้าสต็อกใกล้หมด')
+            return
+
+        _logger.info('StockAlert Cron: พบสินค้าสต็อกใกล้หมด %d รายการ', len(alerts))
+
+        # ส่งอีเมลสรุปให้ผู้ดูแลระบบ
+        admin_partners = self.env.ref('base.group_system', raise_if_not_found=False)
+        if not admin_partners:
+            return
+
+        # สร้างเนื้อหาอีเมล
+        rows = ''.join(
+            f'<tr><td style="padding:8px;border:1px solid #ddd;"><a href="/web#model=product.template&id={a["id"]}">{a["name"]}</a></td>'
+            f'<td style="padding:8px;border:1px solid #ddd;text-align:center;color:#e63946;font-weight:bold;">{int(a["qty"])}</td>'
+            f'<td style="padding:8px;border:1px solid #ddd;text-align:center;">{int(a["threshold"])}</td></tr>'
+            for a in alerts
+        )
+        html_body = f"""
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:#e63946;padding:20px;border-radius:8px 8px 0 0;">
+                <h2 style="color:#fff;margin:0;">⚠️ แจ้งเตือน: สินค้าสต็อกใกล้หมด</h2>
+            </div>
+            <div style="background:#f9f9f9;padding:20px;border-radius:0 0 8px 8px;">
+                <p>สินค้าต่อไปนี้มีสต็อกเหลือน้อยกว่าเกณฑ์ที่กำหนด กรุณาดำเนินการเพิ่มสต็อก:</p>
+                <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+                    <thead>
+                        <tr style="background:#333;color:#fff;">
+                            <th style="padding:10px;border:1px solid #ddd;text-align:left;">ชื่อสินค้า</th>
+                            <th style="padding:10px;border:1px solid #ddd;">สต็อกเหลือ</th>
+                            <th style="padding:10px;border:1px solid #ddd;">เกณฑ์ต่ำสุด</th>
+                        </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </table>
+                <p style="margin-top:16px;color:#666;font-size:0.85rem;">
+                    อีเมลนี้ส่งอัตโนมัติจากระบบ ร้านอาหลั่ย Warehouse Management
+                </p>
+            </div>
+        </div>
+        """
+
+        mail = self.env['mail.mail'].create({
+            'subject': f'⚠️ แจ้งเตือนสต็อกใกล้หมด: {len(alerts)} รายการ',
+            'body_html': html_body,
+            'email_to': self.env.user.email or '',
+            'auto_delete': True,
+        })
+        mail.send()
 
 
 class HomepageCategory(models.Model):

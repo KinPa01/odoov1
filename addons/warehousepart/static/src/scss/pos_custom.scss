@@ -1,12 +1,17 @@
-/* warehousepart/static/src/scss/pos_custom.scss
- * POS UI Enhancements — Low Stock Alert & Category Color Accents
- */
+/* ============================================================
+   warehousepart/static/src/scss/pos_custom.scss
+   POS Receipt — Ran Ahlai Premium Theme v3
+   Color palette: Navy #1a2a5e | Red #8b1515 | Gold #c8991a
+   ============================================================ */
 
-/* ── CATEGORY BUTTONS ─────────────────────────────────────────
- * Odoo POS already handles color via o_colorlist_item_color_X.
- * We just add hover animation + ensure the "none" (uncolored)
- * category buttons look great in a modern style.
- */
+/* ── THAI FONT ─────────────────────────────────────────────── */
+.pos-receipt,
+.pos-receipt * {
+    font-family: 'TH Sarabun New', 'Leelawadee UI', 'Leelawadee',
+                 'Angsana New', 'Cordia New', 'Tahoma', sans-serif !important;
+}
+
+/* ── CATEGORY BUTTONS (POS UI) ────────────────────────────── */
 .category-button {
     transition: transform 0.15s ease, box-shadow 0.15s ease !important;
     font-weight: 600 !important;
@@ -17,7 +22,6 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
     }
 
-    /* Uncolored (default) category button styling */
     &.o_colorlist_item_color_none {
         background: #1e293b !important;
         color: #f1f5f9 !important;
@@ -25,169 +29,378 @@
 
         &:hover {
             background: #334155 !important;
-            border-color: #e63946 !important;
+            border-color: #8b1515 !important;
             color: #fff !important;
         }
     }
 
-    /* Active/selected category — highlight red */
     &.active, &:active {
-        border-color: #e63946 !important;
-        box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.35) !important;
+        border-color: #8b1515 !important;
+        box-shadow: 0 0 0 2px rgba(139, 21, 21, 0.3) !important;
     }
 }
 
-/* ── LOW STOCK BADGE ──────────────────────────────────────────
- * The badge is injected by pos_enhancements.xml as a
- * position-absolute span inside the ProductCard <article>.
- * These extra rules ensure it looks sharp.
- */
-.product.position-relative {
-    /* Pulse animation for low-stock products */
-    .low-stock-badge {
-        animation: ra-pulse 2s infinite;
-    }
-}
-
+/* ── LOW STOCK BADGE ──────────────────────────────────────── */
 @keyframes ra-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.75; }
+    50%       { opacity: 0.7; }
+}
+.product.position-relative .low-stock-badge {
+    animation: ra-pulse 2s ease-in-out infinite;
 }
 
-/* ── POS RECEIPTS BEAUTIFICATION ────────────────────────────── */
+/* ============================================================
+   RECEIPT LAYOUT
+   ============================================================ */
 .pos-receipt {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     font-size: 13px !important;
-    color: #2c3e50 !important;
-    line-height: 1.4 !important;
+    color: #1a1a1a !important;
+    line-height: 1.5 !important;
+    width: 100% !important;
+    background: #fff !important;
 
-    /* Top Brand Header styling */
-    .ran-ahlai-pos-header {
+    /* ══════════════════════════════════════════════════════
+       QR CODE  —  เล็ก 62px ชิดขวา, ซ่อน URL/text ทั้งหมด
+       Odoo 19 renders: <div class="d-flex flex-row gap-2 pt-3">
+       ══════════════════════════════════════════════════════ */
+    .d-flex.flex-row.gap-2,
+    .invoice-button-container,
+    [class*="invoice-button"] {
+        float: right !important;
+        clear: none !important;
+        display: block !important;
+        width: 66px !important;
+        max-width: 66px !important;
+        margin: 8px 0 4px 10px !important;
+        padding: 4px !important;
+        background: #fafafa !important;
+        border: 1px solid #ccc !important;
+        border-radius: 6px !important;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12) !important;
         text-align: center !important;
-        margin-bottom: 12px !important;
-        padding-bottom: 5px !important;
 
-        h2 {
-            font-size: 26px !important;
-            font-weight: 800 !important;
-            letter-spacing: -0.5px !important;
-            color: #8b1515 !important; /* Brand Red */
-            margin: 0 0 2px 0 !important;
-            line-height: 1.2 !important;
+        /* QR image only — 58×58 */
+        > img, > canvas, > svg {
+            display: block !important;
+            width: 58px !important;
+            height: 58px !important;
+            min-width: 58px !important;
+            margin: 0 auto !important;
         }
-        .ran-ahlai-pos-slogan {
-            font-size: 12px !important;
-            color: #dca816 !important; /* Brand Gold */
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            margin-bottom: 6px !important;
-        }
-        .ran-ahlai-pos-info {
-            font-size: 11px !important;
-            color: #666 !important;
-            line-height: 1.3 !important;
+
+        /* Hide ALL text: URL, "Need an invoice?", etc. */
+        > p, > a, > span, > div {
+            display: none !important;
         }
     }
 
-    /* Receipt dividers */
-    .receipt-divider {
-        border-top: 1px dashed #ccc !important;
-        margin: 8px 0 !important;
-        height: 0 !important;
-    }
+    /* ══════════════════════════════════════════════════════
+       HEADER — STORE BRANDING
+       ══════════════════════════════════════════════════════ */
+    .ra-header {
+        text-align: center;
+        padding: 0 0 2px;
 
-    /* Order lines spacing and font styling */
-    .orderline {
-        padding: 5px 0 !important;
-        border-bottom: 1px dotted #eeeeee !important;
-        
-        .product-name {
-            font-weight: 600 !important;
-            color: #1a1a1a !important;
-            white-space: normal !important;
-            
-            .qty {
-                color: #8b1515 !important; /* Highlight qty in brand red */
-                margin-right: 6px !important;
+        /* Top stripe: navy → red → navy */
+        .ra-stripe-top {
+            height: 5px;
+            background: linear-gradient(
+                90deg,
+                #1a2a5e 0%, #2c3e8c 25%, #8b1515 50%, #2c3e8c 75%, #1a2a5e 100%
+            );
+            margin-bottom: 10px;
+            border-radius: 0 0 3px 3px;
+        }
+
+        /* Store name block */
+        .ra-brand {
+            margin-bottom: 8px;
+
+            .ra-brand-name {
+                font-size: 28px !important;
+                font-weight: 900 !important;
+                color: #8b1515 !important;
+                letter-spacing: 1.5px;
+                line-height: 1.05;
+                text-shadow: 0 1px 1px rgba(139, 21, 21, 0.2);
+            }
+
+            .ra-brand-sub {
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: #1a2a5e !important;
+                letter-spacing: 0.8px;
+                margin-top: 1px;
+                margin-bottom: 2px;
+            }
+
+            .ra-brand-slogan {
+                font-size: 11px !important;
+                color: #c8991a !important;
+                font-weight: 700 !important;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
             }
         }
-        
-        .product-price {
-            font-weight: 600 !important;
-            color: #1a1a1a !important;
+
+        /* Address */
+        .ra-address {
+            font-size: 10.5px !important;
+            color: #666 !important;
+            margin: 3px 0 6px;
+            line-height: 1.4;
         }
-        
+
+        /* Contact pills: เลขภาษี + โทร */
+        .ra-contact-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 6px 0 6px;
+            align-items: stretch;
+
+            .ra-pill {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 10px;
+                border-radius: 4px;
+                text-align: left;
+                line-height: 1.3;
+
+                .ra-pill-icon {
+                    font-size: 13px;
+                    flex-shrink: 0;
+                    width: 16px;
+                    text-align: center;
+                }
+
+                .ra-pill-label {
+                    font-size: 11px !important;
+                    font-weight: 700 !important;
+                    min-width: 68px;
+                    flex-shrink: 0;
+                }
+
+                .ra-pill-val {
+                    font-size: 12px !important;
+                    font-weight: 800 !important;
+                    letter-spacing: 0.2px;
+                    flex: 1;
+                }
+            }
+
+            /* เลขภาษี — soft navy bg */
+            .ra-pill-tax {
+                background: #eef1fa;
+                border: 1px solid #b8c4e8;
+
+                .ra-pill-icon  { color: #1a2a5e; }
+                .ra-pill-label { color: #1a2a5e; }
+                .ra-pill-val   { color: #1a2a5e; }
+            }
+
+            /* โทร — soft red bg */
+            .ra-pill-tel {
+                background: #fdf0f0;
+                border: 1px solid #e8b8b8;
+
+                .ra-pill-icon  { color: #8b1515; }
+                .ra-pill-label { color: #8b1515; }
+                .ra-pill-val   { color: #8b1515; }
+            }
+        }
+
+        /* Bottom stripe */
+        .ra-stripe-bottom {
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%, #c0392b 30%, #e74c3c 50%, #c0392b 70%, transparent 100%
+            );
+            margin: 4px 0 3px;
+            border-radius: 1px;
+        }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       RECEIPT HEADER (order ref, date, cashier — Odoo built-in)
+       ══════════════════════════════════════════════════════ */
+    .receipt-header-middle {
+        font-size: 11.5px !important;
+        color: #555 !important;
+        text-align: center;
+        margin-bottom: 6px;
+        line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ORDER LINES
+       ══════════════════════════════════════════════════════ */
+    .orderline {
+        padding: 6px 0 !important;
+        border-bottom: 1px dotted #d5d5d5 !important;
+
+        .product-name {
+            font-weight: 700 !important;
+            color: #111 !important;
+            font-size: 13.5px !important;
+            white-space: normal !important;
+            line-height: 1.3;
+
+            .qty {
+                display: inline-block;
+                background: #8b1515;
+                color: #fff !important;
+                font-weight: 800 !important;
+                font-size: 11px !important;
+                padding: 0 5px;
+                border-radius: 3px;
+                margin-right: 5px !important;
+                line-height: 1.5;
+            }
+        }
+
+        .product-price {
+            font-weight: 800 !important;
+            color: #1a1a1a !important;
+            font-size: 13.5px !important;
+        }
+
         .info-list {
-            color: #7f8c8d !important;
+            color: #888 !important;
             font-size: 11px !important;
             margin-top: 2px !important;
-            
-            .price-per-unit {
-                color: #7f8c8d !important;
-            }
         }
     }
 
-    /* Total amount block */
+    /* ══════════════════════════════════════════════════════
+       DIVIDERS
+       ══════════════════════════════════════════════════════ */
+    .receipt-divider, hr {
+        border: none !important;
+        border-top: 1px dashed #bbb !important;
+        margin: 6px 0 !important;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       TOTAL BLOCK
+       ══════════════════════════════════════════════════════ */
     .pos-receipt-amount.receipt-total {
-        font-size: 18px !important;
-        font-weight: 800 !important;
+        font-size: 19px !important;
+        font-weight: 900 !important;
         color: #8b1515 !important;
-        border-top: 2px dashed #8b1515 !important;
-        border-bottom: 2px dashed #8b1515 !important;
-        padding: 8px 0 !important;
-        margin: 12px 0 !important;
-        text-transform: uppercase !important;
+        border-top: 2px solid #c0392b !important;
+        border-bottom: 2px solid #c0392b !important;
+        padding: 8px 2px !important;
+        margin: 10px 0 8px !important;
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
+        background: linear-gradient(135deg, #fff5f5, #fff) !important;
     }
 
-    /* Regular total/tax labels */
-    .pos-receipt-taxes, .receipt-rounding, .receipt-to-pay, .paymentlines, .receipt-change {
-        font-size: 12px !important;
-        font-weight: 600 !important;
+    /* ══════════════════════════════════════════════════════
+       PAYMENT LINES
+       ══════════════════════════════════════════════════════ */
+    .pos-receipt-taxes,
+    .receipt-rounding,
+    .receipt-to-pay,
+    .paymentlines {
+        font-size: 12.5px !important;
+        color: #333 !important;
+        margin-top: 3px !important;
+    }
+
+    .receipt-change {
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        color: #1a6e35 !important;
         margin-top: 4px !important;
-        
-        &.receipt-change {
-            font-weight: bold !important;
-            color: #27ae60 !important; /* Green for change */
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER  (text LEFT + QR floated RIGHT)
+       overflow:hidden = Block Formatting Context
+       ══════════════════════════════════════════════════════ */
+    .ra-footer {
+        overflow: hidden;
+        margin-top: 10px;
+        padding-bottom: 4px;
+
+        /* Rule with star ornament */
+        .ra-footer-rule {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 7px;
+
+            .ra-rule-line {
+                flex: 1;
+                height: 1px;
+                background: linear-gradient(
+                    90deg, transparent, #c0392b 40%, transparent
+                );
+                display: block;
+            }
+
+            .ra-rule-gem {
+                color: #8b1515;
+                font-size: 9px;
+                flex-shrink: 0;
+            }
+        }
+
+        /* ★ ขอบคุณ ★ */
+        .ra-ty {
+            font-size: 15px !important;
+            font-weight: 900 !important;
+            color: #8b1515 !important;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Warranty note */
+        .ra-note {
+            font-size: 10.5px !important;
+            color: #555 !important;
+            line-height: 1.45;
+            margin-bottom: 7px;
+        }
+
+        /* Social badge */
+        .ra-social-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #1a2a5e, #2c3e8c);
+            border-radius: 4px;
+            padding: 4px 10px;
+
+            .ra-social-item {
+                font-size: 10px !important;
+                font-weight: 700 !important;
+                color: #fff !important;
+                letter-spacing: 0.2px;
+            }
+
+            .ra-social-divider {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 11px;
+            }
         }
     }
-    
-    /* Footer information */
-    .ran-ahlai-pos-footer {
-        text-align: center !important;
-        margin-top: 15px !important;
-        padding-top: 12px !important;
-        border-top: 1px dashed #ccc !important;
-        
-        .footer-thankyou {
-            font-weight: 800 !important;
-            color: #8b1515 !important;
-            font-size: 14px !important;
-            margin-bottom: 4px !important;
-        }
-        
-        .footer-sub {
-            font-size: 11px !important;
-            color: #666 !important;
-            margin-bottom: 6px !important;
-            line-height: 1.3 !important;
-        }
-        
-        .footer-social {
-            font-size: 11px !important;
-            font-weight: bold !important;
-            background-color: #f9f9f9 !important;
-            border: 1px solid #eee !important;
-            border-radius: 4px !important;
-            display: inline-block !important;
-            padding: 4px 8px !important;
-            color: #333 !important;
-            margin-top: 4px !important;
-        }
+
+    /* ══════════════════════════════════════════════════════
+       STANDARD ODOO FOOTER (email, POS part, powered by)
+       ══════════════════════════════════════════════════════ */
+    .pos-receipt-footer {
+        font-size: 10px !important;
+        color: #aaa !important;
+        text-align: center;
+        margin-top: 10px;
+        padding-top: 6px;
+        border-top: 1px dashed #e0e0e0;
+        clear: both;
     }
 }
-

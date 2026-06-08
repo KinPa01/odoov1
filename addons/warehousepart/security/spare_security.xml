@@ -21,5 +21,36 @@
             <field name="implied_ids" eval="[(4, ref('group_spare_cashier')), (4, ref('group_spare_inventory'))]"/>
             <field name="comment">มีสิทธิ์เข้าถึงทุกเมนู รวมถึงการจัดซื้อและคลังสินค้า</field>
         </record>
+
+        <!-- Legacy groups — ยังถูก reference โดย ir.rule ใน DB อย่าลบ -->
+        <record id="group_warehousepart_accountant" model="res.groups">
+            <field name="name">Accountant / นักบัญชี</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehousepart_admin" model="res.groups">
+            <field name="name">Admin / เจ้าของร้าน</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehousepart_user" model="res.groups">
+            <field name="name">Warehousepart / User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehousepart_manager" model="res.groups">
+            <field name="name">Warehousepart / Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehousepart_cashier" model="res.groups">
+            <field name="name">Warehousepart / Cashier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_warehousepart_stock" model="res.groups">
+            <field name="name">Warehousepart / Stock</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
     </data>
 </odoo>

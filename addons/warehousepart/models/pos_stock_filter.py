@@ -18,27 +18,40 @@ class ProductTemplatePos(models.Model):
         """
         คืน set ของ product_tmpl_id ที่มีสต็อก > 0
         เฉพาะใน คลังหน้าร้าน (warehouse code = 'POS') เท่านั้น
-        ป้องกันสต็อกจากคลัง ONLINE หรือคลังอื่นหลุดเข้ามาใน POS
+
+        ใช้ CTE แทน correlated subquery เพื่อให้ query วิ่งเร็วขึ้น
         """
+        import time
+        t0 = time.time()
         self.env.cr.execute("""
-            SELECT DISTINCT pp.product_tmpl_id
-            FROM stock_quant sq
-            JOIN stock_location sl ON sq.location_id = sl.id
-            JOIN product_product pp ON sq.product_id = pp.id
-            JOIN stock_warehouse sw ON (
-                sl.parent_path LIKE (
-                    SELECT sl2.parent_path || '%%'
-                    FROM stock_location sl2
-                    WHERE sl2.id = sw.lot_stock_id
-                )
-                OR sl.id = sw.lot_stock_id
+            WITH pos_wh AS (
+                -- ดึง lot_stock path ของคลัง POS ครั้งเดียว (ไม่ใช่ per-row)
+                SELECT sw.id              AS warehouse_id,
+                       sl_wh.parent_path  AS stock_path,
+                       sl_wh.id           AS stock_loc_id
+                FROM   stock_warehouse sw
+                JOIN   stock_location  sl_wh ON sl_wh.id = sw.lot_stock_id
+                WHERE  sw.code = 'POS'
             )
-            WHERE sl.usage = 'internal'
-              AND sq.quantity > 0
-              AND sw.code = 'POS'
-              AND (sl.company_id = %s OR sl.company_id IS NULL)
+            SELECT DISTINCT pp.product_tmpl_id
+            FROM   stock_quant     sq
+            JOIN   stock_location  sl ON sl.id = sq.location_id
+            JOIN   product_product pp ON pp.id = sq.product_id
+            JOIN   pos_wh          ON (
+                       sl.parent_path LIKE (pos_wh.stock_path || '%%')
+                       OR sl.id = pos_wh.stock_loc_id
+                   )
+            WHERE  sl.usage = 'internal'
+              AND  sq.quantity > 0
+              AND  (sl.company_id = %s OR sl.company_id IS NULL)
         """, (company_id,))
-        return {row[0] for row in self.env.cr.fetchall()}
+        result = {row[0] for row in self.env.cr.fetchall()}
+        _logger.info(
+            "WAREHOUSEPART: _get_pos_stock_tmpl_ids took %.3fs → %d products",
+            time.time() - t0, len(result)
+        )
+        return result
+
 
     @api.model
     def _load_pos_data_fields(self, config_id):

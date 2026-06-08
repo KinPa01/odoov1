@@ -1,28 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <!-- Override POS OrderReceipt to add Ran Ahlai Branding -->
-    <!-- Odoo 19: structure uses ReceiptHeader, pos-receipt-amount, before-footer, after-footer -->
-    <t t-name="warehousepart.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+    <!--
+        Ran Ahlai — Premium POS Receipt
+        ใบเสร็จรับเงิน ร้านอาหลั่ย
+    -->
+    <t t-name="warehousepart.OrderReceipt"
+       t-inherit="point_of_sale.OrderReceipt"
+       t-inherit-mode="extension" owl="1">
 
-        <!-- Inject Ran Ahlai header BEFORE the standard ReceiptHeader (at the very top) -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <!--   STORE HEADER                                  -->
+        <!-- ═══════════════════════════════════════════════ -->
         <xpath expr="//ReceiptHeader" position="before">
-            <div class="ran-ahlai-pos-header">
-                <h2>ร้านอาหลั่ย</h2>
-                <div class="ran-ahlai-pos-slogan">อะไหล่แท้ ราคาดี ส่งทั่วไทย</div>
-                <div class="ran-ahlai-pos-info">
-                    <div>เลขประจำตัวผู้เสียภาษี: <t t-esc="order.company.vat || '0105561000000'"/></div>
-                    <div>โทร: <t t-esc="order.company.phone || '02-123-4567'"/></div>
+            <div class="ra-header">
+
+                <!-- Top accent stripe -->
+                <div class="ra-stripe-top"/>
+
+                <!-- ── Store brand ── -->
+                <div class="ra-brand">
+                    <div class="ra-brand-name">ร้านอาหลั่ย</div>
+                    <div class="ra-brand-sub">อะไหล่รถยนต์คุณภาพสูง</div>
+                    <div class="ra-brand-slogan">อะไหล่แท้&#160;&#183;&#160;ราคาดี&#160;&#183;&#160;ส่งทั่วไทย</div>
                 </div>
-                <div class="receipt-divider"></div>
+
+                <!-- ── Address ── -->
+                <div class="ra-address" t-if="order.company.street">
+                    <t t-esc="order.company.street"/>
+                    <t t-if="order.company.city">, <t t-esc="order.company.city"/></t>
+                </div>
+
+                <!-- ── Contact info pills ── -->
+                <div class="ra-contact-pills">
+                    <div class="ra-pill ra-pill-tax">
+                        <span class="ra-pill-icon">&#9872;</span>
+                        <span class="ra-pill-label">เลขภาษี</span>
+                        <span class="ra-pill-val">
+                            <t t-esc="order.company.vat or '—'"/>
+                        </span>
+                    </div>
+                    <div class="ra-pill ra-pill-tel">
+                        <span class="ra-pill-icon">&#9742;</span>
+                        <span class="ra-pill-label">โทร</span>
+                        <span class="ra-pill-val">
+                            <t t-esc="order.company.phone or '—'"/>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ── Accent bottom stripe ── -->
+                <div class="ra-stripe-bottom"/>
+
             </div>
         </xpath>
 
-        <!-- Inject thank-you footer INSIDE before-footer div (safe hook in Odoo 19) -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <!--   RECEIPT FOOTER                                -->
+        <!-- ═══════════════════════════════════════════════ -->
         <xpath expr="//div[hasclass('before-footer')]" position="inside">
-            <div class="ran-ahlai-pos-footer">
-                <div class="footer-thankyou">ขอบคุณที่ใช้บริการร้านอาหลั่ย</div>
-                <div class="footer-sub">สินค้าทุกชิ้นรับประกันคุณภาพตามมาตรฐานผู้ผลิต</div>
-                <div class="footer-social">FB: ร้านอาหลั่ย | Line: @RanAhlai</div>
+            <div class="ra-footer">
+
+                <!-- Thin rule with star -->
+                <div class="ra-footer-rule">
+                    <span class="ra-rule-line"/>
+                    <span class="ra-rule-gem">&#10022;</span>
+                    <span class="ra-rule-line"/>
+                </div>
+
+                <!-- Thank-you -->
+                <div class="ra-ty">&#9733;&#160;ขอบคุณที่ใช้บริการ&#160;&#9733;</div>
+
+                <!-- Warranty note -->
+                <div class="ra-note">
+                    &#10003;&#160;สินค้าทุกชิ้นรับประกันคุณภาพตามมาตรฐานผู้ผลิต
+                </div>
+
+                <!-- Social handles badge -->
+                <div class="ra-social-badge">
+                    <span class="ra-social-item">&#128231;&#160;FB : ร้านอาหลั่ย</span>
+                    <span class="ra-social-divider">|</span>
+                    <span class="ra-social-item">&#128172;&#160;Line : @RanAhlai</span>
+                </div>
+
             </div>
         </xpath>
 

@@ -28,6 +28,13 @@
                             <field name="max_display_products" help="แสดงสูงสุดกี่ชิ้นบนหน้าแรก (สุ่มใหม่ทุก 8 ชั่วโมง)"/>
                             <field name="active" widget="boolean_toggle"/>
                         </group>
+                        <group string="ช่วงเวลาแคมเปญ">
+                            <field name="start_date" widget="datetime" help="เว้นว่างเพื่อเริ่มทันที"/>
+                            <field name="end_date" widget="datetime" help="เว้นว่างเพื่อไม่มีวันหมดอายุ — ระบบจะปิดอัตโนมัติเมื่อถึงเวลา"/>
+                            <field name="is_running" readonly="1" widget="boolean_toggle"
+                                   decoration-success="is_running == True"
+                                   decoration-muted="is_running == False"/>
+                        </group>
                         <group string="สถิติ">
                             <field name="total_product_count" readonly="1"/>
                             <div class="alert alert-info" role="alert" colspan="2">
@@ -92,10 +99,16 @@
         <field name="name">warehousepart.flash.sale.list</field>
         <field name="model">warehousepart.flash.sale</field>
         <field name="arch" type="xml">
-            <list string="ตั้งค่า Flash Sale" decoration-success="active" decoration-muted="not active">
+            <list string="ตั้งค่า Flash Sale"
+                  decoration-success="is_running"
+                  decoration-warning="active and not is_running"
+                  decoration-muted="not active">
                 <field name="name"/>
                 <field name="mode" string="โหมดการทำงาน"/>
                 <field name="discount_percent" string="ส่วนลด (%)"/>
+                <field name="start_date" string="เริ่มต้น" optional="show"/>
+                <field name="end_date" string="สิ้นสุด" optional="show"/>
+                <field name="is_running" string="กำลังดำเนินอยู่" widget="boolean" readonly="1"/>
                 <field name="total_product_count" string="สินค้าทั้งหมด" readonly="1"/>
                 <field name="max_display_products" string="แสดงสูงสุด"/>
                 <field name="active" widget="boolean_toggle"/>
@@ -237,5 +250,41 @@
             </p>
         </field>
     </record>
+
+    <!-- ═══════════════════════════════════════════════════
+         FLASH SALE SALES REPORT — ดูยอดขายช่วง Flash Sale
+         (Pivot + Graph จาก sale.order.line)
+         ═══════════════════════════════════════════════════ -->
+    <record id="action_flash_sale_report" model="ir.actions.act_window">
+        <field name="name">📊 รายงานยอดขาย Flash Sale</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[('order_id.state', 'in', ['sale','done']), ('discount', '>', 0)]</field>
+        <field name="context">{
+            'search_default_group_by_product': 1,
+            'pivot_measures': ['product_uom_qty', 'price_subtotal'],
+            'pivot_row_groupby': ['product_id'],
+            'pivot_col_groupby': []
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ยังไม่มีข้อมูลยอดขาย Flash Sale
+            </p>
+            <p>
+                รายงานนี้แสดง <strong>ยอดขายสินค้าที่มีส่วนลด (discount &gt; 0)</strong>
+                ซึ่งครอบคลุมช่วง Flash Sale ทั้งหมด
+                — ดูได้ทั้ง Pivot และ Graph
+            </p>
+        </field>
+    </record>
+
+    <!-- ── เพิ่ม Menu สำหรับรายงาน Flash Sale ── -->
+    <menuitem
+        id="menu_flash_sale_report"
+        name="📊 รายงานยอดขาย Flash Sale"
+        parent="menu_spare_website_main"
+        action="action_flash_sale_report"
+        sequence="15"
+        groups="warehousepart.group_spare_manager"/>
 
 </odoo>

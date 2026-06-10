@@ -174,3 +174,101 @@ class ProductTemplate(models.Model):
                 if existing_items:
                     existing_items.unlink()
 
+    @api.model
+    def _search_get_detail(self, website, order, options):
+        res = super()._search_get_detail(website, order, options)
+        if 'search_fields' in res:
+            # เพิ่มให้สามารถค้นหาจากยี่ห้อและรุ่นรถได้ที่ช่องค้นหาหน้าเว็บ
+            res['search_fields'].extend(['part_brand', 'car_model'])
+        return res
+
+    def get_online_qty(self, website=None):
+        """
+        คำนวณจำนวนสต็อกคงเหลือในคลังออนไลน์สำหรับสินค้าชิ้นนี้
+        """
+        self.ensure_one()
+        wh = website and website.warehouse_id
+        if not wh:
+            wh = self.env['stock.warehouse'].sudo().search([('code', '=', 'ONLIN')], limit=1) or \
+                 self.env['stock.warehouse'].sudo().search([('code', '=', 'WH')], limit=1)
+        if not wh:
+            return 0.0
+        return self.get_warehouse_stock_by_id(self.id, wh.id)
+
+    def _get_additionnal_combination_info(self, product_or_template, quantity, uom, date, website):
+        """
+        ถ้าสินค้าหมดในคลังออนไลน์ (free_qty <= 0) และยังไม่ได้ระบุ out_of_stock_message ในระบบหลังบ้าน
+        ให้แสดงข้อความแจ้งเตือนสินค้าหมดโดยอัตโนมัติ (Auto Out-of-Stock Message)
+        """
+        res = super()._get_additionnal_combination_info(product_or_template, quantity, uom, date, website)
+        
+        # ตรวจสอบว่าสินค้ามีสต็อกต่ำกว่าหรือเท่ากับ 0 ในคลังออนไลน์
+        if product_or_template.is_storable and res.get('free_qty', 0.0) <= 0:
+            if not res.get('out_of_stock_message'):
+                # กำหนดข้อความแจ้งเตือนหมดแบบ Auto
+                if res.get('allow_out_of_stock_order'):
+                    res['out_of_stock_message'] = '<b>สินค้าหมดชั่วคราว!</b> (แต่คุณยังสามารถสั่งซื้อล่วงหน้าได้ ทางเรากำลังเร่งเติมสต็อกครับ)'
+                else:
+                    res['out_of_stock_message'] = '<b>สินค้าหมดชั่วคราว!</b> (ทางเรากำลังเร่งเติมสต็อกครับ)'
+        return res
+
+
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    shortage_reason = fields.Selection([
+        ('none', 'ไม่มี / None'),
+        ('supplier_short', 'ซัพพลายเออร์ส่งไม่ครบ / Supplier Short-shipped'),
+        ('damaged', 'สินค้าแตกหัก/เสียหาย / Damaged'),
+        ('lost', 'สูญหาย / Lost'),
+        ('other', 'อื่นๆ (ระบุในหมายเหตุ) / Other'),
+    ], string='สาเหตุสินค้าขาด / Shortage Reason', default='none')
+    shortage_note = fields.Char(string='หมายเหตุสินค้าขาด / Shortage Note')
+
+    def _prepare_move_split_vals(self, qty):
+        vals = super()._prepare_move_split_vals(qty)
+        vals.update({
+            'shortage_reason': 'none',
+            'shortage_note': False,
+        })
+        return vals
+
+
+class PurchaseOrderLine(models.Model):
+    _inherit = 'purchase.order.line'
+
+    qty_pending = fields.Float(
+        string='ค้างรับ / Pending Qty',
+        compute='_compute_qty_pending',
+        store=True,
+    )
+    shortage_reasons = fields.Char(
+        string='สาเหตุสินค้าขาด / Shortage Reasons',
+        compute='_compute_shortage_info',
+    )
+    shortage_notes = fields.Char(
+        string='หมายเหตุสินค้าขาด / Shortage Notes',
+        compute='_compute_shortage_info',
+    )
+
+    @api.depends('product_qty', 'qty_received')
+    def _compute_qty_pending(self):
+        for line in self:
+            line.qty_pending = max(0.0, line.product_qty - line.qty_received)
+
+    @api.depends('move_ids.shortage_reason', 'move_ids.shortage_note', 'move_ids.state')
+    def _compute_shortage_info(self):
+        for line in self:
+            reasons = []
+            notes = []
+            for move in line.move_ids.filtered(lambda m: m.state == 'done'):
+                if move.shortage_reason and move.shortage_reason != 'none':
+                    reason_label = dict(move._fields['shortage_reason'].selection).get(move.shortage_reason, move.shortage_reason)
+                    reasons.append(reason_label)
+                if move.shortage_note:
+                    notes.append(move.shortage_note)
+            line.shortage_reasons = ", ".join(set(reasons)) if reasons else "—"
+            line.shortage_notes = ", ".join(set(notes)) if notes else "—"
+
+
+

@@ -543,66 +543,78 @@
          ═══════════════════════════════════════════════════════════ -->
     <template id="products_item_out_of_stock_ribbon" inherit_id="website_sale.products_item" name="Out of Stock Ribbon">
         <xpath expr="//t[@t-if='show_ribbons']" position="before">
-            <div class="ra-badge-container">
-                <t t-if="product.is_storable and product.sudo().qty_available &lt;= 0">
+            <!-- หมดชั่วคราว: สินค้าหมด -->
+            <t t-if="product.is_storable and product.get_online_qty(website) &lt;= 0">
+                <div class="ra-badge-container">
                     <div class="ra-out-of-stock-ribbon">
                         <span>หมดชั่วคราว</span>
                     </div>
-                </t>
-                <t t-elif="product.is_storable and product.sudo().qty_available &gt; 0 and product.sudo().qty_available &lt;= (product.available_threshold or 5)">
+                </div>
+            </t>
+            <!-- ใกล้หมด: สินค้ามีน้อย (วางบนรูปเช่นเดียวกัน) -->
+            <t t-elif="product.is_storable and product.get_online_qty(website) &gt; 0 and product.get_online_qty(website) &lt;= (product.available_threshold or 5)">
+                <div class="ra-badge-container">
                     <div class="ra-low-stock-ribbon">
                         <span>ใกล้หมด</span>
                     </div>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
+            <t t-if="active_flash_sale and active_flash_sale.tag_id">
+                <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
+                    <span class="ra-flash-sale-badge-price">
+                        ⚡ FLASH SALE -<t t-esc="int(active_flash_sale.discount_percent)"/>%
+                    </span>
                 </t>
-                <!-- ⚡ Flash Sale Badge -->
-                <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
-                <t t-if="active_flash_sale and active_flash_sale.tag_id">
-                    <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
-                        <div class="ra-flash-sale-badge">
-                            <span>⚡ Flash Sale -<t t-esc="int(active_flash_sale.discount_percent)"/>
-%</span>
-                        </div>
-                    </t>
-                </t>
-            </div>
+            </t>
         </xpath>
     </template>
 
     <!-- ═══════════════════════════════════════════════════════════
          ═══════════════════════════════════════════════════════════ -->
     <template id="product_flash_sale_banner" inherit_id="website_sale.product" name="Product Flash Sale Banner">
-        <xpath expr="//div[@id='product_details']/*[1]" position="before">
+        <xpath expr="//div[@id='o_wsale_product_details_content']/*[1]" position="before">
             <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
             <t t-if="active_flash_sale and active_flash_sale.tag_id">
                 <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
-                    <div class="ra-flash-detail-banner mb-4 p-3 rounded" style="background: linear-gradient(135deg, rgba(230,57,70,0.15), rgba(255,107,53,0.15)); border: 1px solid rgba(230, 57, 70, 0.3); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.1);">
-                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <span style="font-size: 1.5rem;">⚡</span>
-                                <div>
-                                    <h6 class="mb-0 text-white fw-bold" style="letter-spacing: 0.5px; font-size: 0.95rem;">แคมเปญ FLASH SALE กำลังดำเนินอยู่!</h6>
-                                    <p class="mb-0 fw-bold" style="font-size: 0.8rem; color: #ff8b8b;">สินค้านี้ได้รับส่วนลดพิเศษ                                        <t t-esc="int(active_flash_sale.discount_percent)"/>
-% ทันที</p>
+                    <!-- ⚡ FLASH SALE BANNER — PREMIUM -->
+                    <div class="ra-flash-detail-banner mb-3">
+                        <div class="ra-fdb-shimmer"/>
+                        <div class="ra-fdb-inner">
+                            <!-- Left: Icon + Labels -->
+                            <div class="ra-fdb-left">
+                                <div class="ra-fdb-bolt">⚡</div>
+                                <div class="ra-fdb-text">
+                                    <div class="ra-fdb-badges">
+                                        <span class="ra-fdb-tag">FLASH SALE</span>
+                                        <span class="ra-fdb-live">● LIVE</span>
+                                    </div>
+                                    <div class="ra-fdb-desc">
+                                        รับส่วนลดทันที
+                                        <strong><t t-esc="int(active_flash_sale.discount_percent)"/>%</strong>
+                                        สำหรับสินค้านี้
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Countdown Timer -->
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge p-2 text-white fw-bold" style="background: #e63946; font-size: 0.85rem; border-radius: 4px; box-shadow: 0 2px 8px rgba(230,57,70,0.4);">
-                                    ลด                                    <t t-esc="int(active_flash_sale.discount_percent)"/>
-%
-                                </span>
+                            <!-- Right: Discount Pill + Countdown -->
+                            <div class="ra-fdb-right">
+                                <div class="ra-fdb-discount">
+                                    <span class="ra-fdb-off">ลด</span>
+                                    <span class="ra-fdb-pct"><t t-esc="int(active_flash_sale.discount_percent)"/>%</span>
+                                </div>
                                 <t t-if="active_flash_sale.end_date">
-                                    <div class="ra-product-countdown d-flex gap-1 align-items-center" t-att-data-remaining="active_flash_sale.remaining_seconds">
-                                        <span class="text-muted small me-1" style="font-size:0.72rem;">หมดใน:</span>
-                                        <span class="ra-pcd-hours ra-countdown-digit">--</span>
-                                        <span class="ra-countdown-sep-sm">:</span>
-                                        <span class="ra-pcd-mins ra-countdown-digit">--</span>
-                                        <span class="ra-countdown-sep-sm">:</span>
-                                        <span class="ra-pcd-secs ra-countdown-digit">--</span>
+                                    <div class="ra-fdb-countdown-wrap">
+                                        <span class="ra-fdb-countdown-label">⏱ หมดใน</span>
+                                        <div class="ra-product-countdown ra-fdb-countdown" t-att-data-remaining="active_flash_sale.remaining_seconds">
+                                            <span class="ra-fdb-digit ra-pcd-hours">--</span>
+                                            <span class="ra-fdb-sep">:</span>
+                                            <span class="ra-fdb-digit ra-pcd-mins">--</span>
+                                            <span class="ra-fdb-sep">:</span>
+                                            <span class="ra-fdb-digit ra-pcd-secs">--</span>
+                                        </div>
                                     </div>
-                                </t>
-                                <t t-else="">
-                                    <span class="text-muted small">ไม่มีกำหนดสิ้นสุด</span>
                                 </t>
                             </div>
                         </div>
@@ -612,27 +624,100 @@
         </xpath>
     </template>
 
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HIDE DEFAULT TERMS & CONDITIONS RENDERED BY CORE ODOO
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="hide_default_product_terms_and_conditions" inherit_id="website_sale.product_terms_and_conditions" name="Ran Ahlai — Hide Default Terms">
+        <xpath expr="//small" position="replace">
+            <!-- Hidden: replaced with empty content as we use a premium custom policy banner -->
+        </xpath>
+    </template>
+
+
     <!-- ═══════════════════════════════════════════════════════════
          PRODUCT DETAIL PAGE — STOCK AVAILABILITY WIDGET
          ═══════════════════════════════════════════════════════════ -->
     <template id="product_stock_availability_widget" inherit_id="website_sale.product" name="Product Stock Availability Widget">
         <xpath expr="//div[hasclass('o_wsale_product_details_content_section_cta')]" position="after">
+
+            <!-- 1. Terms & Shipping Banner (ข้อกำหนดและเงื่อนไข) -->
+            <div class="ra-policy-banner mb-3 d-flex justify-content-between align-items-center gap-2 p-2 px-3 rounded">
+                <div class="ra-policy-item d-flex align-items-center gap-2">
+                    <span class="ra-policy-icon">🛡️</span>
+                    <span class="ra-policy-text">รับประกันคืนเงินภายใน 30 วัน</span>
+                </div>
+                <div class="ra-policy-sep">|</div>
+                <div class="ra-policy-item d-flex align-items-center gap-2">
+                    <span class="ra-policy-icon">🚚</span>
+                    <span class="ra-policy-text">การจัดส่ง: 2-3 วันทำการ</span>
+                </div>
+            </div>
+
+            <!-- 2. Specifications Section (ข้อมูลจำเพาะ) -->
+            <div class="ra-specifications-widget mb-3 p-3 rounded">
+                <div class="ra-spec-header d-flex align-items-center gap-2 mb-3">
+                    <span class="ra-spec-title-icon">⚙️</span>
+                    <h6 class="mb-0 fw-bold text-white">ข้อมูลจำเพาะ / Specifications</h6>
+                </div>
+                
+                <div class="ra-spec-grid d-flex flex-column gap-2">
+                    <!-- Brand -->
+                    <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
+                        <span class="text-white-50 small">ยี่ห้อ / Brand</span>
+                        <t t-if="product.part_brand">
+                            <a t-attf-href="/shop?search=#{product.part_brand}" class="ra-brand-badge-inline-link">
+                                <span class="ra-brand-badge-inline"><t t-esc="product.part_brand"/></span>
+                            </a>
+                        </t>
+                        <t t-else="">
+                            <span class="text-muted small">ไม่ระบุ</span>
+                        </t>
+                    </div>
+                    <!-- Fitment -->
+                    <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
+                        <span class="text-white-50 small">รุ่นรถ / Fitment</span>
+                        <t t-if="product.car_model">
+                            <strong class="text-white small"><t t-esc="product.car_model"/></strong>
+                        </t>
+                        <t t-else="">
+                            <span class="text-muted small">ไม่ระบุ</span>
+                        </t>
+                    </div>
+                    <!-- SKU -->
+                    <t t-if="product.default_code">
+                        <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
+                            <span class="text-white-50 small">รหัสสินค้า / SKU</span>
+                            <strong class="text-white small"><t t-esc="product.default_code"/></strong>
+                        </div>
+                    </t>
+                    <!-- Webike SKU -->
+                    <t t-if="product.webike_sku">
+                        <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
+                            <span class="text-white-50 small">Webike SKU</span>
+                            <strong class="text-white small"><t t-esc="product.webike_sku"/></strong>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 3. Stock Availability Section (เช็กสต็อกรายสาขา) -->
             <t t-set="online_wh" t-value="website.warehouse_id or product.env['stock.warehouse'].sudo().search([('code', '=', 'ONLIN')], limit=1) or product.env['stock.warehouse'].sudo().search([('code', '=', 'WH')], limit=1)"/>
             <t t-set="online_qty" t-value="product.get_warehouse_stock_by_id(product.id, online_wh.id) if online_wh else 0.0"/>
             <t t-set="pos_qty" t-value="product.get_warehouse_stock(product.id, 'POS')"/>
 
-            <div class="ra-stock-widget mb-4 p-3 rounded">
+            <div class="ra-stock-widget mb-3 p-3 rounded">
                 <div class="ra-stock-header d-flex align-items-center gap-2 mb-3">
                     <span class="ra-stock-title-icon">📦</span>
                     <h6 class="mb-0 fw-bold text-white">เช็กสต็อกรายสาขา / Stock Availability</h6>
                 </div>
 
-                <div class="row g-3">
-                    <!-- 1. Online Warehouse Stock -->
+                <div class="row g-2">
+                    <!-- Online Stock Card -->
                     <div class="col-12 col-sm-6">
                         <div class="ra-stock-card p-3 rounded d-flex flex-column justify-content-between h-100">
                             <div>
-                                <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="d-flex align-items-center gap-2 mb-2">
                                     <span class="ra-card-icon">🌐</span>
                                     <span class="fw-bold text-white-50 small">คลังออนไลน์ (จัดส่งด่วน)</span>
                                 </div>
@@ -651,7 +736,7 @@
                                     </t>
                                 </div>
                             </div>
-                            <div class="mt-2 text-muted small">
+                            <div class="mt-2 text-muted-soft small">
                                 <t t-if="online_qty &gt; 0">
                                     พร้อมจัดส่งใน 1-3 วันทำการ
                                 </t>
@@ -662,11 +747,11 @@
                         </div>
                     </div>
 
-                    <!-- 2. POS Warehouse Stock -->
+                    <!-- Store Stock Card -->
                     <div class="col-12 col-sm-6">
                         <div class="ra-stock-card p-3 rounded d-flex flex-column justify-content-between h-100">
                             <div>
-                                <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="d-flex align-items-center gap-2 mb-2">
                                     <span class="ra-card-icon">🏪</span>
                                     <span class="fw-bold text-white-50 small">คลังหน้าร้าน (ซื้อสาขาหลัก)</span>
                                 </div>
@@ -685,7 +770,7 @@
                                     </t>
                                 </div>
                             </div>
-                            <div class="mt-2 text-muted small">
+                            <div class="mt-2 text-muted-soft small">
                                 <t t-if="pos_qty &gt; 0">
                                     รับสินค้าที่หน้าร้านได้ทันที
                                 </t>
@@ -697,7 +782,7 @@
                     </div>
                 </div>
 
-                <!-- 3. Internal Info: Shelf Location (Only for Employees) -->
+                <!-- Internal Shelf Location for Staff only -->
                 <t t-if="product.shelf_location and product.env.user.has_group('base.group_user')">
                     <div class="ra-internal-stock-info mt-3 pt-2 border-top border-secondary-subtle d-flex align-items-center gap-2">
                         <span class="badge bg-info text-dark">📍 สำหรับเจ้าหน้าที่</span>
@@ -715,7 +800,7 @@
          ═══════════════════════════════════════════════════════════ -->
     <template id="cart_low_stock_warning" inherit_id="website_sale.cart_lines" name="Cart Low Stock Warning">
         <xpath expr="//div[@id='cart_products']" position="before">
-            <t t-set="low_stock_lines" t-value="[line for line in website_sale_order.order_line if line.product_id.is_storable and line.product_id.qty_available > 0 and line.product_id.qty_available &lt;= (line.product_id.product_tmpl_id.available_threshold or 5)]"/>
+            <t t-set="low_stock_lines" t-value="[line for line in website_sale_order.order_line if line.product_id.is_storable and line.product_id.product_tmpl_id.get_online_qty(website) &gt; 0 and line.product_id.product_tmpl_id.get_online_qty(website) &lt;= (line.product_id.product_tmpl_id.available_threshold or 5)]"/>
             <t t-if="low_stock_lines">
                 <div class="alert d-flex align-items-start gap-3 mb-4 rounded-3" style="background: rgba(255,165,0,0.12); border: 1px solid rgba(255,165,0,0.35); color:#fff;" role="alert">
                     <span style="font-size:1.4rem;flex-shrink:0;">⚠️</span>
@@ -726,12 +811,24 @@
                             <t t-foreach="low_stock_lines" t-as="low_line">
                                 <li>
                                     <strong style="color:#ffb347;"><t t-esc="low_line.product_id.name"/></strong>
-                                    — เหลือเพียง <strong style="color:#ff6b6b;"><t t-esc="int(low_line.product_id.qty_available)"/></strong> ชิ้นเท่านั้น!
+                                    — เหลือเพียง <strong style="color:#ff6b6b;"><t t-esc="int(low_line.product_id.product_tmpl_id.get_online_qty(website))"/></strong> ชิ้นเท่านั้น!
                                 </li>
                             </t>
                         </ul>
                     </div>
                 </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PRODUCT PAGE — HIDE FLASH SALE PRODUCT TAG
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="ran_ahlai_product_tags" inherit_id="website_sale.product_tags" name="Ran Ahlai — Product Tags">
+        <xpath expr="//t[@t-set='visible_tags']" position="after">
+            <t t-set="active_flash_sale" t-value="product.env['warehousepart.flash.sale'].sudo().search([('active', '=', True)], limit=1)"/>
+            <t t-if="active_flash_sale and active_flash_sale.tag_id">
+                <t t-set="visible_tags" t-value="visible_tags - active_flash_sale.tag_id"/>
             </t>
         </xpath>
     </template>

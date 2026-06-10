@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- รายชื่อสินค้าค้างรับ (Purchase Order Line List View) -->
+    <record id="view_purchase_order_line_backorder_tree" model="ir.ui.view">
+        <field name="name">purchase.order.line.backorder.tree</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <list string="รายงานค้างรับ (Backorder)" create="false" edit="false" delete="false">
+                <field name="order_id" string="เลขที่ใบสั่งซื้อ"/>
+                <field name="partner_id" string="ซัพพลายเออร์"/>
+                <field name="product_id" string="สินค้า"/>
+                <field name="product_qty" string="จำนวนที่สั่ง" sum="Total Ordered"/>
+                <field name="qty_received" string="รับเข้าแล้ว" sum="Total Received"/>
+                <field name="qty_pending" string="ค้างรับ" sum="Total Pending"/>
+                <field name="shortage_reasons" string="สาเหตุสินค้าขาด"/>
+                <field name="shortage_notes" string="หมายเหตุสินค้าขาด"/>
+                <field name="date_planned" widget="date" string="กำหนดส่งมอบ"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ค้นหาและจัดกลุ่มรายงานค้างรับ (Search and Filter View) -->
+    <record id="view_purchase_order_line_backorder_search" model="ir.ui.view">
+        <field name="name">purchase.order.line.backorder.search</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <search string="ค้นหารายงานค้างรับ">
+                <field name="order_id" string="ใบสั่งซื้อ"/>
+                <field name="partner_id" string="ซัพพลายเออร์"/>
+                <field name="product_id" string="สินค้า"/>
+                <group>
+                    <filter name="group_by_order" string="ใบสั่งซื้อ" domain="[]" context="{'group_by': 'order_id'}"/>
+                    <filter name="group_by_partner" string="ซัพพลายเออร์" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_by_product" string="สินค้า" domain="[]" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action เปิดหน้ารายงานค้างรับ (Backorder Report Action) -->
+    <record id="action_spare_backorder_report" model="ir.actions.act_window">
+        <field name="name">รายงานค้างรับ (Backorder Report)</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_purchase_order_line_backorder_tree"/>
+        <field name="search_view_id" ref="view_purchase_order_line_backorder_search"/>
+        <!-- กรองให้แสดงเฉพาะ PO ที่ยืนยันแล้ว และมีจำนวนค้างรับ (qty_pending > 0) -->
+        <field name="domain">[('order_id.state', 'in', ('purchase', 'done')), ('qty_pending', '&gt;', 0)]</field>
+        <field name="context">{'search_default_group_by_order': 1}</field>
+    </record>
+
+    <!-- เพิ่มเมนูในระบบ ร้านอาหลั่ย -->
+    <menuitem id="menu_spare_backorder_report" 
+              name="📋 รายงานค้างรับ (Backorder)" 
+              parent="menu_warehousepart_root" 
+              action="action_spare_backorder_report" 
+              groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" 
+              sequence="45"/>
+</odoo>

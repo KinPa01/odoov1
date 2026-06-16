@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════════════════════════════════════════════════
+         ข้อมูลพนักงาน (Demo) — ร้านอาหลั่ย
+         ══════════════════════════════════════════════════════════════════
+         โครงสร้างทีม:
+           👑 เจ้าของ         1 คน  — ดูและจัดการทุกอย่าง
+           💰 บัญชี          1 คน  — การเงิน + เงินเดือนพนักงาน
+           🏭 คลังสินค้า     5 คน  — จัดส่ง + โอนย้ายสินค้า
+           🏪 หน้าร้าน       2 คน  — POS เท่านั้น
+         ══════════════════════════════════════════════════════════════════
+         หมายเหตุ Odoo 19: groups_id ถูกลบจาก res.users แล้ว
+         ใช้ res.groups.users แทนในการกำหนดสิทธิ์
+    ══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ─── BLOCK 1: Job Positions + Employees (noupdate=0) ──────────── -->
+    <data noupdate="0">
+
+        <!-- ─── Job Positions ──────────────────────────────────────────── -->
+        <record id="job_owner" model="hr.job">
+            <field name="name">เจ้าของร้าน</field>
+            <field name="no_of_recruitment">1</field>
+        </record>
+        <record id="job_accountant" model="hr.job">
+            <field name="name">พนักงานบัญชี</field>
+            <field name="no_of_recruitment">1</field>
+        </record>
+        <record id="job_warehouse" model="hr.job">
+            <field name="name">พนักงานคลังสินค้า</field>
+            <field name="no_of_recruitment">5</field>
+        </record>
+        <record id="job_front_staff" model="hr.job">
+            <field name="name">พนักงานขายหน้าร้าน</field>
+            <field name="no_of_recruitment">2</field>
+        </record>
+
+        <!-- ─── Departments ────────────────────────────────────────────── -->
+        <record id="dept_owner" model="hr.department">
+            <field name="name">ฝ่ายบริหาร</field>
+        </record>
+        <record id="dept_accounting" model="hr.department">
+            <field name="name">ฝ่ายบัญชี</field>
+        </record>
+        <record id="dept_warehouse" model="hr.department">
+            <field name="name">ฝ่ายคลังสินค้า</field>
+        </record>
+        <record id="dept_front" model="hr.department">
+            <field name="name">ฝ่ายขายหน้าร้าน</field>
+        </record>
+
+        <!-- ─── 👑 เจ้าของร้าน ─────────────────────────────────────────── -->
+        <record id="employee_owner" model="hr.employee">
+            <field name="name">คุณรัน เจ้าของร้าน</field>
+            <field name="job_id" ref="job_owner"/>
+            <field name="department_id" ref="dept_owner"/>
+            <field name="work_email">owner@ran-ahlai.com</field>
+            <field name="work_phone">02-000-0001</field>
+            <field name="mobile_phone">081-000-0001</field>
+        </record>
+
+        <!-- ─── 💰 พนักงานบัญชี ────────────────────────────────────────── -->
+        <record id="employee_accountant" model="hr.employee">
+            <field name="name">คุณนิดา บัญชีดี</field>
+            <field name="job_id" ref="job_accountant"/>
+            <field name="department_id" ref="dept_accounting"/>
+            <field name="work_email">account@ran-ahlai.com</field>
+            <field name="work_phone">02-000-0002</field>
+            <field name="mobile_phone">082-000-0001</field>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลังสินค้า 5 คน ──────────────────────────────── -->
+        <record id="employee_inv_001" model="hr.employee">
+            <field name="name">คุณสมชาย คลังดี</field>
+            <field name="job_id" ref="job_warehouse"/>
+            <field name="department_id" ref="dept_warehouse"/>
+            <field name="work_email">inv01@ran-ahlai.com</field>
+            <field name="mobile_phone">083-000-0001</field>
+        </record>
+
+        <record id="employee_inv_002" model="hr.employee">
+            <field name="name">คุณวิชัย จัดสต็อก</field>
+            <field name="job_id" ref="job_warehouse"/>
+            <field name="department_id" ref="dept_warehouse"/>
+            <field name="work_email">inv02@ran-ahlai.com</field>
+            <field name="mobile_phone">083-000-0002</field>
+        </record>
+
+        <record id="employee_inv_003" model="hr.employee">
+            <field name="name">คุณสุดา รับของ</field>
+            <field name="job_id" ref="job_warehouse"/>
+            <field name="department_id" ref="dept_warehouse"/>
+            <field name="work_email">inv03@ran-ahlai.com</field>
+            <field name="mobile_phone">083-000-0003</field>
+        </record>
+
+        <record id="employee_inv_004" model="hr.employee">
+            <field name="name">คุณประสิทธิ์ โกดังใหญ่</field>
+            <field name="job_id" ref="job_warehouse"/>
+            <field name="department_id" ref="dept_warehouse"/>
+            <field name="work_email">inv04@ran-ahlai.com</field>
+            <field name="mobile_phone">083-000-0004</field>
+        </record>
+
+        <record id="employee_inv_005" model="hr.employee">
+            <field name="name">คุณมานะ ขนส่งดี</field>
+            <field name="job_id" ref="job_warehouse"/>
+            <field name="department_id" ref="dept_warehouse"/>
+            <field name="work_email">inv05@ran-ahlai.com</field>
+            <field name="mobile_phone">083-000-0005</field>
+        </record>
+
+        <!-- ─── 🏪 พนักงานขายหน้าร้าน 2 คน ─────────────────────────────── -->
+        <record id="employee_front_001" model="hr.employee">
+            <field name="name">คุณปลา หน้าร้าน</field>
+            <field name="job_id" ref="job_front_staff"/>
+            <field name="department_id" ref="dept_front"/>
+            <field name="work_email">front01@ran-ahlai.com</field>
+            <field name="mobile_phone">084-000-0001</field>
+        </record>
+
+        <record id="employee_front_002" model="hr.employee">
+            <field name="name">คุณก้อง หน้าร้าน</field>
+            <field name="job_id" ref="job_front_staff"/>
+            <field name="department_id" ref="dept_front"/>
+            <field name="work_email">front02@ran-ahlai.com</field>
+            <field name="mobile_phone">084-000-0002</field>
+        </record>
+
+    </data>
+
+    <!-- ─── BLOCK 2: Odoo Users (noupdate=1 ป้องกันรีเซ็ตรหัสผ่าน) ─── -->
+    <!-- ══════════════════════════════════════════════════════════════════
+         res.users — Odoo Login Accounts
+         รหัสผ่าน default: Changeme@1  (ควรเปลี่ยนหลัง login ครั้งแรก)
+         หมายเหตุ: ไม่ใช้ groups_id เพราะถูกลบใน Odoo 19
+                   การกำหนด group ทำใน BLOCK 3
+    ══════════════════════════════════════════════════════════════════ -->
+    <data noupdate="1">
+
+        <!-- ─── 👑 เจ้าของร้าน ─────────────────────────────────────────── -->
+        <record id="user_owner" model="res.users">
+            <field name="name">คุณรัน เจ้าของร้าน</field>
+            <field name="login">owner@ran-ahlai.com</field>
+            <field name="email">owner@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_owner" model="hr.employee">
+            <field name="user_id" ref="user_owner"/>
+        </record>
+
+        <!-- ─── 💰 พนักงานบัญชี ────────────────────────────────────────── -->
+        <record id="user_accountant" model="res.users">
+            <field name="name">คุณนิดา บัญชีดี</field>
+            <field name="login">account@ran-ahlai.com</field>
+            <field name="email">account@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_accountant" model="hr.employee">
+            <field name="user_id" ref="user_accountant"/>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลัง 1: คุณสมชาย ────────────────────────────── -->
+        <record id="user_inv_001" model="res.users">
+            <field name="name">คุณสมชาย คลังดี</field>
+            <field name="login">inv01@ran-ahlai.com</field>
+            <field name="email">inv01@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_inv_001" model="hr.employee">
+            <field name="user_id" ref="user_inv_001"/>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลัง 2: คุณวิชัย ─────────────────────────────── -->
+        <record id="user_inv_002" model="res.users">
+            <field name="name">คุณวิชัย จัดสต็อก</field>
+            <field name="login">inv02@ran-ahlai.com</field>
+            <field name="email">inv02@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_inv_002" model="hr.employee">
+            <field name="user_id" ref="user_inv_002"/>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลัง 3: คุณสุดา ──────────────────────────────── -->
+        <record id="user_inv_003" model="res.users">
+            <field name="name">คุณสุดา รับของ</field>
+            <field name="login">inv03@ran-ahlai.com</field>
+            <field name="email">inv03@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_inv_003" model="hr.employee">
+            <field name="user_id" ref="user_inv_003"/>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลัง 4: คุณประสิทธิ์ ─────────────────────────── -->
+        <record id="user_inv_004" model="res.users">
+            <field name="name">คุณประสิทธิ์ โกดังใหญ่</field>
+            <field name="login">inv04@ran-ahlai.com</field>
+            <field name="email">inv04@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_inv_004" model="hr.employee">
+            <field name="user_id" ref="user_inv_004"/>
+        </record>
+
+        <!-- ─── 🏭 พนักงานคลัง 5: คุณมานะ ──────────────────────────────── -->
+        <record id="user_inv_005" model="res.users">
+            <field name="name">คุณมานะ ขนส่งดี</field>
+            <field name="login">inv05@ran-ahlai.com</field>
+            <field name="email">inv05@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_inv_005" model="hr.employee">
+            <field name="user_id" ref="user_inv_005"/>
+        </record>
+
+        <!-- ─── 🏪 พนักงานขายหน้าร้าน 1: คุณปลา ────────────────────────── -->
+        <record id="user_front_001" model="res.users">
+            <field name="name">คุณปลา หน้าร้าน</field>
+            <field name="login">front01@ran-ahlai.com</field>
+            <field name="email">front01@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_front_001" model="hr.employee">
+            <field name="user_id" ref="user_front_001"/>
+        </record>
+
+        <!-- ─── 🏪 พนักงานขายหน้าร้าน 2: คุณก้อง ───────────────────────── -->
+        <record id="user_front_002" model="res.users">
+            <field name="name">คุณก้อง หน้าร้าน</field>
+            <field name="login">front02@ran-ahlai.com</field>
+            <field name="email">front02@ran-ahlai.com</field>
+            <field name="password">Changeme@1</field>
+            <field name="lang">th_TH</field>
+            <field name="tz">Asia/Bangkok</field>
+        </record>
+        <record id="employee_front_002" model="hr.employee">
+            <field name="user_id" ref="user_front_002"/>
+        </record>
+
+    </data>
+
+    <!-- ─── BLOCK 3: Group Assignments via Python function ─────────────── -->
+    <!-- ══════════════════════════════════════════════════════════════════
+         ใช้ <function> เรียก Python method ที่ใช้ SQL ตรงแทน
+         เพราะ res.users.groups_id และ res.groups.users ถูกลบใน Odoo 19
+         method _setup_demo_groups ใช้ ON CONFLICT DO NOTHING → idempotent
+    ══════════════════════════════════════════════════════════════════ -->
+    <data noupdate="0">
+        <function model="hr.attendance.custom" name="_setup_demo_groups"/>
+    </data>
+
+</odoo>

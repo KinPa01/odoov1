@@ -225,6 +225,38 @@ class StockMove(models.Model):
     ], string='สาเหตุสินค้าขาด / Shortage Reason', default='none')
     shortage_note = fields.Char(string='หมายเหตุสินค้าขาด / Shortage Note')
 
+    shelf_location = fields.Many2one(
+        'stock.location',
+        string='ชั้นวาง (Shelf)',
+        related='product_id.product_tmpl_id.shelf_location',
+        readonly=True,
+    )
+    location_qty = fields.Float(
+        string='สต็อกต้นทาง',
+        compute='_compute_locations_qty',
+        digits=(16, 2),
+    )
+    location_dest_qty = fields.Float(
+        string='สต็อกปลายทาง',
+        compute='_compute_locations_qty',
+        digits=(16, 2),
+    )
+
+    @api.depends('product_id', 'location_id', 'location_dest_id')
+    def _compute_locations_qty(self):
+        for move in self:
+            if move.product_id and move.location_id:
+                # Odoo standard context search for location qty
+                move.location_qty = move.product_id.with_context(location=move.location_id.id).qty_available
+            else:
+                move.location_qty = 0.0
+
+            if move.product_id and move.location_dest_id:
+                # Odoo standard context search for location qty
+                move.location_dest_qty = move.product_id.with_context(location=move.location_dest_id.id).qty_available
+            else:
+                move.location_dest_qty = 0.0
+
     def _prepare_move_split_vals(self, qty):
         vals = super()._prepare_move_split_vals(qty)
         vals.update({

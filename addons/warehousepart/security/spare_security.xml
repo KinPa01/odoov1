@@ -1,56 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <!-- สิทธิ์: พนักงานขาย (Cashier) -->
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             RBAC — Security Groups (ร้านอาหลั่ย)
+             ══════════════════════════════════════════════════════════════════
+             4 บทบาทหลัก:
+               1. group_spare_cashier      — พนักงานขายหน้าร้าน (POS เท่านั้น)
+               2. group_spare_inventory    — พนักงานคลัง (จัดส่ง + โอนย้ายสินค้า)
+               3. group_spare_accountant   — พนักงานบัญชี (เงินเดือน + การเงินบริษัท)
+               4. group_spare_owner        — เจ้าของร้าน (ทุกอย่าง)
+
+             implied Odoo groups:
+               cashier     → point_of_sale.group_pos_user
+               inventory   → stock.group_stock_user
+               accountant  → account.group_account_user
+               owner       → account.group_account_manager
+                           + stock.group_stock_manager
+                           + point_of_sale.group_pos_manager
+                           + purchase.group_purchase_manager
+                           + base.group_erp_manager (Settings)
+        ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── 1. พนักงานหน้าร้าน (ดูชั้นวาง read-only) ─────────────── -->
+        <record id="group_spare_front_staff" model="res.groups">
+            <field name="name">พนักงานหน้าร้าน (Front Staff)</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">ดูชั้นวางสินค้าและสต็อกคลังหน้าร้านได้ — ห้ามแก้ไขข้อมูล</field>
+        </record>
+
+        <!-- ─── 2. พนักงานขายหน้าร้าน / แคชเชียร์ (POS เท่านั้น) ────── -->
         <record id="group_spare_cashier" model="res.groups">
-            <field name="name">พนักงานขาย / แคชเชียร์ (Cashier)</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="comment">มีสิทธิ์เฉพาะดูข้อมูลแคตตาล็อกอะไหล่ และเข้าใช้งาน POS ได้</field>
+            <field name="name">พนักงานขายหน้าร้าน / แคชเชียร์ (Cashier)</field>
+            <field name="implied_ids" eval="[
+                (4, ref('base.group_user')),
+                (4, ref('point_of_sale.group_pos_user')),
+            ]"/>
+            <field name="comment">เข้าถึงได้เฉพาะ POS — ไม่สามารถดูคลัง, บัญชี หรือข้อมูลสินค้าในแบ็กเอนด์ได้</field>
         </record>
 
-        <!-- สิทธิ์: พนักงานคลังสินค้า (Inventory) -->
+        <!-- ─── 3. พนักงานคลังสินค้า (จัดส่ง + โอนย้ายสินค้า) ────────── -->
         <record id="group_spare_inventory" model="res.groups">
-            <field name="name">พนักงานคลังสินค้า (Inventory Staff)</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="comment">มีสิทธิ์จัดการคลังสินค้าและการจัดส่ง</field>
+            <field name="name">พนักงานคลัง (Inventory Staff)</field>
+            <field name="implied_ids" eval="[
+                (4, ref('base.group_user')),
+                (4, ref('stock.group_stock_user')),
+            ]"/>
+            <field name="comment">จัดการการจัดส่งสินค้าและโอนย้ายสินค้าในคลัง — ไม่สามารถดูบัญชีหรือ POS ได้</field>
         </record>
 
-        <!-- สิทธิ์: ผู้จัดการร้าน (Manager) -->
+        <!-- ─── 4. พนักงานบัญชี (เงินเดือน + การเงินบริษัท) ──────────── -->
+        <record id="group_spare_accountant" model="res.groups">
+            <field name="name">พนักงานบัญชี (Accountant)</field>
+            <field name="implied_ids" eval="[
+                (4, ref('base.group_user')),
+                (4, ref('account.group_account_user')),
+            ]"/>
+            <field name="comment">ดูและจัดการรายรับ/รายจ่าย + ข้อมูลเงินเดือนพนักงาน — ไม่สามารถดูคลังหรือ POS ได้</field>
+        </record>
+
+        <!-- ─── 5. ผู้จัดการร้าน (Manager) — legacy role ──────────────── -->
         <record id="group_spare_manager" model="res.groups">
             <field name="name">ผู้จัดการร้าน (Manager)</field>
-            <field name="implied_ids" eval="[(4, ref('group_spare_cashier')), (4, ref('group_spare_inventory'))]"/>
-            <field name="comment">มีสิทธิ์เข้าถึงทุกเมนู รวมถึงการจัดซื้อและคลังสินค้า</field>
+            <field name="implied_ids" eval="[
+                (4, ref('group_spare_cashier')),
+                (4, ref('group_spare_inventory')),
+                (4, ref('purchase.group_purchase_user')),
+            ]"/>
+            <field name="comment">จัดการสินค้า คลัง POS และการจัดซื้อ</field>
         </record>
 
-        <!-- Legacy groups — ยังถูก reference โดย ir.rule ใน DB อย่าลบ -->
+        <!-- ─── 6. เจ้าของร้าน (Owner) — สิทธิ์สูงสุด ─────────────────── -->
+        <record id="group_spare_owner" model="res.groups">
+            <field name="name">เจ้าของร้าน (Owner)</field>
+            <field name="implied_ids" eval="[
+                (4, ref('group_spare_front_staff')),
+                (4, ref('group_spare_cashier')),
+                (4, ref('group_spare_inventory')),
+                (4, ref('group_spare_accountant')),
+                (4, ref('group_spare_manager')),
+                (4, ref('account.group_account_manager')),
+                (4, ref('stock.group_stock_manager')),
+                (4, ref('point_of_sale.group_pos_manager')),
+                (4, ref('purchase.group_purchase_manager')),
+                (4, ref('base.group_erp_manager')),
+            ]"/>
+            <field name="comment">เข้าถึงทุกเมนูและฟีเจอร์ทั้งหมดของระบบ — ดูสินค้า, การเงิน, คลัง, POS ได้ทุกอย่าง</field>
+        </record>
+
+        <!-- ─── Legacy groups — ยังถูก reference โดย ir.rule ใน DB อย่าลบ ─ -->
         <record id="group_warehousepart_accountant" model="res.groups">
-            <field name="name">Accountant / นักบัญชี</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Accountant / นักบัญชี (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_accountant'))]"/>
         </record>
 
         <record id="group_warehousepart_admin" model="res.groups">
-            <field name="name">Admin / เจ้าของร้าน</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Admin / เจ้าของร้าน (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_owner'))]"/>
         </record>
 
         <record id="group_warehousepart_user" model="res.groups">
-            <field name="name">Warehousepart / User</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Warehousepart / User (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_front_staff'))]"/>
         </record>
 
         <record id="group_warehousepart_manager" model="res.groups">
-            <field name="name">Warehousepart / Manager</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Warehousepart / Manager (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_manager'))]"/>
         </record>
 
         <record id="group_warehousepart_cashier" model="res.groups">
-            <field name="name">Warehousepart / Cashier</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Warehousepart / Cashier (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_cashier'))]"/>
         </record>
 
         <record id="group_warehousepart_stock" model="res.groups">
-            <field name="name">Warehousepart / Stock</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="name">Warehousepart / Stock (Legacy)</field>
+            <field name="implied_ids" eval="[(4, ref('group_spare_inventory'))]"/>
         </record>
+
     </data>
 </odoo>

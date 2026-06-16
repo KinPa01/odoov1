@@ -230,14 +230,281 @@
     </record>
 
     <!-- Terms and Conditions Page -->
-    <record id="page_terms_conditions" model="website.page">
-        <field name="name">ข้อกำหนดและเงื่อนไขการใช้งาน</field>
-        <field name="url">/terms</field>
+    <template id="account_terms_conditions_page_inherit" inherit_id="account.account_terms_conditions_page" name="Ranahlai Terms &amp; Conditions Page">
+        <xpath expr="//t[@t-call='web.frontend_layout']" position="replace">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Prompt', 'Inter', sans-serif; background-color: #f8fafc; color: #334155;">
+
+                    <!-- Hero Banner -->
+                    <section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #8b1515 100%); padding: 80px 0 64px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(139,21,21,0.15) 0%, transparent 70%); pointer-events: none;"/>
+                        <div class="container text-center text-white" style="position: relative; z-index: 10;">
+                            <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
+                                <span style="color: #fca5a5; font-size: 0.8rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Legal Agreement</span>
+                            </div>
+                            <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(to right, #ffffff, #f1f5f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ข้อกำหนดและเงื่อนไขการบริการ</h1>
+                            <p style="color: #cbd5e1; font-size: 1.15rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">เงื่อนไขการสั่งซื้ออะไหล่ นโยบายรับประกันสินค้า และข้อตกลงการใช้งานเว็บไซต์ร้านอาหลั่ย</p>
+                            <div style="margin-top: 28px; color: #94a3b8; font-size: 0.85rem; font-weight: 500;">ปรับปรุงล่าสุด: 10 มิถุนายน 2569</div>
+                        </div>
+                    </section>
+
+                    <!-- Highlights Section -->
+                    <section style="margin-top: -30px; position: relative; z-index: 20; padding-bottom: 20px;">
+                        <div class="container">
+                            <div class="row g-4 justify-content-center">
+                                <div class="col-md-4">
+                                    <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 18px;">
+                                        <div style="width: 52px; height: 52px; border-radius: 12px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <span style="font-size: 1.6rem;">🛡️</span>
+                                        </div>
+                                        <div>
+                                            <h4 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">อะไหล่แท้ 100%</h4>
+                                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">รับประกันคุณภาพ อะไหล่แท้จากโรงงานผู้ผลิต</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 18px;">
+                                        <div style="width: 52px; height: 52px; border-radius: 12px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <span style="font-size: 1.6rem;">🔄</span>
+                                        </div>
+                                        <div>
+                                            <h4 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">เคลมเปลี่ยนใน 7 วัน</h4>
+                                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">เคลมสินค้าง่ายและรวดเร็วหากพบตำหนิการผลิต</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 18px;">
+                                        <div style="width: 52px; height: 52px; border-radius: 12px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <span style="font-size: 1.6rem;">📦</span>
+                                        </div>
+                                        <div>
+                                            <h4 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">ประกันความเสียหาย</h4>
+                                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">คุ้มครองเต็มจำนวนหากเสียหายระหว่างขนส่ง</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Main Content &amp; Navigation Layout -->
+                    <section style="padding: 40px 0 80px;">
+                        <div class="container">
+                            <div class="row g-4">
+                                <!-- Left Sticky Navigation (Desktop only) -->
+                                <div class="col-lg-3 d-none d-lg-block">
+                                    <div style="position: sticky; top: 100px; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                                        <h5 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;">หัวข้อข้อตกลง</h5>
+                                        <div class="d-flex flex-column gap-2">
+                                            <a href="#section-1" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">1. การยอมรับข้อตกลง</a>
+                                            <a href="#section-2" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">2. ราคาสินค้าและการจัดส่ง</a>
+                                            <a href="#section-3" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">3. นโยบายการรับประกัน</a>
+                                            <a href="#section-4" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">4. นโยบายการคืนและเปลี่ยน</a>
+                                            <a href="#section-5" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">5. สิทธิ์ทางทรัพย์สินทางปัญญา</a>
+                                            <a href="#section-6" style="color: #64748b; font-size: 0.9rem; text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#8b1515'; this.style.background='#fff5f5';" onmouseout="this.style.color='#64748b'; this.style.background='transparent';">6. ข้อมูลการติดต่อร้าน</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Content -->
+                                <div class="col-lg-9 col-12">
+                                    <!-- Clause 1 -->
+                                    <div id="section-1" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); scroll-margin-top: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: #8b1515; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700; font-size: 1rem;">1</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0;">1. การยอมรับข้อกำหนดและเงื่อนไขทั่วไป</h2>
+                                        </div>
+                                        <p style="line-height: 1.8; margin-bottom: 16px;">
+                                            ยินดีต้อนรับสู่เว็บไซต์ของ **ร้านอาหลั่ย (ranahlai.com)** การใช้งานเว็บไซต์นี้รวมถึงการลงทะเบียนสมาชิก การค้นหาข้อมูล หรือการส่งคำสั่งซื้อสินค้าอะไหล่ยนต์และอุปกรณ์เสริมใดๆ ถือว่าท่านได้ทำความเข้าใจและตกลงยอมรับข้อตกลงและเงื่อนไขที่ระบุไว้ในหน้านี้ทุกประการโดยไม่มีข้อยกเว้น
+                                        </p>
+                                        <p style="line-height: 1.8; margin-bottom: 0;">
+                                            หากท่านไม่ยอมรับเงื่อนไขข้อใดข้อหนึ่ง กรุณายุติการใช้งานเว็บไซต์นี้ ทางร้านอาหลั่ยขอสงวนสิทธิ์ในการแก้ไข ปรับปรุง หรือเปลี่ยนแปลงข้อกำหนดการให้บริการนี้ได้ทุกเมื่อโดยมิต้องแจ้งให้ทราบล่วงหน้า เพื่อความปลอดภัยและความถูกต้องของกฎระเบียบการค้าออนไลน์
+                                        </p>
+                                    </div>
+
+                                    <!-- Clause 2 -->
+                                    <div id="section-2" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); scroll-margin-top: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: #8b1515; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700; font-size: 1rem;">2</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0;">2. ข้อมูลสินค้า ราคา และความถูกต้องของข้อมูล</h2>
+                                        </div>
+                                        <p style="line-height: 1.8; margin-bottom: 16px;">
+                                            เรามุ่งหวังที่จะให้รายละเอียดรูปภาพและข้อมูลราคาสินค้าอะไหล่ยนต์อย่างแม่นยำที่สุด อย่างไรก็ตาม ราคาสินค้าหรือสถานะสต็อกอาจมีการเปลี่ยนแปลงตามผู้ผลิต ผู้นำเข้า หรือราคาตลาดจริงได้โดยไม่คาดคิด
+                                        </p>
+
+                                        <!-- Warning Alert -->
+                                        <div style="background: #fff5f5; border-left: 4px solid #8b1515; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                                            <div style="display: flex; gap: 10px; align-items: start;">
+                                                <span style="font-size: 1.2rem;">⚠️</span>
+                                                <div>
+                                                    <h5 style="color: #8b1515; font-size: 0.95rem; font-weight: 700; margin: 0 0 4px 0;">โปรดตรวจสอบความเข้ากันได้ของรุ่นรถ</h5>
+                                                    <p style="color: #6a1010; font-size: 0.85rem; line-height: 1.6; margin: 0;">
+                                                        รูปภาพอะไหล่ทั้งหมดบนเว็บไซต์จัดทำขึ้นเพื่อการอ้างอิงเบื้องต้นเท่านั้น ทางร้านแนะนำให้ท่านตรวจสอบ **เลขตัวถังรถ (Chassis Number / VIN)** หรือติดต่อแอดมินเพื่อเช็กความถูกต้องตรงรุ่นก่อนยืนยันสั่งซื้อ
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p style="line-height: 1.8; margin-bottom: 0;">
+                                            ราคาที่ระบุทั้งหมดเป็นเงินบาทและได้รับการคำนวณภาษีมูลค่าเพิ่ม (VAT 7%) แล้ว (ยกเว้นกรณีที่ระบุเป็นอย่างอื่น) โดยยังไม่รวมค่าธรรมเนียมจัดส่งซึ่งจะแสดงตอนคำนวณน้ำหนักและระยะทางก่อนกดยืนยันชำระเงิน
+                                        </p>
+                                    </div>
+
+                                    <!-- Clause 3 -->
+                                    <div id="section-3" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); scroll-margin-top: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: #8b1515; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700; font-size: 1rem;">3</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0;">3. นโยบายการรับประกันสินค้า (Warranty Policy)</h2>
+                                        </div>
+                                        <p style="line-height: 1.8; margin-bottom: 20px;">
+                                            สินค้าอะไหล่ยนต์เกือบทุกประเภทจะได้รับการประกันภายใต้เงื่อนไขของผู้ผลิตและเงื่อนไขของทางร้านอาหลั่ย ดังนี้:
+                                        </p>
+
+                                        <!-- Warranty Grid -->
+                                        <div class="row g-3" style="margin-bottom: 20px;">
+                                            <div class="col-md-6">
+                                                <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; height: 100%;">
+                                                    <h5 style="color: #0f172a; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">🔧 อะไหล่แท้ศูนย์บริการ (Genuine Parts)</h5>
+                                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.6; margin: 0;">
+                                                        รับประกันสินค้าเป็นเวลา **1-3 เดือน** หรือตามนโยบายของแต่ละศูนย์บริการอย่างเป็นทางการ
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; height: 100%;">
+                                                    <h5 style="color: #0f172a; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">⚙️ อะไหล่ทดแทน / OEM Premium</h5>
+                                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.6; margin: 0;">
+                                                        รับประกันความเสียหายจากการใช้งานปกติเป็นเวลา **3-6 เดือนเต็ม** นับจากวันที่ได้รับสินค้า
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="background: #f8fafc; border-radius: 10px; padding: 20px; border: 1px solid #e2e8f0;">
+                                            <h5 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">❌ ข้อยกเว้นการรับประกัน (ไม่คุ้มครองในกรณีต่อไปนี้):</h5>
+                                            <ul style="font-size: 0.85rem; color: #64748b; line-height: 1.8; padding-left: 20px; margin-bottom: 0;">
+                                                <li>ความเสียหายที่เกิดจากการติดตั้งที่ผิดวิธี โดยไม่มีความชำนาญของช่างติดตั้ง</li>
+                                                <li>การดัดแปลงสภาพสินค้า หรือนำไปใช้กับรถที่ผิดประเภท/โมเดลจากข้อแนะนำสินค้า</li>
+                                                <li>การนำชิ้นส่วนสินค้าไปใช้แข่งขันความเร็ว โหลดต่ำ หรือขับรถลุยน้ำท่วมขังสูง</li>
+                                                <li>ความเสื่อมสภาพจากการใช้งานปกติ เช่น ยางปัดน้ำฝน ฟิวส์ หรือไส้กรองกระดาษ</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clause 4 -->
+                                    <div id="section-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); scroll-margin-top: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: #8b1515; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700; font-size: 1rem;">4</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0;">4. นโยบายการคืนและเปลี่ยนสินค้า (Return &amp; Exchange Policy)</h2>
+                                        </div>
+                                        <p style="line-height: 1.8; margin-bottom: 16px;">
+                                            ทางร้านยินดีรับคืนสินค้าหรือเปลี่ยนสินค้าใหม่ภายใน **7 วันนับจากวันที่ได้รับของ** ภายใต้เงื่อนไขที่กำหนดไว้ดังนี้:
+                                        </p>
+
+                                        <!-- Return Timeline / Steps -->
+                                        <div class="row g-3" style="margin-bottom: 24px;">
+                                            <div class="col-md-4">
+                                                <div style="background: #f8fafc; border-radius: 10px; padding: 18px; height: 100%; border: 1px solid #e2e8f0;">
+                                                    <div style="font-size: 1.2rem; margin-bottom: 8px;">🎥 ขั้นที่ 1</div>
+                                                    <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">ถ่ายวิดีโอขณะแกะกล่อง</h6>
+                                                    <p style="font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.5;">เพื่อตรวจสอบสภาพและจำนวนสินค้าให้มีผลการยืนยันที่แน่ชัด</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="background: #f8fafc; border-radius: 10px; padding: 18px; height: 100%; border: 1px solid #e2e8f0;">
+                                                    <div style="font-size: 1.2rem; margin-bottom: 8px;">📦 ขั้นที่ 2</div>
+                                                    <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">คงกล่องบรรจุและป้าย</h6>
+                                                    <p style="font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.5;">สินค้าต้องอยู่ครบกล่องป้ายเดิม และห้ามเปื้อนคราบน้ำมันเครื่อง</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="background: #f8fafc; border-radius: 10px; padding: 18px; height: 100%; border: 1px solid #e2e8f0;">
+                                                    <div style="font-size: 1.2rem; margin-bottom: 8px;">💬 ขั้นที่ 3</div>
+                                                    <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">แจ้งติดต่อเจ้าหน้าที่</h6>
+                                                    <p style="font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.5;">ส่งวิดีโอหลักฐานพร้อมรายละเอียดเลขคำสั่งซื้อทางไลน์หรือหน้าติดต่อ</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="background: #fffbeb; border-left: 4px solid #d97706; border-radius: 8px; padding: 16px;">
+                                            <p style="color: #78350f; font-size: 0.85rem; line-height: 1.6; margin: 0;">
+                                                *หมายเหตุ: กรณีที่ลูกค้าสั่งอะไหล่ผิดรุ่นด้วยตนเอง (โดยไม่ได้ทำการยืนยันรุ่นรถกับแอดมินก่อนส่งมอบสินค้า) ลูกค้าต้องเป็นผู้รับผิดชอบค่าขนส่งทั้งไปและกลับในการขอเปลี่ยนสินค้า โดยสินค้าที่จะส่งเปลี่ยนต้องอยู่ในซีลเดิมครบถ้วนสมบูรณ์ 100% เท่านั้น
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clause 5 -->
+                                    <div id="section-5" style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); scroll-margin-top: 100px;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: #8b1515; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; font-weight: 700; font-size: 1rem;">5</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: #0f172a; margin: 0;">5. ลิขสิทธิ์และทรัพย์สินทางปัญญา</h2>
+                                        </div>
+                                        <p style="line-height: 1.8; margin-bottom: 0;">
+                                            รูปภาพสินค้า ตราสัญลักษณ์ โครงสร้างหน้าเว็บ บทความ คู่มือ และไฟล์ข้อมูลทางเทคนิคทั้งหมดที่ปรากฏบนเว็บไซต์ร้านอาหลั่ย ถือเป็นทรัพย์สินทางปัญญาของร้านอาหลั่ยหรือพันธมิตรผู้จัดจำหน่ายอย่างถูกต้องตามกฎหมาย ห้ามผู้ใดทำการคัดลอก ดัดแปลง แจกจ่าย หรือนำภาพถ่ายเฉพาะของทางร้านไปใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษรอย่างเด็ดขาด
+                                        </p>
+                                    </div>
+
+                                    <!-- Clause 6 -->
+                                    <div id="section-6" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px; color: white;">
+                                        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                            <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(139,21,21,0.2); border: 1px solid rgba(139,21,21,0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fca5a5; font-weight: 700; font-size: 1rem;">6</div>
+                                            <h2 style="font-size: 1.4rem; font-weight: 700; color: white; margin: 0;">6. ฝ่ายบริการลูกค้าและข้อมูลการติดต่อ</h2>
+                                        </div>
+                                        <p style="color: #cbd5e1; line-height: 1.8; margin-bottom: 24px;">
+                                            หากท่านมีข้อสงสัยเกี่ยวกับเงื่อนไขการให้บริการ การรับประกันสินค้า หรือต้องการให้เช็กอะไหล่รถของท่าน สามารถติดต่อได้ตามช่องทางอย่างเป็นทางการของร้านอาหลั่ยได้โดยตรง:
+                                        </p>
+
+                                        <!-- Contact Grid -->
+                                        <div class="row g-3" style="margin-bottom: 24px;">
+                                            <div class="col-md-4">
+                                                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; text-align: center; height: 100%;">
+                                                    <div style="font-size: 1.6rem; margin-bottom: 8px;">📞</div>
+                                                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">โทรศัพท์ติดต่อ</div>
+                                                    <div style="font-size: 0.85rem; color: #cbd5e1;">02-123-4567, 089-123-4567</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; text-align: center; height: 100%;">
+                                                    <div style="font-size: 1.6rem; margin-bottom: 8px;">💬</div>
+                                                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Line Official</div>
+                                                    <div style="font-size: 0.85rem; color: #cbd5e1;">@ranahlai (มี @ ด้านหน้า)</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; text-align: center; height: 100%;">
+                                                    <div style="font-size: 1.6rem; margin-bottom: 8px;">✉️</div>
+                                                    <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">อีเมลติดต่อ</div>
+                                                    <div style="font-size: 0.85rem; color: #cbd5e1;">contact@ranahlai.com</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;">
+                                            <span style="font-size: 0.85rem; color: #cbd5e1;">เปิดให้บริการ: จันทร์ - เสาร์ เวลา 08:30 น. - 17:30 น.</span>
+                                            <a href="/shop" style="background: linear-gradient(135deg, #8b1515, #a01c1c); color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">กลับไปหน้าสั่งซื้อสินค้า →</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Privacy Policy Page -->
+    <record id="page_privacy_policy" model="website.page">
+        <field name="name">นโยบายความเป็นส่วนตัว</field>
+        <field name="url">/privacy-policy</field>
         <field name="type">qweb</field>
-        <field name="key">warehousepart.terms_conditions</field>
+        <field name="key">warehousepart.privacy_policy</field>
         <field name="is_published">True</field>
         <field name="arch" type="xml">
-            <t name="ข้อกำหนดและเงื่อนไข" t-name="warehousepart.terms_conditions">
+            <t name="นโยบายความเป็นส่วนตัว" t-name="warehousepart.privacy_policy">
                 <t t-call="website.layout">
                     <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Inter', 'Roboto', sans-serif; background-color: #f9fafb;">
 
@@ -247,26 +514,10 @@
                             <div class="container">
                                 <div class="text-center">
                                     <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
-                                        <span style="color: #fca5a5; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Legal</span>
+                                        <span style="color: #fca5a5; font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Privacy Policy</span>
                                     </div>
-                                    <h1 style="color: #ffffff; font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;">ข้อกำหนดและเงื่อนไข</h1>
-                                    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">Terms &amp; Conditions — ร้านอาหลั่ย อะไหล่รถยนต์และมอเตอร์ไซต์</p>
-                                    <div style="margin-top: 24px; color: #6b7280; font-size: 0.82rem;">อัปเดตล่าสุด: มกราคม 2568</div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- Table of Contents -->
-                        <section style="background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 20px 0;">
-                            <div class="container">
-                                <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; align-items: center;">
-                                    <span style="color: #6b7280; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">สารบัญ:</span>
-                                    <a href="#section-1" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">1. การยอมรับเงื่อนไข</a>
-                                    <a href="#section-2" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">2. สินค้าและราคา</a>
-                                    <a href="#section-3" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">3. การสั่งซื้อ</a>
-                                    <a href="#section-4" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">4. การชำระเงิน</a>
-                                    <a href="#section-5" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">5. ความเป็นส่วนตัว</a>
-                                    <a href="#section-6" style="color: #8b1515; font-size: 0.85rem; text-decoration: none; font-weight: 500;">6. ติดต่อเรา</a>
+                                    <h1 style="color: #ffffff; font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px;">นโยบายความเป็นส่วนตัว</h1>
+                                    <p style="color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto;">การเก็บรวบรวม รักษาความปลอดภัย และการใช้งานข้อมูลส่วนบุคคล — ร้านอาหลั่ย</p>
                                 </div>
                             </div>
                         </section>
@@ -278,116 +529,61 @@
                                     <div class="col-lg-8">
 
                                         <!-- Section 1 -->
-                                        <div id="section-1" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
                                             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
                                                 <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">1</span>
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">🔒</span>
                                                 </div>
-                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การยอมรับข้อกำหนดและเงื่อนไข</h2>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">1. ข้อมูลส่วนบุคคลที่เราเก็บรวบรวม</h2>
                                             </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">การเข้าใช้งานเว็บไซต์ร้านอาหลั่ย (ranahlai.com) และการสั่งซื้อสินค้าใดๆ ถือว่าท่านได้อ่าน ทำความเข้าใจ และยอมรับข้อกำหนดและเงื่อนไขทั้งหมดที่ระบุไว้ในเอกสารนี้</p>
-                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">หากท่านไม่ยอมรับข้อกำหนดใดๆ กรุณายุติการใช้งานเว็บไซต์ ทางร้านขอสงวนสิทธิ์ในการเปลี่ยนแปลงข้อกำหนดและเงื่อนไขนี้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า</p>
-                                        </div>
-
-                                        <!-- Section 2 -->
-                                        <div id="section-2" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
-                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">2</span>
-                                                </div>
-                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">ข้อมูลสินค้าและราคา</h2>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ทางร้านพยายามนำเสนอข้อมูลสินค้า รูปภาพ และราคาให้ถูกต้องและเป็นปัจจุบันที่สุด อย่างไรก็ตาม ราคาสินค้าอาจมีการเปลี่ยนแปลงตามต้นทุนและนโยบายของผู้ผลิต</p>
-                                            <div style="background: #fef2f2; border-left: 3px solid #8b1515; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 12px;">
-                                                <p style="color: #7f1d1d; font-size: 0.9rem; line-height: 1.6; margin: 0; font-weight: 500;">⚠️ รูปภาพสินค้าเป็นภาพประกอบเพื่อการอ้างอิงเท่านั้น ผลิตภัณฑ์จริงอาจมีความแตกต่างในรายละเอียดบางประการ</p>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">ราคาที่แสดงเป็นราคารวมภาษีมูลค่าเพิ่ม (VAT 7%) แล้ว ยกเว้นค่าจัดส่งที่คิดแยกต่างหากตามระยะทางและน้ำหนักสินค้า</p>
-                                        </div>
-
-                                        <!-- Section 3 -->
-                                        <div id="section-3" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
-                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">3</span>
-                                                </div>
-                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การสั่งซื้อสินค้า</h2>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 16px;">เมื่อท่านทำการสั่งซื้อสินค้า ระบบจะส่งอีเมลยืนยันการรับคำสั่งซื้อให้ท่านทราบ ซึ่งไม่ใช่การยืนยันว่าสินค้ามีในสต็อก ทางร้านขอสงวนสิทธิ์ในการยกเลิกหรือปฏิเสธคำสั่งซื้อในกรณีดังนี้:</p>
-                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin: 0;">
-                                                <li>สินค้าหมดสต็อกหรือถูกระงับการจำหน่าย</li>
-                                                <li>ข้อมูลการชำระเงินไม่สามารถยืนยันได้</li>
-                                                <li>พบข้อผิดพลาดในราคาสินค้าบนเว็บไซต์</li>
-                                                <li>พบพฤติกรรมที่ผิดปกติหรือน่าสงสัยในการสั่งซื้อ</li>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">เราเก็บรวบรวมข้อมูลส่วนบุคคลเมื่อท่านเข้าใช้งานระบบ สมัครสมาชิก หรือทำการสั่งซื้อสินค้าอะไหล่ผ่านเว็บไซต์ เช่น:</p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 0;">
+                                                <li>ชื่อ-นามสกุล และที่อยู่สำหรับจัดส่งพัสดุอะไหล่</li>
+                                                <li>ข้อมูลติดต่อ (เบอร์โทรศัพท์, อีเมล, ไลน์ไอดี)</li>
+                                                <li>ข้อมูลการทำธุรกรรมและประวัติการชำระเงิน</li>
                                             </ul>
                                         </div>
 
+                                        <!-- Section 2 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">⚙️</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">2. การนำข้อมูลไปใช้งาน</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">เราจัดเก็บและใช้ข้อมูลส่วนบุคคลของท่านในส่วนที่จำเป็นสำหรับการให้บริการเท่านั้น:</p>
+                                            <ul style="color: #4b5563; line-height: 2; padding-left: 20px; margin-bottom: 0;">
+                                                <li>ใช้จัดส่งสินค้าอะไหล่ผ่านบริษัทขนส่งเอกชน</li>
+                                                <li>ใช้ในการรับประกัน แนะนำสินค้าให้ตรงกับรุ่นรถ และการดูแลบริการหลังการขาย</li>
+                                                <li>ใช้ตรวจสอบข้อมูลการชำระเงินและออกเอกสารใบเสร็จ/ใบกำกับภาษี</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Section 3 -->
+                                        <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
+                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                    <span style="color: #fff; font-weight: 700; font-size: 1.2rem;">🛡️</span>
+                                                </div>
+                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">3. มาตรการรักษาความปลอดภัยของข้อมูล</h2>
+                                            </div>
+                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ข้อมูลส่วนบุคคลของท่านจะถูกจัดเก็บไว้ในฐานข้อมูลที่มีมาตรการรักษาความปลอดภัยสูงสุด ป้องกันการสูญหาย ถูกนำไปใช้โดยไม่มีสิทธิ์ หรือนำไปเปิดเผยโดยไม่ได้รับอนุญาต</p>
+                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">เราจะเก็บรักษาข้อมูลของท่านไว้ตามระยะเวลาที่จำเป็นต่อการดำเนินธุรกิจ หรือตามระยะเวลาที่กฎหมายบัญญัติไว้เท่านั้น</p>
+                                        </div>
+
                                         <!-- Section 4 -->
-                                        <div id="section-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
-                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">4</span>
-                                                </div>
-                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">การชำระเงิน</h2>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 16px;">ทางร้านรับชำระเงินหลายช่องทาง ได้แก่:</p>
-                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
-                                                    <span style="font-size: 1.3rem;">💵</span>
-                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">เงินสด (หน้าร้าน)</span>
-                                                </div>
-                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
-                                                    <span style="font-size: 1.3rem;">🏦</span>
-                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">โอนธนาคาร</span>
-                                                </div>
-                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
-                                                    <span style="font-size: 1.3rem;">📱</span>
-                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">QR Code / PromptPay</span>
-                                                </div>
-                                                <div style="background: #f9fafb; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid #e5e7eb;">
-                                                    <span style="font-size: 1.3rem;">💳</span>
-                                                    <span style="color: #374151; font-weight: 600; font-size: 0.9rem;">บัตรเครดิต/เดบิต</span>
-                                                </div>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">สินค้าจะถูกจัดเตรียมและจัดส่งหลังจากได้รับการยืนยันการชำระเงินเรียบร้อยแล้วเท่านั้น</p>
-                                        </div>
-
-                                        <!-- Section 5 -->
-                                        <div id="section-5" style="background: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb; padding: 40px; margin-bottom: 24px; box-shadow: 0 1px 6px rgba(0,0,0,0.04);">
-                                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #8b1515, #a01c1c); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fff; font-weight: 700; font-size: 0.95rem;">5</span>
-                                                </div>
-                                                <h2 style="color: #111827; font-size: 1.3rem; font-weight: 700; margin: 0;">ความเป็นส่วนตัวและข้อมูลส่วนบุคคล</h2>
-                                            </div>
-                                            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 12px;">ร้านอาหลั่ยให้ความสำคัญกับความเป็นส่วนตัวของลูกค้าอย่างสูงสุด ข้อมูลส่วนบุคคลที่ท่านให้ไว้ เช่น ชื่อ ที่อยู่ เบอร์โทรศัพท์ และอีเมล จะถูกใช้เพื่อประมวลผลคำสั่งซื้อ จัดส่งสินค้า และให้บริการหลังการขายเท่านั้น</p>
-                                            <p style="color: #4b5563; line-height: 1.8; margin: 0;">ทางร้านจะไม่เปิดเผยหรือขายข้อมูลส่วนบุคคลของท่านให้แก่บุคคลที่สาม ยกเว้นในกรณีที่จำเป็นต่อการจัดส่งสินค้า (บริษัทขนส่ง) หรือตามที่กฎหมายกำหนด</p>
-                                        </div>
-
-                                        <!-- Section 6 -->
-                                        <div id="section-6" style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px;">
+                                        <div style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); border-radius: 16px; padding: 40px; margin-bottom: 24px;">
                                             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
                                                 <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(139,21,21,0.4); border: 1px solid rgba(139,21,21,0.5); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                                    <span style="color: #fca5a5; font-weight: 700; font-size: 0.95rem;">6</span>
+                                                    <span style="color: #fca5a5; font-weight: 700; font-size: 1.2rem;">💬</span>
                                                 </div>
-                                                <h2 style="color: #ffffff; font-size: 1.3rem; font-weight: 700; margin: 0;">ติดต่อเรา</h2>
+                                                <h2 style="color: #ffffff; font-size: 1.3rem; font-weight: 700; margin: 0;">สิทธิ์ของท่านและข้อมูลผู้ควบคุมข้อมูล</h2>
                                             </div>
-                                            <p style="color: #9ca3af; line-height: 1.8; margin-bottom: 20px;">หากท่านมีคำถามหรือข้อสงสัยเกี่ยวกับข้อกำหนดและเงื่อนไขนี้ กรุณาติดต่อทีมงานของเรา:</p>
-                                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                                <div style="display: flex; align-items: center; gap: 12px;">
-                                                    <span style="color: #8b1515; font-size: 1.1rem;">📍</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">บริษัท ร้านอาหลั่ย (เดโม่) จำกัด — 123 ถนนสุขุมวิท กรุงเทพมหานคร 10110</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 12px;">
-                                                    <span style="color: #8b1515; font-size: 1.1rem;">📞</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">02-123-4567, 089-123-4567</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 12px;">
-                                                    <span style="color: #8b1515; font-size: 1.1rem;">✉️</span>
-                                                    <span style="color: #e5e7eb; font-size: 0.95rem;">support@ranahlai-demo.com</span>
-                                                </div>
-                                            </div>
-                                            <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
-                                                <a href="/shop" style="display: inline-block; background: linear-gradient(135deg, #8b1515, #a01c1c); color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">กลับไปซื้อสินค้า →</a>
+                                            <p style="color: #9ca3af; line-height: 1.8; margin-bottom: 20px;">ท่านมีสิทธิ์ในการเข้าถึงข้อมูล ขอคัดค้าน ขอแก้ไข หรือขอลบข้อมูลส่วนบุคคลของท่านในทุกเวลา โดยสามารถแจ้งคำร้องมายังทีมงานผู้ดูแล:</p>
+                                            <div style="display: flex; flex-direction: column; gap: 12px; color: #e5e7eb; font-size: 0.95rem;">
+                                                <div>✉️ อีเมล: contact@ranahlai.com</div>
+                                                <div>📞 โทรศัพท์: 02-123-4567</div>
                                             </div>
                                         </div>
 
@@ -401,5 +597,181 @@
             </t>
         </field>
     </record>
+
+    <!-- Contact Us Page Inherit -->
+    <template id="contactus_inherit" inherit_id="website.contactus" name="Ranahlai Contact Us Page">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure oe_empty" style="font-family: 'Prompt', 'Inter', sans-serif; background-color: #f8fafc; color: #334155;">
+                <!-- Hero Section -->
+                <section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #8b1515 100%); padding: 80px 0 64px; position: relative; overflow: hidden;">
+                    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(139,21,21,0.15) 0%, transparent 70%); pointer-events: none;"/>
+                    <div class="container text-center text-white" style="position: relative; z-index: 10;">
+                        <div style="display: inline-block; background: rgba(139,21,21,0.15); border: 1px solid rgba(139,21,21,0.3); border-radius: 100px; padding: 6px 20px; margin-bottom: 20px;">
+                            <span style="color: #fca5a5; font-size: 0.8rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;">Contact Us</span>
+                        </div>
+                        <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; background: linear-gradient(to right, #ffffff, #f1f5f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ติดต่อร้านอาหลั่ย</h1>
+                        <p style="color: #cbd5e1; font-size: 1.15rem; max-width: 600px; margin: 0 auto; line-height: 1.6;">สอบถามข้อมูลอะไหล่ เช็กเลขตัวถังรถยนต์ หรือแจ้งเคลมสินค้าด่วน</p>
+                    </div>
+                </section>
+
+                <!-- Main Content Section -->
+                <section style="padding: 60px 0 80px;">
+                    <div class="container">
+                        <div class="row g-4">
+                            <!-- Left Side: Contact Information &amp; Details -->
+                            <div class="col-lg-5 col-12">
+                                <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div>
+                                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px;">ข้อมูลการติดต่อ</h3>
+
+                                        <!-- Address Info -->
+                                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: start;">
+                                            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #8b1515; font-size: 1.3rem;">
+                                                📍
+                                            </div>
+                                            <div>
+                                                <h5 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">ที่ตั้งคลังสินค้า</h5>
+                                                <p style="font-size: 0.9rem; color: #64748b; margin: 0; line-height: 1.6;">
+                                                    เลขที่ 123/45 ถนนนวมินทร์ แขวงคลองจั่น เขตบางกะปิ กรุงเทพมหานคร 10240
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Phone Info -->
+                                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: start;">
+                                            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #8b1515; font-size: 1.3rem;">
+                                                📞
+                                            </div>
+                                            <div>
+                                                <h5 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">เบอร์โทรศัพท์</h5>
+                                                <p style="font-size: 0.9rem; color: #64748b; margin: 0; line-height: 1.6;">
+                                                    02-123-4567<br/>
+                                                    089-123-4567 (ฝ่ายดูแลลูกค้าอะไหล่)
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Line Official Info -->
+                                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: start;">
+                                            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #8b1515; font-size: 1.3rem;">
+                                                💬
+                                            </div>
+                                            <div>
+                                                <h5 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Line Official</h5>
+                                                <p style="font-size: 0.9rem; color: #8b1515; font-weight: 600; margin: 0; line-height: 1.6;">
+                                                    @ranahlai <span style="color: #64748b; font-weight: normal;">(มี @ ด้านหน้า)</span>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email Info -->
+                                        <div style="display: flex; gap: 16px; margin-bottom: 24px; align-items: start;">
+                                            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(139,21,21,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #8b1515; font-size: 1.3rem;">
+                                                ✉️
+                                            </div>
+                                            <div>
+                                                <h5 style="font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">อีเมลติดต่อ</h5>
+                                                <p style="font-size: 0.9rem; color: #64748b; margin: 0; line-height: 1.6;">
+                                                    contact@ranahlai.com
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Business Hours Info -->
+                                    <div style="background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; margin-top: 12px;">
+                                        <h6 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">⏰ เวลาทำการหน้าร้านและคลังสินค้า</h6>
+                                        <p style="font-size: 0.85rem; color: #64748b; margin: 0; line-height: 1.6;">
+                                            เปิดให้บริการ: วันจันทร์ - วันเสาร์ เวลา 08:30 น. - 17:30 น.<br/>
+                                        <span style="color: #ea580c; font-weight: 600;">* ปิดให้บริการทุกวันอาทิตย์</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Contact Us Form -->
+                        <div class="col-lg-7 col-12">
+                            <div style="background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 100%;">
+                                <h3 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">ส่งข้อความถึงเรา</h3>
+                                <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 32px; line-height: 1.6;">
+                                        กรุณากรอกข้อมูลในฟอร์มด้านล่าง เจ้าหน้าที่ฝ่ายบริการลูกค้าของเราจะติดต่อกลับท่านอย่างรวดเร็วที่สุด
+                                </p>
+
+                                <!-- Odoo s_website_form wrapper -->
+                                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form" style="padding: 0;">
+                                    <div class="container" style="padding: 0;">
+                                        <form id="contactus_form" action="/website/form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="mail.mail" data-success-mode="redirect" data-success-page="/contactus-thank-you" data-pre-fill="true">
+                                            <div class="s_website_form_rows row g-3">
+                                                <!-- Name Field -->
+                                                <div class="col-md-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact1">
+                                                            ชื่อ-นามสกุล                                                        <span style="color: #8b1515;">*</span>
+                                                    </label>
+                                                    <input id="contact1" type="text" class="form-control s_website_form_input" name="name" required="" data-fill-with="name" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"/>
+                                                </div>
+
+                                                <!-- Phone Field -->
+                                                <div class="col-md-6 s_website_form_field s_website_form_custom" data-type="char" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact2">
+                                                            เบอร์โทรศัพท์
+                                                    </label>
+                                                    <input id="contact2" type="tel" class="form-control s_website_form_input" name="phone" data-fill-with="phone" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"/>
+                                                </div>
+
+                                                <!-- Email Field -->
+                                                <div class="col-md-6 s_website_form_field s_website_form_required s_website_form_model_required" data-type="email" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact3">
+                                                            อีเมล                                                        <span style="color: #8b1515;">*</span>
+                                                    </label>
+                                                    <input id="contact3" type="email" class="form-control s_website_form_input" name="email_from" required="" data-fill-with="email" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"/>
+                                                </div>
+
+                                                <!-- Company Field -->
+                                                <div class="col-md-6 s_website_form_field s_website_form_custom" data-type="char" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact4">
+                                                            ชื่อบริษัท / อู่ซ่อมรถ
+                                                    </label>
+                                                    <input id="contact4" type="text" class="form-control s_website_form_input" name="company" data-fill-with="commercial_company_name" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"/>
+                                                </div>
+
+                                                <!-- Subject Field -->
+                                                <div class="col-12 s_website_form_field s_website_form_required s_website_form_model_required" data-type="char" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact5">
+                                                            หัวข้อติดต่อ                                                        <span style="color: #8b1515;">*</span>
+                                                    </label>
+                                                    <input id="contact5" type="text" class="form-control s_website_form_input" name="subject" required="" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"/>
+                                                </div>
+
+                                                <!-- Description Field -->
+                                                <div class="col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="text" data-name="Field">
+                                                    <label class="form-label" style="font-weight: 600; color: #475569; font-size: 0.9rem; margin-bottom: 6px;" for="contact6">
+                                                            ข้อความคำถาม / รายละเอียดอะไหล่ที่ต้องการสอบถาม                                                        <span style="color: #8b1515;">*</span>
+                                                    </label>
+                                                    <textarea id="contact6" class="form-control s_website_form_input" name="description" required="" rows="5" style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-size: 0.95rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#8b1515'; this.style.boxShadow='0 0 0 3px rgba(139,21,21,0.1)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';" placeholder="ระบุรุ่นรถ ปี เลขตัวถังรถ (VIN) หรือชิ้นส่วนอะไหล่ที่ต้องการหา..."/>
+                                                </div>
+
+                                                <!-- Hidden Email To Field -->
+                                                <div class="col-12 s_website_form_field s_website_form_dnone">
+                                                    <input id="contact7" type="hidden" class="form-control s_website_form_input" name="email_to"/>
+                                                </div>
+
+                                                <!-- Submit Button -->
+                                                <div class="col-12 s_website_form_submit s_website_form_no_submit_label text-end mt-4">
+                                                    <a href="#" role="button" class="btn btn-primary s_website_form_send" style="background: linear-gradient(135deg, #8b1515, #a01c1c); border: none; border-radius: 8px; padding: 12px 36px; font-weight: 600; font-size: 1rem; color: white; display: inline-block; box-shadow: 0 4px 12px rgba(139,21,21,0.2); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(139,21,21,0.3)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 12px rgba(139,21,21,0.2)';">ส่งข้อความ</a>
+                                                    <span id="s_website_form_result" style="margin-left: 10px;"/>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </xpath>
+</template>
+
 
 </odoo>

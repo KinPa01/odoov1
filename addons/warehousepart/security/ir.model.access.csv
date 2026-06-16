@@ -7,3 +7,10 @@ access_homepage_category_user,warehousepart.homepage.category.user,model_warehou
 access_homepage_category_manager,warehousepart.homepage.category.manager,model_warehousepart_homepage_category,base.group_system,1,1,1,1
 access_homepage_product_user,warehousepart.homepage.product.user,model_warehousepart_homepage_product,,1,0,0,0
 access_homepage_product_manager,warehousepart.homepage.product.manager,model_warehousepart_homepage_product,base.group_system,1,1,1,1
+access_attendance_owner,attendance.owner,model_hr_attendance_custom,warehousepart.group_spare_owner,1,1,1,1
+access_attendance_manager,attendance.manager,model_hr_attendance_custom,warehousepart.group_spare_manager,1,1,1,0
+access_attendance_accountant,attendance.accountant,model_hr_attendance_custom,warehousepart.group_spare_accountant,1,0,0,0
+access_attendance_inventory,attendance.inventory,model_hr_attendance_custom,warehousepart.group_spare_inventory,1,0,0,0
+access_attendance_front,attendance.front,model_hr_attendance_custom,warehousepart.group_spare_front_staff,1,0,0,0
+access_attendance_wizard_owner,attendance.wizard.owner,model_hr_attendance_generate_wizard,warehousepart.group_spare_owner,1,1,1,1
+access_attendance_wizard_manager,attendance.wizard.manager,model_hr_attendance_generate_wizard,warehousepart.group_spare_manager,1,1,1,1

@@ -49,11 +49,4 @@
         <field name="context">{'search_default_group_by_order': 1}</field>
     </record>
 
-    <!-- เพิ่มเมนูในระบบ ร้านอาหลั่ย -->
-    <menuitem id="menu_spare_backorder_report" 
-              name="📋 รายงานค้างรับ (Backorder)" 
-              parent="menu_warehousepart_root" 
-              action="action_spare_backorder_report" 
-              groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" 
-              sequence="45"/>
 </odoo>

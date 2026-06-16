@@ -565,7 +565,8 @@
             <t t-if="active_flash_sale and active_flash_sale.tag_id">
                 <t t-if="any(tag.id == active_flash_sale.tag_id.id for tag in product.sudo().product_tag_ids)">
                     <span class="ra-flash-sale-badge-price">
-                        ⚡ FLASH SALE -<t t-esc="int(active_flash_sale.discount_percent)"/>%
+                        ⚡ FLASH SALE -<t t-esc="int(active_flash_sale.discount_percent)"/>
+%
                     </span>
                 </t>
             </t>
@@ -593,7 +594,9 @@
                                     </div>
                                     <div class="ra-fdb-desc">
                                         รับส่วนลดทันที
-                                        <strong><t t-esc="int(active_flash_sale.discount_percent)"/>%</strong>
+                                        <strong>
+                                            <t t-esc="int(active_flash_sale.discount_percent)"/>
+%</strong>
                                         สำหรับสินค้านี้
                                     </div>
                                 </div>
@@ -602,7 +605,9 @@
                             <div class="ra-fdb-right">
                                 <div class="ra-fdb-discount">
                                     <span class="ra-fdb-off">ลด</span>
-                                    <span class="ra-fdb-pct"><t t-esc="int(active_flash_sale.discount_percent)"/>%</span>
+                                    <span class="ra-fdb-pct">
+                                        <t t-esc="int(active_flash_sale.discount_percent)"/>
+%</span>
                                 </div>
                                 <t t-if="active_flash_sale.end_date">
                                     <div class="ra-fdb-countdown-wrap">
@@ -660,14 +665,16 @@
                     <span class="ra-spec-title-icon">⚙️</span>
                     <h6 class="mb-0 fw-bold text-white">ข้อมูลจำเพาะ / Specifications</h6>
                 </div>
-                
+
                 <div class="ra-spec-grid d-flex flex-column gap-2">
                     <!-- Brand -->
                     <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
                         <span class="text-white-50 small">ยี่ห้อ / Brand</span>
                         <t t-if="product.part_brand">
                             <a t-attf-href="/shop?search=#{product.part_brand}" class="ra-brand-badge-inline-link">
-                                <span class="ra-brand-badge-inline"><t t-esc="product.part_brand"/></span>
+                                <span class="ra-brand-badge-inline">
+                                    <t t-esc="product.part_brand"/>
+                                </span>
                             </a>
                         </t>
                         <t t-else="">
@@ -678,7 +685,9 @@
                     <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
                         <span class="text-white-50 small">รุ่นรถ / Fitment</span>
                         <t t-if="product.car_model">
-                            <strong class="text-white small"><t t-esc="product.car_model"/></strong>
+                            <strong class="text-white small">
+                                <t t-esc="product.car_model"/>
+                            </strong>
                         </t>
                         <t t-else="">
                             <span class="text-muted small">ไม่ระบุ</span>
@@ -688,14 +697,18 @@
                     <t t-if="product.default_code">
                         <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
                             <span class="text-white-50 small">รหัสสินค้า / SKU</span>
-                            <strong class="text-white small"><t t-esc="product.default_code"/></strong>
+                            <strong class="text-white small">
+                                <t t-esc="product.default_code"/>
+                            </strong>
                         </div>
                     </t>
                     <!-- Webike SKU -->
                     <t t-if="product.webike_sku">
                         <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle pb-2">
                             <span class="text-white-50 small">Webike SKU</span>
-                            <strong class="text-white small"><t t-esc="product.webike_sku"/></strong>
+                            <strong class="text-white small">
+                                <t t-esc="product.webike_sku"/>
+                            </strong>
                         </div>
                     </t>
                 </div>
@@ -725,7 +738,8 @@
                                     <t t-if="online_qty &gt; 0">
                                         <span class="badge bg-success-soft text-success px-2 py-1 rounded d-inline-flex align-items-center gap-1">
                                             <span>✔</span>
-                                            <span>มีสินค้า (<t t-esc="int(online_qty)"/> ชิ้น)</span>
+                                            <span>มีสินค้า (                                                <t t-esc="int(online_qty)"/>
+ ชิ้น)</span>
                                         </span>
                                     </t>
                                     <t t-else="">
@@ -759,7 +773,8 @@
                                     <t t-if="pos_qty &gt; 0">
                                         <span class="badge bg-success-soft text-success px-2 py-1 rounded d-inline-flex align-items-center gap-1">
                                             <span>✔</span>
-                                            <span>มีสินค้า (<t t-esc="int(pos_qty)"/> ชิ้น)</span>
+                                            <span>มีสินค้า (                                                <t t-esc="int(pos_qty)"/>
+ ชิ้น)</span>
                                         </span>
                                     </t>
                                     <t t-else="">
@@ -787,7 +802,9 @@
                     <div class="ra-internal-stock-info mt-3 pt-2 border-top border-secondary-subtle d-flex align-items-center gap-2">
                         <span class="badge bg-info text-dark">📍 สำหรับเจ้าหน้าที่</span>
                         <span class="text-white-50 small">
-                            ตำแหน่งชั้นวางอะไหล่: <strong class="text-white"><t t-esc="product.shelf_location.name"/></strong>
+                            ตำแหน่งชั้นวางอะไหล่:                            <strong class="text-white">
+                                <t t-esc="product.shelf_location.name"/>
+                            </strong>
                         </span>
                     </div>
                 </t>
@@ -810,8 +827,12 @@
                         <ul class="mb-0 ps-3" style="font-size:0.82rem;color:rgba(255,255,255,0.7);">
                             <t t-foreach="low_stock_lines" t-as="low_line">
                                 <li>
-                                    <strong style="color:#ffb347;"><t t-esc="low_line.product_id.name"/></strong>
-                                    — เหลือเพียง <strong style="color:#ff6b6b;"><t t-esc="int(low_line.product_id.product_tmpl_id.get_online_qty(website))"/></strong> ชิ้นเท่านั้น!
+                                    <strong style="color:#ffb347;">
+                                        <t t-esc="low_line.product_id.name"/>
+                                    </strong>
+                                    — เหลือเพียง                                    <strong style="color:#ff6b6b;">
+                                        <t t-esc="int(low_line.product_id.product_tmpl_id.get_online_qty(website))"/>
+                                    </strong> ชิ้นเท่านั้น!
                                 </li>
                             </t>
                         </ul>
@@ -830,6 +851,121 @@
             <t t-if="active_flash_sale and active_flash_sale.tag_id">
                 <t t-set="visible_tags" t-value="visible_tags - active_flash_sale.tag_id"/>
             </t>
+        </xpath>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PREMIUM WEBSITE FOOTER OVERRIDE
+         ═══════════════════════════════════════════════════════════ -->
+    <template id="ran_ahlai_premium_footer" inherit_id="website.layout" name="Ran Ahlai — Premium Footer">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo border-0 text-break ra-footer" t-ignore="true" t-if="not no_footer">
+                <section class="ra-footer-content">
+                    <div class="container py-5">
+                        <div class="row g-4">
+                            <!-- Left: Brand / Logo -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="ra-footer-brand mb-3">
+                                    <h3 class="fw-bold text-white mb-1 d-flex align-items-center gap-2">
+                                        <span class="text-danger">⚙️</span> ร้านอาหลั่ย
+                                    </h3>
+                                    <div class="ra-footer-tagline">ศูนย์รวมอะไหล่รถยนต์พรีเมียม ครบวงจร</div>
+                                </div>
+                                <p class="ra-footer-desc text-white-50 mb-4" style="font-size: 0.9rem; line-height: 1.6;">
+                                    เราจำหน่ายอะไหล่แท้และอะไหล่ทดแทนมาตรฐาน OEM คุณภาพสูงจากผู้ผลิตชั้นนำทั่วโลก มั่นใจได้ในความทนทานและการรับประกันสินค้า จัดส่งรวดเร็วทันใจทั่วไทย
+                                </p>
+                                <div class="ra-footer-socials d-flex gap-2">
+                                    <a href="https://facebook.com" class="ra-social-btn" target="_blank" title="Facebook">
+                                        <i class="fa fa-facebook-official"></i>
+                                    </a>
+                                    <a href="https://line.me" class="ra-social-btn" target="_blank" title="LINE">
+                                        <span style="font-weight: 900; font-size: 0.8rem;">LINE</span>
+                                    </a>
+                                    <a href="/contactus" class="ra-social-btn" title="Contact Us">
+                                        <i class="fa fa-envelope"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Middle Left: Useful Links -->
+                            <div class="col-lg-2 col-md-6 col-6">
+                                <h5 class="fw-bold text-white mb-3 text-uppercase" style="font-size: 0.95rem; letter-spacing: 1px;">ลิงก์ที่เป็นประโยชน์</h5>
+                                <ul class="list-unstyled d-flex flex-column gap-2" style="font-size: 0.9rem;">
+                                    <li>
+                                        <a href="/" class="text-white-50 hover-text-danger">หน้าแรก</a>
+                                    </li>
+                                    <li>
+                                        <a href="/shop" class="text-white-50 hover-text-danger">สินค้าทั้งหมด</a>
+                                    </li>
+                                    <li>
+                                        <a href="/contactus" class="text-white-50 hover-text-danger">ติดต่อเรา</a>
+                                    </li>
+                                    <li>
+                                        <a href="/my/orders" class="text-white-50 hover-text-danger">ประวัติการสั่งซื้อ</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Middle Right: Categories -->
+                            <div class="col-lg-3 col-md-6 col-6">
+                                <h5 class="fw-bold text-white mb-3 text-uppercase" style="font-size: 0.95rem; letter-spacing: 1px;">หมวดหมู่อะไหล่แนะนำ</h5>
+                                <ul class="list-unstyled d-flex flex-column gap-2" style="font-size: 0.9rem;">
+                                    <li>
+                                        <a href="/shop?search=น้ำมันเครื่อง" class="text-white-50 hover-text-danger">น้ำมันเครื่องสังเคราะห์</a>
+                                    </li>
+                                    <li>
+                                        <a href="/shop?search=ระบบเบรก" class="text-white-50 hover-text-danger">ผ้าเบรก &amp; จานเบรก</a>
+                                    </li>
+                                    <li>
+                                        <a href="/shop?search=กรอง" class="text-white-50 hover-text-danger">ไส้กรองน้ำมัน &amp; กรองอากาศ</a>
+                                    </li>
+                                    <li>
+                                        <a href="/shop?search=ยาง" class="text-white-50 hover-text-danger">ยางรถยนต์และล้อ</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Right: Contact -->
+                            <div class="col-lg-3 col-md-6">
+                                <h5 class="fw-bold text-white mb-3 text-uppercase" style="font-size: 0.95rem; letter-spacing: 1px;">เชื่อมต่อกับเรา</h5>
+                                <ul class="list-unstyled d-flex flex-column gap-3 text-white-50" style="font-size: 0.9rem;">
+                                    <li class="d-flex align-items-start gap-2">
+                                        <span class="text-danger" style="margin-top: 2px;">📍</span>
+                                        <span>123 ถ.ศรีนครินทร์ แขวงหนองบอน เขตประเวศ กรุงเทพฯ 10250</span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-2">
+                                        <span class="text-danger">📞</span>
+                                        <span>โทรศัพท์:                                            <a href="tel:021234567" class="text-white-50">02-123-4567</a>
+                                        </span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-2">
+                                        <span class="text-danger">💬</span>
+                                        <span>LINE: <strong class="text-white">@ranahlai</strong>
+                                        </span>
+                                    </li>
+                                    <li class="d-flex align-items-center gap-2">
+                                        <span class="text-danger">✉️</span>
+                                        <span>อีเมล:                                            <a href="mailto:contact@ranahlai.com" class="text-white-50">contact@ranahlai.com</a>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Copyright -->
+                    <div class="ra-footer-bottom py-3 border-top border-secondary-subtle">
+                        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 text-white-50" style="font-size: 0.8rem;">
+                            <div>© 2026 ร้านอาหลั่ย (Ran Ahlai). สงวนลิขสิทธิ์ทั้งหมด.</div>
+                            <div class="d-flex gap-3">
+                                <a href="/terms" class="text-white-50 hover-text-danger">เงื่อนไขการบริการ</a>
+                                <span>•</span>
+                                <a href="/privacy-policy" class="text-white-50 hover-text-danger">นโยบายความเป็นส่วนตัว</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </xpath>
     </template>
 

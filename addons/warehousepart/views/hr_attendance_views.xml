@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             Views สำหรับ hr.attendance.custom
+             - List View (ตาราง)
+             - Form View (ฟอร์มรายเดียว)
+             - Search View (ค้นหา/กรอง)
+             - Pivot View (วิเคราะห์ข้อมูล)
+             - Wizard Form
+        ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── List View ──────────────────────────────────────────────── -->
+        <record id="view_attendance_custom_list" model="ir.ui.view">
+            <field name="name">hr.attendance.custom.list</field>
+            <field name="model">hr.attendance.custom</field>
+            <field name="arch" type="xml">
+                <list string="บันทึกเวลาทำงาน"
+                      decoration-danger="is_late == True"
+                      decoration-warning="ot_hours &gt; 0"
+                      decoration-success="worked_hours &gt;= 8">
+                    <field name="work_date" string="วันที่"/>
+                    <field name="employee_id" string="พนักงาน"/>
+                    <field name="check_in_local" string="⏰ เข้างาน"/>
+                    <field name="check_out_local" string="🔚 ออกงาน"/>
+                    <field name="worked_hours" string="ชม.ปกติ" widget="float_time"/>
+                    <field name="ot_hours" string="OT (ชม.)" widget="float_time"
+                           decoration-warning="ot_hours &gt; 0"/>
+                    <field name="total_hours" string="รวม (ชม.)" widget="float_time"/>
+                    <field name="is_late" string="มาสาย?" widget="boolean"
+                           decoration-danger="is_late == True"/>
+                    <field name="late_minutes" string="สายกี่นาที"
+                           decoration-danger="late_minutes &gt; 0"/>
+                    <field name="note" string="หมายเหตุ" optional="show"/>
+                    <field name="is_random" string="Auto" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ─── Wizard Action (ต้องประกาศก่อน Form View ที่ใช้ %(...)d) ── -->
+        <record id="action_attendance_generate_wizard" model="ir.actions.act_window">
+            <field name="name">🎲 สร้างข้อมูลลงเวลาแบบสุ่ม</field>
+            <field name="res_model">hr.attendance.generate.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- ─── Form View ──────────────────────────────────────────────── -->
+        <record id="view_attendance_custom_form" model="ir.ui.view">
+            <field name="name">hr.attendance.custom.form</field>
+            <field name="model">hr.attendance.custom</field>
+            <field name="arch" type="xml">
+                <form string="บันทึกเวลาทำงาน">
+                    <header>
+                        <field name="is_late" invisible="1"/>
+                        <field name="ot_hours" invisible="1"/>
+                        <button name="%(action_attendance_generate_wizard)d"
+                                string="🎲 สร้างข้อมูลสุ่ม"
+                                type="action"
+                                groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"
+                                class="btn-secondary"/>
+                    </header>
+                    <sheet>
+                        <!-- แถบสถานะด้านบน -->
+                        <div class="oe_button_box" name="button_box"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="ข้อมูลพนักงาน">
+                                <field name="employee_id" options="{'no_create': True}"/>
+                                <field name="work_date"/>
+                            </group>
+                            <group string="สถานะ">
+                                <field name="is_late" widget="boolean_toggle"/>
+                                <field name="late_minutes" invisible="not is_late"/>
+                                <field name="is_random"/>
+                            </group>
+                        </group>
+
+                        <group string="เวลาทำงาน">
+                            <group string="บันทึกเวลา">
+                                <field name="check_in" string="เวลาเข้า (UTC)"/>
+                                <field name="check_out" string="เวลาออก (UTC)"/>
+                            </group>
+                            <group string="แสดงผลเวลาไทย (UTC+7)">
+                                <field name="check_in_local" readonly="1"/>
+                                <field name="check_out_local" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="สรุปชั่วโมงทำงาน">
+                            <group>
+                                <field name="worked_hours" widget="float_time" readonly="1"/>
+                                <field name="ot_hours" widget="float_time" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="total_hours" widget="float_time" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="หมายเหตุ">
+                            <field name="note" nolabel="1" placeholder="บันทึกเพิ่มเติม..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Search View ────────────────────────────────────────────── -->
+        <record id="view_attendance_custom_search" model="ir.ui.view">
+            <field name="name">hr.attendance.custom.search</field>
+            <field name="model">hr.attendance.custom</field>
+            <field name="arch" type="xml">
+                <search string="ค้นหาบันทึกเวลา">
+                    <field name="employee_id" string="ชื่อพนักงาน"/>
+                    <field name="work_date" string="วันที่"/>
+                    <filter string="⏰ มาสาย" name="filter_late"
+                            domain="[('is_late','=',True)]"/>
+                    <filter string="🌙 มี OT" name="filter_ot"
+                            domain="[('ot_hours','&gt;',0)]"/>
+                    <filter string="🎲 ข้อมูลสุ่ม" name="filter_random"
+                            domain="[('is_random','=',True)]"/>
+                    <separator/>
+                    <group>
+                        <filter string="พนักงาน" name="group_employee"
+                                context="{'group_by': 'employee_id'}"/>
+                        <filter string="วันที่" name="group_date"
+                                context="{'group_by': 'work_date'}"/>
+                        <filter string="เดือน" name="group_month"
+                                context="{'group_by': 'work_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ─── Pivot View ─────────────────────────────────────────────── -->
+        <record id="view_attendance_custom_pivot" model="ir.ui.view">
+            <field name="name">hr.attendance.custom.pivot</field>
+            <field name="model">hr.attendance.custom</field>
+            <field name="arch" type="xml">
+                <pivot string="วิเคราะห์เวลาทำงาน">
+                    <field name="employee_id" type="row"/>
+                    <field name="work_date" type="col" interval="month"/>
+                    <field name="total_hours" type="measure"/>
+                    <field name="ot_hours" type="measure"/>
+                    <field name="worked_hours" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- ─── Actions ────────────────────────────────────────────────── -->
+        <record id="action_attendance_custom" model="ir.actions.act_window">
+            <field name="name">บันทึกเวลาทำงาน</field>
+            <field name="res_model">hr.attendance.custom</field>
+            <field name="view_mode">list,form,pivot</field>
+            <field name="search_view_id" ref="view_attendance_custom_search"/>
+            <field name="context">{'search_default_group_employee': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีบันทึกเวลาทำงาน
+                </p>
+                <p>
+                    คลิก <b>สร้าง</b> เพื่อเพิ่มบันทึกเวลา<br/>
+                    หรือใช้ <b>🎲 สร้างข้อมูลสุ่ม</b> เพื่อ generate ข้อมูลย้อนหลัง
+                </p>
+            </field>
+        </record>
+
+        <!-- ─── Wizard: สร้างข้อมูลสุ่ม ───────────────────────────────── -->
+        <record id="view_attendance_generate_wizard_form" model="ir.ui.view">
+            <field name="name">hr.attendance.generate.wizard.form</field>
+            <field name="model">hr.attendance.generate.wizard</field>
+            <field name="arch" type="xml">
+                <form string="🎲 สร้างข้อมูลลงเวลาแบบสุ่ม">
+                    <sheet>
+                        <div class="oe_title">
+                            <h2>สร้างข้อมูลลงเวลาอัตโนมัติ</h2>
+                            <p class="text-muted">
+                                ระบบจะสร้างเวลาเข้า-ออกงานแบบสุ่มตามเวลาไทย (UTC+7)<br/>
+                                ⏰ เวลาเข้า: 07:50–08:30 น. | 🔚 ออก: 16:55–17:15 น. (OT ถึง 20:00 น.)
+                            </p>
+                        </div>
+                        <group string="ช่วงวันที่">
+                            <group>
+                                <field name="date_from" string="ตั้งแต่วันที่"/>
+                                <field name="date_to" string="ถึงวันที่"/>
+                            </group>
+                            <group>
+                                <field name="skip_weekends" string="ข้ามวันเสาร์-อาทิตย์"/>
+                                <field name="ot_probability" string="โอกาส OT (%)"/>
+                            </group>
+                        </group>
+                        <group string="พนักงาน">
+                            <field name="employee_ids"
+                                   widget="many2many_tags"
+                                   placeholder="เว้นว่าง = ทุกคน"
+                                   string="เลือกพนักงาน"/>
+                        </group>
+                        <group string="ตัวเลือกเพิ่มเติม">
+                            <field name="overwrite" string="เขียนทับข้อมูลเดิม (ถ้ามี)"/>
+                        </group>
+                        <group invisible="result_count == 0">
+                            <field name="result_count" string="✅ สร้างแล้ว (รายการ)" readonly="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_generate"
+                                string="🎲 สร้างข้อมูลสุ่ม"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="ยกเลิก" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

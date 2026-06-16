@@ -1,30 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-     <!-- ══════════════════════════════════════════════════
+     <!-- ══════════════════════════════════════════════════════════════════
          เมนูหลัก — ร้านอาหลั่ย (Hub สำหรับอะไหล่รถยนต์)
-    ══════════════════════════════════════════════════ -->
-     <menuitem id="menu_warehousepart_root" name="ร้านอาหลั่ย" sequence="10" web_icon="warehousepart,static/description/icon.png"/>
+         ══════════════════════════════════════════════════════════════════
+         RBAC สรุปสิทธิ์เข้าถึงเมนู:
+         ┌─────────────────────┬───────┬────────┬────────┬──────────┐
+         │ เมนู                │ เจ้าของ│ บัญชี │ คลัง  │ หน้าร้าน│
+         ├─────────────────────┼───────┼────────┼────────┼──────────┤
+         │ ฐานข้อมูลอะไหล่    │  ✅   │  ✅    │  ✅   │   ✅    │
+         │ ชั้นวางสินค้า       │  ✅   │  ❌    │  ✅   │   ✅    │
+         │ คลังและการจัดส่ง   │  ✅   │  ❌    │  ✅   │   ❌    │
+         │ โอนย้ายอะไหล่ด่วน  │  ✅   │  ❌    │  ✅   │   ❌    │
+         │ ระบบขาย POS        │  ✅   │  ❌    │  ❌   │   ✅    │
+         │ บัญชีและการเงิน    │  ✅   │  ✅    │  ❌   │   ❌    │
+         │ เงินเดือนพนักงาน   │  ✅   │  ✅    │  ❌   │   ❌    │
+         │ สั่งซื้อ (Purchase) │  ✅   │  ❌    │  ❌   │   ❌    │
+         │ ข้อมูลผู้ติดต่อ    │  ✅   │  ❌    │  ❌   │   ❌    │
+         │ เวลาทำงาน          │  ✅   │  ✅    │  ✅   │   ✅    │
+         │ จัดการเว็บไซต์     │  ✅   │  ❌    │  ❌   │   ❌    │
+         └─────────────────────┴───────┴────────┴────────┴──────────┘
+     ══════════════════════════════════════════════════════════════════ -->
 
-     <!-- ══ สินค้าอะไหล่ ══ -->
-     <menuitem id="menu_spare_parts_main" name="📦 ฐานข้อมูลอะไหล่" parent="menu_warehousepart_root" sequence="10"/>
+     <!-- เมนูราก — เห็นได้ทุก role -->
+     <menuitem id="menu_warehousepart_root"
+               name="ร้านอาหลั่ย"
+               sequence="10"
+               web_icon="warehousepart,static/description/icon.png"/>
 
-     <menuitem id="menu_spare_part_list" name="แคตตาล็อกอะไหล่" parent="menu_spare_parts_main" action="action_spare_product_template" sequence="10"/>
+     <!-- ══════════════════════════════════════════════════════════════
+          📦 ฐานข้อมูลอะไหล่ — ทุก role เห็นได้ (เจ้าของ/คลัง/บัญชี/หน้าร้าน)
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_parts_main"
+               name="📦 ฐานข้อมูลอะไหล่"
+               parent="menu_warehousepart_root"
+               sequence="10"/>
 
-     <menuitem id="menu_spare_part_category" name="หมวดหมู่อะไหล่ (POS)" parent="menu_spare_parts_main" action="point_of_sale.product_pos_category_action" sequence="20"/>
+     <!-- แคตตาล็อก — เจ้าของ/คลัง/บัญชี เห็น (หน้าร้านใช้ POS แทน) -->
+     <menuitem id="menu_spare_part_list"
+               name="แคตตาล็อกอะไหล่"
+               parent="menu_spare_parts_main"
+               action="action_spare_product_template"
+               groups="warehousepart.group_spare_owner,warehousepart.group_spare_inventory,warehousepart.group_spare_accountant,warehousepart.group_spare_manager"
+               sequence="10"/>
 
-     <!-- ══ คลังสินค้า (ทางลัดไป Inventory ของ Odoo) ══ -->
-     <menuitem id="menu_spare_quick_transfer" name="🚀 โอนย้ายอะไหล่ด่วน" parent="menu_warehousepart_root" action="action_spare_quick_transfer" groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" sequence="18"/>
+     <!-- หมวดหมู่ POS — เจ้าของ/ผู้จัดการเท่านั้น -->
+     <menuitem id="menu_spare_part_category"
+               name="หมวดหมู่อะไหล่ (POS)"
+               parent="menu_spare_parts_main"
+               action="point_of_sale.product_pos_category_action"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="20"/>
 
-     <menuitem id="menu_spare_inventory_shortcut" name="🏗️ คลังสินค้าและการจัดส่ง" parent="menu_warehousepart_root" action="stock.stock_picking_type_action" groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory" sequence="20"/>
+     <!-- ชั้นวางสินค้า — เจ้าของ/คลัง/หน้าร้าน (ดูได้แต่แก้ไขไม่ได้สำหรับหน้าร้าน) -->
+     <record id="action_stock_location_shelves" model="ir.actions.act_window">
+          <field name="name">🗂️ ชั้นวางสินค้า</field>
+          <field name="res_model">stock.location</field>
+          <field name="view_mode">list,form</field>
+          <field name="domain">[('usage','=','internal')]</field>
+          <field name="context">{'default_usage': 'internal'}</field>
+     </record>
 
-     <menuitem id="menu_spare_delivery_carriers" name="🚚 วิธีการจัดส่งและติดตาม" parent="menu_warehousepart_root" action="delivery.action_delivery_carrier_form" groups="warehousepart.group_spare_manager" sequence="22"/>
+     <menuitem id="menu_spare_shelf_locations"
+               name="🗂️ ชั้นวางสินค้า (Shelf)"
+               parent="menu_spare_parts_main"
+               action="action_stock_location_shelves"
+               groups="warehousepart.group_spare_front_staff,warehousepart.group_spare_inventory,warehousepart.group_spare_owner"
+               sequence="30"/>
 
-     <menuitem id="menu_spare_pos_shortcut" name="🖥️ ระบบขายหน้าร้าน (POS)" parent="menu_warehousepart_root" action="point_of_sale.action_pos_config_kanban" groups="warehousepart.group_spare_cashier" sequence="30"/>
+     <!-- ══════════════════════════════════════════════════════════════
+          🏗️ คลังและการจัดส่ง — พนักงานคลัง + เจ้าของ
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_quick_transfer"
+               name="🚀 โอนย้ายอะไหล่ด่วน"
+               parent="menu_warehousepart_root"
+               action="action_spare_quick_transfer"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory,warehousepart.group_spare_owner"
+               sequence="18"/>
 
-     <!-- ══ การจัดซื้อ (ทางลัดไป Purchase ของ Odoo) ══ -->
-     <menuitem id="menu_spare_purchase_shortcut" name="🛒 ระบบสั่งซื้อ (Purchase)" parent="menu_warehousepart_root" action="purchase.purchase_rfq" groups="warehousepart.group_spare_manager" sequence="40"/>
+     <menuitem id="menu_spare_inventory_shortcut"
+               name="🏗️ คลังสินค้าและการจัดส่ง"
+               parent="menu_warehousepart_root"
+               action="stock.stock_picking_type_action"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory,warehousepart.group_spare_owner"
+               sequence="20"/>
 
-     <!-- ══ ข้อมูลผู้ติดต่อ ══ -->
+     <!-- ดูสต็อก read-only สำหรับหน้าร้าน -->
+     <record id="action_stock_quant_front" model="ir.actions.act_window">
+          <field name="name">📊 ดูสต็อกคลังหน้าร้าน</field>
+          <field name="res_model">stock.quant</field>
+          <field name="view_mode">list</field>
+          <field name="domain">[('location_id.usage','=','internal')]</field>
+          <field name="context">{'search_default_internal_loc': 1}</field>
+     </record>
+
+     <menuitem id="menu_front_stock_view"
+               name="📊 ดูสต็อกคลังหน้าร้าน"
+               parent="menu_warehousepart_root"
+               action="action_stock_quant_front"
+               groups="warehousepart.group_spare_front_staff"
+               sequence="15"/>
+
+     <!-- วิธีจัดส่ง — เจ้าของ/ผู้จัดการเท่านั้น -->
+     <menuitem id="menu_spare_delivery_carriers"
+               name="🚚 วิธีการจัดส่งและติดตาม"
+               parent="menu_warehousepart_root"
+               action="delivery.action_delivery_carrier_form"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="22"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          🖥️ ระบบขายหน้าร้าน (POS) — พนักงานหน้าร้าน + เจ้าของ
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_pos_shortcut"
+               name="🖥️ ระบบขายหน้าร้าน (POS)"
+               parent="menu_warehousepart_root"
+               action="point_of_sale.action_pos_config_kanban"
+               groups="warehousepart.group_spare_cashier,warehousepart.group_spare_owner"
+               sequence="30"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          💰 บัญชีและการเงิน — พนักงานบัญชี + เจ้าของ
+     ══════════════════════════════════════════════════════════════════ -->
+     <record id="action_spare_account_moves" model="ir.actions.act_window">
+          <field name="name">📊 รายรับ-รายจ่าย</field>
+          <field name="res_model">account.move</field>
+          <field name="view_mode">list,form</field>
+          <field name="domain">[('move_type','in',['out_invoice','in_invoice','out_refund','in_refund'])]</field>
+          <field name="context">{'default_move_type': 'out_invoice'}</field>
+     </record>
+
+     <menuitem id="menu_spare_accounting_main"
+               name="💰 บัญชีและการเงิน"
+               parent="menu_warehousepart_root"
+               groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"
+               sequence="45"/>
+
+     <menuitem id="menu_spare_account_moves"
+               name="📊 รายรับ-รายจ่าย"
+               parent="menu_spare_accounting_main"
+               action="action_spare_account_moves"
+               sequence="10"/>
+
+     <menuitem id="menu_spare_account_full"
+               name="📒 บัญชีทั้งหมด (Accounting)"
+               parent="menu_spare_accounting_main"
+               action="account.action_move_journal_line"
+               groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"
+               sequence="20"/>
+
+     <!-- ─── เงินเดือนพนักงาน — บัญชี + เจ้าของ ────────────────────── -->
+     <record id="action_spare_hr_employees_salary" model="ir.actions.act_window">
+          <field name="name">👥 ข้อมูลพนักงานและเงินเดือน</field>
+          <field name="res_model">hr.employee</field>
+          <field name="view_mode">list,form</field>
+          <field name="context">{}</field>
+     </record>
+
+     <menuitem id="menu_spare_hr_salary"
+               name="👥 ข้อมูลพนักงานและเงินเดือน"
+               parent="menu_spare_accounting_main"
+               action="action_spare_hr_employees_salary"
+               groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"
+               sequence="30"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          🛒 การจัดซื้อ (Purchase) — เจ้าของเท่านั้น
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_purchase_shortcut"
+               name="🛒 ระบบสั่งซื้อ (Purchase)"
+               parent="menu_warehousepart_root"
+               action="purchase.purchase_rfq"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="40"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          ⏱️ เวลาทำงาน — ทุก role ดูได้ เจ้าของ/Manager/บัญชีแก้ไขได้
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_attendance_main"
+               name="⏱️ เวลาทำงาน"
+               parent="menu_warehousepart_root"
+               sequence="50"/>
+
+     <menuitem id="menu_spare_attendance_list"
+               name="📋 บันทึกเวลาเข้า-ออก"
+               parent="menu_spare_attendance_main"
+               action="action_attendance_custom"
+               sequence="10"/>
+
+     <menuitem id="menu_spare_attendance_generate"
+               name="🎲 สร้างข้อมูลสุ่ม (Generate)"
+               parent="menu_spare_attendance_main"
+               action="action_attendance_generate_wizard"
+               groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"
+               sequence="20"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          🤝 ข้อมูลผู้ติดต่อ — เจ้าของ/ผู้จัดการเท่านั้น
+     ══════════════════════════════════════════════════════════════════ -->
      <record id="action_spare_customers" model="ir.actions.act_window">
           <field name="name">ลูกค้า (Customers)</field>
           <field name="res_model">res.partner</field>
@@ -39,12 +211,70 @@
           <field name="context">{'search_default_supplier': 1, 'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
      </record>
 
-     <menuitem id="menu_spare_contacts_main" name="🤝 ข้อมูลผู้ติดต่อ" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="50"/>
+     <menuitem id="menu_spare_contacts_main"
+               name="🤝 ข้อมูลผู้ติดต่อ"
+               parent="menu_warehousepart_root"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="55"/>
 
-     <menuitem id="menu_spare_customers" name="ลูกค้า (Customers)" parent="menu_spare_contacts_main" action="action_spare_customers" sequence="10"/>
+     <menuitem id="menu_spare_customers"
+               name="ลูกค้า (Customers)"
+               parent="menu_spare_contacts_main"
+               action="action_spare_customers"
+               sequence="10"/>
 
-     <menuitem id="menu_spare_suppliers" name="ซัพพลายเออร์ (Suppliers)" parent="menu_spare_contacts_main" action="action_spare_suppliers" sequence="20"/>
+     <menuitem id="menu_spare_suppliers"
+               name="ซัพพลายเออร์ (Suppliers)"
+               parent="menu_spare_contacts_main"
+               action="action_spare_suppliers"
+               sequence="20"/>
 
-     <!-- ══ จัดการเว็บไซต์ ══ -->
-     <menuitem id="menu_spare_website_main" name="🌐 จัดการหน้าเว็บไซต์" parent="menu_warehousepart_root" groups="warehousepart.group_spare_manager" sequence="60"/>
+     <!-- ══════════════════════════════════════════════════════════════════
+          🌐 จัดการหน้าเว็บไซต์ — เจ้าของ/ผู้จัดการเท่านั้น
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_website_main"
+               name="🌐 จัดการหน้าเว็บไซต์"
+               parent="menu_warehousepart_root"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="60"/>
+
+     <!-- ── เมนูย่อยเว็บไซต์ ── -->
+     <menuitem id="menu_spare_flash_sale"
+               name="⚡ ตั้งค่า Flash Sale"
+               parent="menu_spare_website_main"
+               action="action_flash_sale_config"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="10"/>
+
+     <menuitem id="menu_flash_sale_report"
+               name="📊 รายงานยอดขาย Flash Sale"
+               parent="menu_spare_website_main"
+               action="action_flash_sale_report"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="15"/>
+
+     <menuitem id="menu_spare_homepage_product"
+               name="⭐ สินค้าแนะนำหน้าแรก"
+               parent="menu_spare_website_main"
+               action="action_homepage_product"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="20"/>
+
+     <menuitem id="menu_spare_homepage_category"
+               name="📁 จัดการหมวดหมู่หน้าแรก"
+               parent="menu_spare_website_main"
+               action="action_homepage_category"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_owner"
+               sequence="30"/>
+
+     <!-- ══════════════════════════════════════════════════════════════
+          📋 รายงานค้างรับ (Backorder) — คลัง + เจ้าของ/ผู้จัดการ
+     ══════════════════════════════════════════════════════════════════ -->
+     <menuitem id="menu_spare_backorder_report"
+               name="📋 รายงานค้างรับ (Backorder)"
+               parent="menu_warehousepart_root"
+               action="action_spare_backorder_report"
+               groups="warehousepart.group_spare_manager,warehousepart.group_spare_inventory,warehousepart.group_spare_owner"
+               sequence="45"/>
 </odoo>
+

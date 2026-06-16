@@ -25,20 +25,25 @@
         'data/warehouse_setup.xml',
         'security/spare_security.xml',
         'security/ir.model.access.csv',
-        'views/menu_views.xml',
+        # ── Views (actions ต้องโหลดก่อน menu ที่ใช้ action เหล่านั้น) ──
         'views/spare_quick_transfer_views.xml',
         'views/spare_part_views.xml',
         'views/backorder_report_views.xml',
         'views/homepage_category_views.xml',
+        'views/hr_attendance_views.xml',
+        'views/stock_overview_views.xml',
+        # ── Menu โหลดหลัง views/actions ทั้งหมด ──
+        'views/menu_views.xml',
         'views/website_templates.xml',
         'views/report_templates.xml',
+        # ── Data ──
         'data/ran_ahlai_master_data.xml',
         'data/ran_ahlai_master_data_bulk.xml',
         'data/uom_setup.xml',
         'data/demo_tracking_data.xml',
+        'data/employee_data.xml',
         'data/website_pages.xml',
         'data/flash_sale_data.xml',
-        'views/stock_overview_views.xml',
         'data/pos_config_setup.xml',
     ],
     'assets': {

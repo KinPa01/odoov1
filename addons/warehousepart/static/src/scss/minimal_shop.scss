@@ -3309,3 +3309,688 @@ s {
         width: 100% !important;
     }
 }
+
+/* ── PREMIUM WEBSITE FOOTER ─────────────────────────────────── */
+.ra-footer {
+    background-color: #0d0f14 !important;
+    border-top: 1px solid var(--ra-border) !important;
+    color: var(--ra-text-sub) !important;
+
+    .ra-footer-tagline {
+        font-size: 0.8rem;
+        color: var(--ra-red);
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .hover-text-danger {
+        transition: var(--ra-transition);
+        &:hover {
+            color: var(--ra-red) !important;
+        }
+    }
+
+    .ra-social-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background-color: var(--ra-surface);
+        border: 1px solid var(--ra-border);
+        border-radius: var(--ra-radius);
+        color: #fff !important;
+        transition: var(--ra-transition);
+
+        &:hover {
+            background-color: var(--ra-red);
+            border-color: var(--ra-red);
+            transform: translateY(-2px);
+        }
+    }
+
+    .border-top {
+        border-color: var(--ra-border) !important;
+    }
+}
+
+/* ── AUTOMOTIVE THEME CUSTOM OVERRIDES ─────────────────────────── */
+body,
+#wrap,
+#wrap.oe_structure,
+.oe_website_sale,
+.o_wsale_products_main_row,
+#products_grid,
+#products_grid_before {
+    background-color: var(--ra-bg) !important;
+    color: var(--ra-text) !important;
+}
+
+/* Category lists and attributes in Sidebar */
+#products_grid_before {
+    h6, .h6 {
+        color: var(--ra-text) !important;
+        font-weight: 700 !important;
+        border-bottom: 1px solid var(--ra-border) !important;
+        padding-bottom: 8px !important;
+        margin-top: 15px !important;
+    }
+    
+    .nav-link {
+        color: var(--ra-text-muted) !important;
+        padding: 6px 12px !important;
+        border-radius: 4px !important;
+        transition: var(--ra-transition) !important;
+        
+        &:hover {
+            background-color: var(--ra-surface) !important;
+            color: var(--ra-red) !important;
+        }
+        
+        &.active {
+            background-color: var(--ra-red-bg) !important;
+            color: var(--ra-red) !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    .custom-control, .form-check {
+        margin-bottom: 8px !important;
+        
+        .custom-control-label, .form-check-label {
+            color: var(--ra-text-muted) !important;
+            font-size: 0.88rem !important;
+            cursor: pointer;
+            
+            &:hover {
+                color: var(--ra-text) !important;
+            }
+        }
+        
+        .custom-control-input:checked ~ .custom-control-label::before,
+        .form-check-input:checked {
+            background-color: var(--ra-red) !important;
+            border-color: var(--ra-red) !important;
+        }
+    }
+}
+
+/* Sort by dropdown, filter badge lists */
+.o_wsale_apply_layout,
+.o_sortby_dropdown {
+    .btn {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        color: var(--ra-text-sub) !important;
+        
+        &:hover, &:focus, &.show {
+            border-color: var(--ra-red) !important;
+            color: #fff !important;
+        }
+    }
+    
+    .dropdown-menu {
+        background: var(--ra-elevated) !important;
+        border: 1px solid var(--ra-border) !important;
+        
+        .dropdown-item {
+            color: var(--ra-text-muted) !important;
+            
+            &:hover, &.active {
+                background: var(--ra-surface) !important;
+                color: var(--ra-red) !important;
+            }
+        }
+    }
+}
+
+/* Active filter tag badges */
+.o_wsale_products_searchbar_form,
+.o_wsale_products_grid_before_active_filters {
+    .badge {
+        background-color: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        color: var(--ra-text-muted) !important;
+        padding: 6px 12px !important;
+        border-radius: 20px !important;
+        
+        a {
+            color: var(--ra-text-muted) !important;
+            &:hover {
+                color: var(--ra-red) !important;
+            }
+        }
+    }
+}
+
+/* Pager / Pagination */
+.pagination {
+    background: transparent !important;
+    
+    .page-item {
+        .page-link {
+            background-color: var(--ra-surface) !important;
+            border: 1px solid var(--ra-border) !important;
+            color: var(--ra-text-sub) !important;
+            padding: 8px 16px !important;
+            
+            &:hover {
+                background-color: var(--ra-elevated) !important;
+                color: var(--ra-red) !important;
+                border-color: var(--ra-border-hover) !important;
+            }
+        }
+        
+        &.active .page-link {
+            background-color: var(--ra-red) !important;
+            border-color: var(--ra-red) !important;
+            color: #fff !important;
+            box-shadow: var(--ra-shadow-red) !important;
+        }
+        
+        &.disabled .page-link {
+            background-color: var(--ra-bg) !important;
+            border-color: var(--ra-border) !important;
+            color: rgba(255, 255, 255, 0.2) !important;
+        }
+    }
+}
+
+/* Product Detail Page overrides */
+#product_detail {
+    background-color: var(--ra-bg) !important;
+    
+    .o_wsale_product_attributes_table {
+        background-color: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        overflow: hidden;
+        
+        th, td {
+            border-color: var(--ra-border) !important;
+            color: var(--ra-text-muted) !important;
+            padding: 12px 18px !important;
+        }
+        
+        th {
+            background-color: var(--ra-elevated) !important;
+            color: var(--ra-text) !important;
+            font-weight: 700;
+        }
+    }
+
+    /* Attributes variants selection options */
+    .js_add_cart_variants {
+        .col-form-label {
+            color: var(--ra-text) !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Radios and checkboxes */
+        .custom-control-label, .form-check-label {
+            color: var(--ra-text-muted) !important;
+        }
+
+        /* Variant selector pills */
+        .o_variant_pills {
+            .btn {
+                background: var(--ra-surface) !important;
+                border: 1px solid var(--ra-border) !important;
+                color: var(--ra-text-muted) !important;
+                padding: 6px 14px !important;
+                border-radius: 20px !important;
+                margin-right: 6px !important;
+                font-weight: 500 !important;
+                transition: var(--ra-transition) !important;
+
+                &.active, &:hover {
+                    background: var(--ra-red-bg) !important;
+                    border-color: var(--ra-red) !important;
+                    color: var(--ra-red) !important;
+                    box-shadow: 0 0 0 2px var(--ra-red-glow) !important;
+                }
+            }
+        }
+    }
+    
+    /* Quantity Input widget */
+    .css_quantity {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius) !important;
+        display: inline-flex !important;
+        align-items: center;
+        overflow: hidden;
+        height: 44px;
+        
+        input {
+            background: transparent !important;
+            color: var(--ra-text) !important;
+            border: none !important;
+            font-weight: 700 !important;
+            width: 50px !important;
+            text-align: center;
+        }
+        
+        .btn, .js_add_cart_json {
+            background: transparent !important;
+            color: var(--ra-text-muted) !important;
+            border: none !important;
+            height: 100% !important;
+            padding: 0 16px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--ra-transition) !important;
+            
+            &:hover {
+                color: var(--ra-red) !important;
+                background-color: var(--ra-elevated) !important;
+            }
+        }
+    }
+}
+
+/* Cart & Checkout Page overrides */
+.o_website_sale_cart,
+.o_website_sale_checkout {
+    background-color: var(--ra-bg) !important;
+
+    /* Wizard steps progress bar */
+    .wizard {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        padding: 20px !important;
+        margin-bottom: 30px !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+
+        .progress {
+            background-color: var(--ra-elevated) !important;
+            height: 6px !important;
+            border-radius: 10px !important;
+        }
+
+        .progress-bar {
+            background-color: var(--ra-red) !important;
+            box-shadow: var(--ra-shadow-red) !important;
+        }
+        
+        .text-primary {
+            color: var(--ra-red) !important;
+            font-weight: 700 !important;
+        }
+        
+        .text-muted {
+            color: var(--ra-text-muted) !important;
+        }
+        
+        a {
+            color: var(--ra-text-sub) !important;
+            &:hover {
+                color: var(--ra-red) !important;
+            }
+        }
+    }
+
+    /* Cart Items Table styling */
+    #cart_products,
+    .table-responsive table {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        overflow: hidden;
+        margin-bottom: 24px !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+
+        thead th {
+            background: var(--ra-elevated) !important;
+            color: var(--ra-text) !important;
+            border-bottom: 1px solid var(--ra-border) !important;
+            font-weight: 700 !important;
+            padding: 16px !important;
+        }
+
+        tbody td {
+            border-bottom: 1px solid var(--ra-border) !important;
+            padding: 16px !important;
+            color: var(--ra-text-muted) !important;
+            vertical-align: middle !important;
+            
+            a {
+                color: var(--ra-text) !important;
+                font-weight: 600 !important;
+                
+                &:hover {
+                    color: var(--ra-red) !important;
+                }
+            }
+        }
+    }
+
+    /* Empty Cart Layout */
+    .o_empty_cart {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        padding: 60px 20px !important;
+        text-align: center !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+        
+        h3, .h3 {
+            color: var(--ra-text) !important;
+            font-weight: 800 !important;
+            margin-bottom: 20px !important;
+        }
+        
+        p {
+            color: var(--ra-text-muted) !important;
+            margin-bottom: 30px !important;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b1515, #a01c1c) !important;
+            border: none !important;
+            padding: 14px 36px !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+        }
+    }
+
+    /* Checkout actions & coupon block */
+    .o_cart_summary,
+    .card {
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-radius: var(--ra-radius-lg) !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+        margin-bottom: 20px !important;
+        overflow: hidden;
+
+        .card-header, h5, .h5 {
+            background: var(--ra-elevated) !important;
+            color: var(--ra-text) !important;
+            border-bottom: 1px solid var(--ra-border) !important;
+            font-weight: 700 !important;
+            padding: 16px 20px !important;
+            margin: 0 !important;
+        }
+
+        .card-body {
+            padding: 20px !important;
+            color: var(--ra-text) !important;
+        }
+        
+        /* Total price area */
+        .o_cart_summary_total {
+            border-top: 1px solid var(--ra-border) !important;
+            padding-top: 15px !important;
+            margin-top: 15px !important;
+            
+            strong, .h4 {
+                color: var(--ra-red) !important;
+                font-weight: 800 !important;
+            }
+        }
+    }
+}
+
+/* ================================================================
+   ADDITIONAL AUTO THEME CUSTOM OVERRIDES (Search, Filter, Forms, Buttons)
+   ================================================================ */
+
+/* Override light background utility classes on e-commerce pages */
+.oe_website_sale,
+.o_website_sale_cart,
+.o_website_sale_checkout,
+.o_website_sale_address {
+    .bg-light,
+    .text-bg-light,
+    .bg-white,
+    .text-bg-white,
+    .bg-100,
+    .bg-200,
+    .bg-300,
+    .bg-400,
+    .bg-primary-light,
+    .text-bg-primary,
+    .bg-body {
+        background-color: var(--ra-surface) !important;
+        background: var(--ra-surface) !important;
+        color: var(--ra-text) !important;
+    }
+}
+
+/* Style for btn-light and border buttons (Filter, Search, Coupon, Address buttons) */
+.btn-light,
+.btn-secondary,
+.border.btn-light,
+.btn-light.border,
+.o_wsale_apply_layout .btn-light,
+#products_grid_before .btn-light,
+.o_wsale_products_searchbar_form .btn,
+.coupon_form .btn,
+#coupon_form .btn,
+.o_wsale_products_searchbar_form .btn-light,
+.o_website_sale_cart .btn-light,
+.o_website_sale_checkout .btn-light,
+.btn-secondary.border {
+    background-color: var(--ra-surface) !important;
+    border: 1px solid var(--ra-border) !important;
+    color: var(--ra-text-sub) !important;
+    transition: var(--ra-transition) !important;
+
+    &:hover, &:focus, &:active, &.active {
+        background-color: var(--ra-red) !important;
+        border-color: var(--ra-red) !important;
+        color: #ffffff !important;
+        box-shadow: var(--ra-shadow-red) !important;
+    }
+}
+
+/* Input boxes, Textareas, Selects styling */
+.form-control,
+.form-select,
+.o_wsale_products_searchbar_form input,
+input[name="promo"],
+input[name="coupon"],
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+select.form-select {
+    background-color: var(--ra-surface) !important;
+    border: 1px solid var(--ra-border) !important;
+    color: var(--ra-text) !important;
+    border-radius: var(--ra-radius) !important;
+    transition: var(--ra-transition) !important;
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    &:focus {
+        background-color: var(--ra-elevated) !important;
+        border-color: var(--ra-red) !important;
+        color: var(--ra-text) !important;
+        box-shadow: 0 0 0 2px var(--ra-red-glow) !important;
+    }
+}
+
+/* Correct card border glowing and dark background override */
+.o_cart_summary,
+.o_wsale_total_right_column,
+#wsale_total_right_column,
+.o_cart_summary .card,
+.o_wsale_total_right_column .card,
+.o_cart_summary .bg-primary-light,
+.o_wsale_total_right_column .bg-primary-light,
+.bg-primary-light,
+.card {
+    background-color: var(--ra-surface) !important;
+    background: var(--ra-surface) !important;
+    border-color: var(--ra-border) !important;
+}
+
+/* Fix Odoo 17 Order Summary totals cut-off and margins */
+.o_cart_summary {
+    overflow: visible !important;
+    background-color: var(--ra-surface) !important;
+    background: var(--ra-surface) !important;
+    border: 1px solid var(--ra-border) !important;
+    border-radius: var(--ra-radius-lg) !important;
+    box-shadow: var(--ra-shadow-dark) !important;
+    
+    #cart_total,
+    .o_cart_summary_total,
+    .o_total_row {
+        margin: 0 !important;
+        padding: 15px 20px !important;
+        width: 100% !important;
+        
+        table, .table {
+            margin-bottom: 0 !important;
+            width: 100% !important;
+            background: transparent !important;
+            
+            td, th {
+                padding: 8px 0 !important;
+                border-color: var(--ra-border) !important;
+                background: transparent !important;
+            }
+        }
+        
+        .row {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            padding: 4px 0 !important;
+        }
+    }
+    
+    /* Ensure the coupon form has padding and alignment */
+    .coupon_form,
+    #coupon_form,
+    .o_coupon_form {
+        margin: 10px 20px 20px 20px !important;
+    }
+}
+
+/* ================================================================
+   COMPREHENSIVE CART & CHECKOUT PAGE THEME CLEANUP OVERRIDES
+   ================================================================ */
+.oe_website_sale,
+.o_website_sale_cart,
+.o_website_sale_checkout,
+.o_website_sale_address {
+    // Force cards (including address cards) to use dark navy surface
+    .card,
+    .o_address_card,
+    .o_total_card {
+        background-color: var(--ra-surface) !important;
+        background: var(--ra-surface) !important;
+        border: 1px solid var(--ra-border) !important;
+        border-color: var(--ra-border) !important;
+        color: var(--ra-text) !important;
+        box-shadow: var(--ra-shadow-dark) !important;
+        
+        // Disable potential Bootstrap or Odoo color palette background classes
+        &.bg-light,
+        &.bg-white,
+        &.bg-100,
+        &.bg-200,
+        &.bg-300,
+        &.bg-400,
+        &.bg-body,
+        &.bg-primary-light,
+        &.text-bg-light,
+        &.text-bg-primary,
+        &.text-bg-danger,
+        &.bg-primary,
+        &.bg-danger {
+            background-color: var(--ra-surface) !important;
+            background: var(--ra-surface) !important;
+            color: var(--ra-text) !important;
+            border-color: var(--ra-border) !important;
+        }
+
+        // Active/Selected state for address cards
+        &.border-primary,
+        &.bg-400 {
+            border: 1px solid var(--ra-red) !important;
+            border-color: var(--ra-red) !important;
+            box-shadow: 0 0 0 2px var(--ra-red-glow) !important;
+            background-color: var(--ra-elevated) !important;
+            background: var(--ra-elevated) !important;
+        }
+        
+        .card-body {
+            background-color: transparent !important;
+            background: transparent !important;
+            color: var(--ra-text) !important;
+        }
+        
+        .card-header,
+        .card-footer {
+            background-color: var(--ra-elevated) !important;
+            background: var(--ra-elevated) !important;
+            border-color: var(--ra-border) !important;
+            color: var(--ra-text) !important;
+        }
+    }
+
+    // Force delivery method items and list groups to use dark navy surface
+    #o_delivery_methods,
+    .o_delivery_form,
+    .list-group {
+        background-color: transparent !important;
+        border-color: var(--ra-border) !important;
+
+        .list-group-item {
+            background-color: var(--ra-surface) !important;
+            background: var(--ra-surface) !important;
+            border: 1px solid var(--ra-border) !important;
+            border-color: var(--ra-border) !important;
+            color: var(--ra-text) !important;
+            margin-bottom: 8px !important;
+            border-radius: var(--ra-radius) !important;
+            transition: var(--ra-transition) !important;
+            
+            // Selected delivery method list item
+            &.active,
+            &.bg-light,
+            &.bg-primary,
+            &.bg-danger,
+            &.bg-100,
+            &.bg-200,
+            &.bg-300,
+            &.bg-400,
+            &.text-bg-primary,
+            &.text-bg-danger,
+            &:has(input[type="radio"]:checked) {
+                background-color: var(--ra-elevated) !important;
+                background: var(--ra-elevated) !important;
+                border-color: var(--ra-red) !important;
+                box-shadow: 0 0 0 2px var(--ra-red-glow) !important;
+                color: var(--ra-text) !important;
+            }
+            
+            // Hover state
+            &:hover {
+                border-color: var(--ra-red-light) !important;
+                background-color: var(--ra-elevated) !important;
+            }
+        }
+    }
+
+    // Make sure wizard step items and navigation elements have proper contrast
+    .wizard,
+    .o_cta_navigation_container {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+}
+
+
+
+

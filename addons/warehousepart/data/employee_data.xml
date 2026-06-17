@@ -128,21 +128,21 @@
 
     </data>
 
-    <!-- ─── BLOCK 2: Odoo Users (noupdate=1 ป้องกันรีเซ็ตรหัสผ่าน) ─── -->
+    <!-- ─── BLOCK 2: Odoo Users (noupdate=0 เพื่ออัปเดตรหัสผ่านใหม่) ─── -->
     <!-- ══════════════════════════════════════════════════════════════════
          res.users — Odoo Login Accounts
-         รหัสผ่าน default: Changeme@1  (ควรเปลี่ยนหลัง login ครั้งแรก)
+         รหัสผ่าน default: admin  (เปลี่ยนเป็น admin ตามความต้องการของผู้ใช้งาน)
          หมายเหตุ: ไม่ใช้ groups_id เพราะถูกลบใน Odoo 19
                    การกำหนด group ทำใน BLOCK 3
     ══════════════════════════════════════════════════════════════════ -->
-    <data noupdate="1">
+    <data noupdate="0">
 
         <!-- ─── 👑 เจ้าของร้าน ─────────────────────────────────────────── -->
         <record id="user_owner" model="res.users">
             <field name="name">คุณรัน เจ้าของร้าน</field>
             <field name="login">owner@ran-ahlai.com</field>
             <field name="email">owner@ran-ahlai.com</field>
-            <field name="password">Changeme@1</field>
+            <field name="password">admin</field>
             <field name="lang">th_TH</field>
             <field name="tz">Asia/Bangkok</field>
         </record>
@@ -155,7 +155,7 @@
             <field name="name">คุณนิดา บัญชีดี</field>
             <field name="login">account@ran-ahlai.com</field>
             <field name="email">account@ran-ahlai.com</field>
-            <field name="password">Changeme@1</field>
+            <field name="password">admin</field>
             <field name="lang">th_TH</field>
             <field name="tz">Asia/Bangkok</field>
         </record>
@@ -168,7 +168,7 @@
             <field name="name">คุณสมชาย คลังดี</field>
             <field name="login">inv01@ran-ahlai.com</field>
             <field name="email">inv01@ran-ahlai.com</field>
-            <field name="password">Changeme@1</field>
+            <field name="password">admin</field>
             <field name="lang">th_TH</field>
             <field name="tz">Asia/Bangkok</field>
         </record>
@@ -176,12 +176,12 @@
             <field name="user_id" ref="user_inv_001"/>
         </record>
 
-        <!-- ─── 🏭 พนักงานคลัง 2: คุณวิชัย ─────────────────────────────── -->
+        <!-- ─── 🏭 พนักงานคลัง 2: คุณวิชัย จัดสต็อก ─────────────────────────────── -->
         <record id="user_inv_002" model="res.users">
             <field name="name">คุณวิชัย จัดสต็อก</field>
             <field name="login">inv02@ran-ahlai.com</field>
             <field name="email">inv02@ran-ahlai.com</field>
-            <field name="password">Changeme@1</field>
+            <field name="password">admin</field>
             <field name="lang">th_TH</field>
             <field name="tz">Asia/Bangkok</field>
         </record>
@@ -189,12 +189,12 @@
             <field name="user_id" ref="user_inv_002"/>
         </record>
 
-        <!-- ─── 🏭 พนักงานคลัง 3: คุณสุดา ──────────────────────────────── -->
+        <!-- ─── 🏭 พนักงานคลัง 3: คุณสุดา รับของ ──────────────────────────────── -->
         <record id="user_inv_003" model="res.users">
             <field name="name">คุณสุดา รับของ</field>
             <field name="login">inv03@ran-ahlai.com</field>
             <field name="email">inv03@ran-ahlai.com</field>
-            <field name="password">Changeme@1</field>
+            <field name="password">admin</field>
             <field name="lang">th_TH</field>
             <field name="tz">Asia/Bangkok</field>
         </record>

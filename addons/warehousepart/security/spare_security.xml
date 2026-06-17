@@ -84,6 +84,7 @@
                 (4, ref('point_of_sale.group_pos_manager')),
                 (4, ref('purchase.group_purchase_manager')),
                 (4, ref('base.group_erp_manager')),
+                (4, ref('base.group_system')),
             ]"/>
             <field name="comment">เข้าถึงทุกเมนูและฟีเจอร์ทั้งหมดของระบบ — ดูสินค้า, การเงิน, คลัง, POS ได้ทุกอย่าง</field>
         </record>

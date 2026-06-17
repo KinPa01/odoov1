@@ -54,7 +54,7 @@
             <field name="name">พนักงานบัญชี (Accountant)</field>
             <field name="implied_ids" eval="[
                 (4, ref('base.group_user')),
-                (4, ref('account.group_account_user')),
+                (4, ref('account.group_account_manager')),
             ]"/>
             <field name="comment">ดูและจัดการรายรับ/รายจ่าย + ข้อมูลเงินเดือนพนักงาน — ไม่สามารถดูคลังหรือ POS ได้</field>
         </record>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             📈 รายได้สุทธิของสินค้า — store.product.income
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── List View ──────────────────────────────────────────────── -->
+        <record id="view_product_income_list" model="ir.ui.view">
+            <field name="name">store.product.income.list</field>
+            <field name="model">store.product.income</field>
+            <field name="arch" type="xml">
+                <list string="รายได้สุทธิสินค้า"
+                      decoration-success="net_profit &gt; 0"
+                      decoration-danger="net_profit &lt; 0"
+                      decoration-warning="net_profit == 0">
+                    <field name="period_month" string="เดือน"/>
+                    <field name="period_year" string="ปี"/>
+                    <field name="product_id" string="สินค้า"/>
+                    <field name="categ_id" string="หมวดหมู่" optional="show"/>
+                    <field name="sale_price" string="ราคาขาย" optional="show"/>
+                    <field name="cost_price" string="ต้นทุน/ชิ้น" optional="show"/>
+                    <field name="qty_sold" string="จำนวนขาย (ชิ้น)" sum="รวม"/>
+                    <field name="total_revenue" string="รายรับรวม (บาท)" sum="รวม"/>
+                    <field name="total_cost" string="ต้นทุนรวม (บาท)" sum="รวม"/>
+                    <field name="gross_profit" string="กำไรขั้นต้น (บาท)" sum="รวม"
+                           decoration-success="gross_profit &gt; 0"
+                           decoration-danger="gross_profit &lt; 0"/>
+                    <field name="net_profit" string="รายได้สุทธิ (บาท)" sum="รวม"
+                           decoration-success="net_profit &gt; 0"
+                           decoration-danger="net_profit &lt; 0"/>
+                    <field name="margin_pct" string="% กำไร"
+                           decoration-success="margin_pct &gt;= 20"
+                           decoration-warning="margin_pct &gt; 0 and margin_pct &lt; 20"
+                           decoration-danger="margin_pct &lt;= 0"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ─── Form View ──────────────────────────────────────────────── -->
+        <record id="view_product_income_form" model="ir.ui.view">
+            <field name="name">store.product.income.form</field>
+            <field name="model">store.product.income</field>
+            <field name="arch" type="xml">
+                <form string="รายได้สุทธิสินค้า">
+                    <header>
+                        <button name="action_sync_from_pos"
+                                string="🔄 Sync จาก POS"
+                                type="object"
+                                class="btn-primary"
+                                groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="product_name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="ข้อมูลสินค้า">
+                                <field name="product_id" options="{'no_create': True}"/>
+                                <field name="categ_id" readonly="1"/>
+                            </group>
+                            <group string="ช่วงเวลา">
+                                <field name="period_month"/>
+                                <field name="period_year"/>
+                            </group>
+                        </group>
+
+                        <group string="ราคา">
+                            <group>
+                                <field name="sale_price" readonly="1"/>
+                                <field name="cost_price" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <group string="ยอดขาย">
+                            <group string="ยอดจริง">
+                                <field name="qty_sold"/>
+                                <field name="total_revenue"/>
+                            </group>
+                            <group string="คำนวณ (อัตโนมัติ)">
+                                <field name="total_cost" readonly="1"/>
+                                <field name="gross_profit" readonly="1"
+                                       class="fw-bold"/>
+                                <field name="net_profit" readonly="1"
+                                       class="fw-bold text-success"/>
+                                <field name="margin_pct" readonly="1"
+                                       string="อัตรากำไร (%)"/>
+                            </group>
+                        </group>
+
+                        <group string="หมายเหตุ">
+                            <field name="note" nolabel="1" placeholder="บันทึกเพิ่มเติม..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Graph View ─────────────────────────────────────────────── -->
+        <record id="view_product_income_graph" model="ir.ui.view">
+            <field name="name">store.product.income.graph</field>
+            <field name="model">store.product.income</field>
+            <field name="arch" type="xml">
+                <graph string="กำไรต่อสินค้า" type="bar">
+                    <field name="product_id" type="row"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="total_revenue" type="measure"/>
+                    <field name="total_cost" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ─── Pivot View ─────────────────────────────────────────────── -->
+        <record id="view_product_income_pivot" model="ir.ui.view">
+            <field name="name">store.product.income.pivot</field>
+            <field name="model">store.product.income</field>
+            <field name="arch" type="xml">
+                <pivot string="วิเคราะห์รายได้สุทธิสินค้า">
+                    <field name="product_id" type="row"/>
+                    <field name="period_month" type="col"/>
+                    <field name="net_profit" type="measure"/>
+                    <field name="total_revenue" type="measure"/>
+                    <field name="margin_pct" type="measure"/>
+                    <field name="qty_sold" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- ─── Search View ────────────────────────────────────────────── -->
+        <record id="view_product_income_search" model="ir.ui.view">
+            <field name="name">store.product.income.search</field>
+            <field name="model">store.product.income</field>
+            <field name="arch" type="xml">
+                <search string="ค้นหารายได้สุทธิสินค้า">
+                    <field name="product_id" string="ชื่อสินค้า"/>
+                    <field name="categ_id" string="หมวดหมู่"/>
+                    <separator/>
+                    <filter string="กำไร" name="filter_profit"
+                            domain="[('net_profit','&gt;',0)]"/>
+                    <filter string="ขาดทุน" name="filter_loss"
+                            domain="[('net_profit','&lt;',0)]"/>
+                    <filter string="กำไรสูง (&gt;20%)" name="filter_high_margin"
+                            domain="[('margin_pct','&gt;=',20)]"/>
+                    <separator/>
+                    <group>
+                        <filter string="หมวดหมู่" name="group_categ"
+                                context="{'group_by': 'categ_id'}"/>
+                        <filter string="เดือน" name="group_month"
+                                context="{'group_by': 'period_month'}"/>
+                        <filter string="สินค้า" name="group_product"
+                                context="{'group_by': 'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ─── Sync Wizard Form ───────────────────────────────────────── -->
+        <record id="view_product_income_wizard_form" model="ir.ui.view">
+            <field name="name">store.product.income.wizard.form</field>
+            <field name="model">store.product.income.wizard</field>
+            <field name="arch" type="xml">
+                <form string="🔄 Sync รายได้สุทธิสินค้าจาก POS">
+                    <sheet>
+                        <div class="oe_title">
+                            <h2>ดึงข้อมูลยอดขายจาก POS</h2>
+                            <p class="text-muted">
+                                ระบบจะดึงยอดขายจาก POS Orders ของเดือนที่เลือก
+                                แล้วคำนวณรายได้สุทธิต่อสินค้าอัตโนมัติ
+                            </p>
+                        </div>
+                        <group>
+                            <group string="ช่วงเวลา">
+                                <field name="period_month"/>
+                                <field name="period_year"/>
+                            </group>
+                            <group string="ตัวเลือก">
+                                <field name="overwrite" string="เขียนทับข้อมูลเดิม (ถ้ามี)"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_sync"
+                                string="🔄 Sync ข้อมูล"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="ยกเลิก" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Actions ─────────────────────────────────────────────────── -->
+        <record id="action_product_income" model="ir.actions.act_window">
+            <field name="name">📈 รายได้สุทธิสินค้า</field>
+            <field name="res_model">store.product.income</field>
+            <field name="view_mode">list,graph,pivot,form</field>
+            <field name="search_view_id" ref="view_product_income_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีข้อมูลรายได้สุทธิสินค้า
+                </p>
+                <p>
+                    ใช้ปุ่ม <b>🔄 Sync จาก POS</b> เพื่อดึงข้อมูลจากยอดขาย POS อัตโนมัติ
+                    หรือคลิก <b>สร้าง</b> เพื่อกรอกข้อมูลด้วยตนเอง
+                </p>
+            </field>
+        </record>
+
+        <record id="action_product_income_sync_wizard" model="ir.actions.act_window">
+            <field name="name">🔄 Sync รายได้สุทธิสินค้า</field>
+            <field name="res_model">store.product.income.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             📥 รับสินค้า/ตรวจสอบสินค้า — พนักงานคลัง
+             (stock.picking ประเภท incoming — รับของจากซัพพลายเออร์)
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── List View: รับสินค้า ─────────────────────────────────────── -->
+        <record id="view_goods_receipt_list" model="ir.ui.view">
+            <field name="name">stock.picking.goods.receipt.list</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <list string="รับสินค้าเข้าคลัง"
+                      decoration-success="state == 'done'"
+                      decoration-warning="state == 'assigned'"
+                      decoration-info="state == 'confirmed'"
+                      decoration-muted="state == 'cancel'">
+                    <field name="name" string="เลขที่ใบรับ"/>
+                    <field name="scheduled_date" string="วันที่กำหนดรับ"/>
+                    <field name="date_done" string="วันที่รับจริง" optional="show"/>
+                    <field name="partner_id" string="ซัพพลายเออร์"/>
+                    <field name="origin" string="อ้างอิง PO" optional="show"/>
+                    <field name="state" string="สถานะ"
+                           widget="badge"
+                           decoration-info="state == 'confirmed'"
+                           decoration-warning="state == 'assigned'"
+                           decoration-success="state == 'done'"
+                           decoration-danger="state == 'cancel'"/>
+                    <button name="action_confirm"
+                            string="ยืนยัน"
+                            type="object"
+                            icon="fa-check"
+                            invisible="state != 'draft'"
+                            class="btn-secondary btn-sm"/>
+                    <button name="button_validate"
+                            string="✅ รับสินค้า"
+                            type="object"
+                            icon="fa-truck"
+                            invisible="state not in ('assigned','confirmed')"
+                            class="btn-primary btn-sm"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ─── Form View: รับสินค้า ─────────────────────────────────────── -->
+        <record id="view_goods_receipt_form" model="ir.ui.view">
+            <field name="name">stock.picking.goods.receipt.form</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <form string="ใบรับสินค้าเข้าคลัง">
+                    <header>
+                        <button name="action_confirm"
+                                string="📋 ยืนยันใบรับ"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_assign"
+                                string="🔍 ตรวจสอบความพร้อม"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state != 'confirmed'"/>
+                        <button name="button_validate"
+                                string="✅ รับสินค้าเข้าคลัง"
+                                type="object"
+                                class="btn-success"
+                                invisible="state not in ('assigned','confirmed')"
+                                confirm="ยืนยันการรับสินค้าเข้าคลัง? ระบบจะอัปเดตสต็อกอัตโนมัติ"/>
+                        <button name="action_cancel"
+                                string="❌ ยกเลิก"
+                                type="object"
+                                class="btn-danger"
+                                invisible="state in ('done','cancel')"
+                                groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,assigned,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="ใบรับสินค้า"/>
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="ข้อมูลการรับ">
+                                <field name="partner_id" string="ซัพพลายเออร์"
+                                       options="{'no_create': True}"/>
+                                <field name="scheduled_date" string="วันที่กำหนดรับ"/>
+                                <field name="date_done" string="รับจริงวันที่" readonly="1"
+                                       invisible="not date_done"/>
+                            </group>
+                            <group string="อ้างอิง">
+                                <field name="origin" string="เลขที่ PO อ้างอิง"/>
+                                <field name="location_id" string="จากที่ไหน" readonly="1"/>
+                                <field name="location_dest_id" string="ปลายทาง (คลัง)"/>
+                            </group>
+                        </group>
+
+                        <!-- รายการสินค้าที่รับ -->
+                        <field name="move_ids">
+                            <list editable="bottom"
+                                  string="รายการสินค้าที่รับ"
+                                  decoration-success="state == 'done'">
+                                <field name="product_id" string="สินค้า"
+                                       options="{'no_create': True}"/>
+                                <field name="description_picking" string="รายละเอียด"
+                                       optional="hide"/>
+                                <field name="product_uom_qty" string="จำนวนที่สั่ง"/>
+                                <field name="quantity" string="จำนวนที่รับจริง"/>
+                                <field name="product_uom" string="หน่วย" readonly="1"/>
+                                <field name="state" string="สถานะ" readonly="1"
+                                       widget="badge"
+                                       decoration-success="state == 'done'"
+                                       decoration-warning="state == 'assigned'"
+                                       optional="show"/>
+                            </list>
+                        </field>
+
+
+                        <group string="หมายเหตุ">
+                            <field name="note" nolabel="1" placeholder="บันทึกการตรวจสอบ..."/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Search View ────────────────────────────────────────────── -->
+        <record id="view_goods_receipt_search" model="ir.ui.view">
+            <field name="name">stock.picking.goods.receipt.search</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <search string="ค้นหาใบรับสินค้า">
+                    <field name="name" string="เลขที่ใบรับ"/>
+                    <field name="partner_id" string="ซัพพลายเออร์"/>
+                    <field name="origin" string="เลข PO"/>
+                    <separator/>
+                    <filter string="📋 รอยืนยัน" name="filter_confirmed"
+                            domain="[('state','=','confirmed')]"/>
+                    <filter string="🔍 พร้อมรับ" name="filter_ready"
+                            domain="[('state','=','assigned')]"/>
+                    <filter string="✅ รับแล้ว" name="filter_done"
+                            domain="[('state','=','done')]"/>
+                    <filter string="วันนี้" name="filter_today"
+                            domain="[('scheduled_date','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')),
+                                     ('scheduled_date','&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                    <separator/>
+                    <group>
+                        <filter string="ซัพพลายเออร์" name="group_partner"
+                                context="{'group_by': 'partner_id'}"/>
+                        <filter string="วันที่" name="group_date"
+                                context="{'group_by': 'scheduled_date:day'}"/>
+                        <filter string="สถานะ" name="group_state"
+                                context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ─── Actions: รับสินค้า ──────────────────────────────────────── -->
+        <!-- Action หลัก: พนักงานคลังรับสินค้า -->
+        <record id="action_goods_receipt_inventory" model="ir.actions.act_window">
+            <field name="name">📥 รับสินค้าเข้าคลัง</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids" eval="[(5,0,0),
+                (0,0,{'view_mode':'list','view_id':ref('view_goods_receipt_list')}),
+                (0,0,{'view_mode':'form','view_id':ref('view_goods_receipt_form')}),
+            ]"/>
+            <field name="domain">[('picking_type_code','=','incoming'),('state','not in',['cancel'])]</field>
+            <field name="context">{'search_default_filter_ready': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ไม่มีใบรับสินค้าที่รอดำเนินการ
+                </p>
+                <p>
+                    ใบรับสินค้าจะสร้างอัตโนมัติจากใบสั่งซื้อ (Purchase Order)<br/>
+                    คลิกที่ใบรับเพื่อตรวจสอบและยืนยันการรับสินค้า
+                </p>
+            </field>
+        </record>
+
+        <!-- Action: รับสินค้าทั้งหมด (รวม done/cancel) -->
+        <record id="action_goods_receipt_all" model="ir.actions.act_window">
+            <field name="name">📦 ประวัติรับสินค้าทั้งหมด</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids" eval="[(5,0,0),
+                (0,0,{'view_mode':'list','view_id':ref('view_goods_receipt_list')}),
+                (0,0,{'view_mode':'form','view_id':ref('view_goods_receipt_form')}),
+            ]"/>
+            <field name="domain">[('picking_type_code','=','incoming')]</field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+</odoo>

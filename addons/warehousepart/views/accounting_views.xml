@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             Views สำหรับ store.income.expense (รายรับ-รายจ่ายร้าน)
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── List View ──────────────────────────────────────────────── -->
+        <record id="view_store_income_expense_list" model="ir.ui.view">
+            <field name="name">store.income.expense.list</field>
+            <field name="model">store.income.expense</field>
+            <field name="arch" type="xml">
+                <list string="รายรับ-รายจ่ายร้าน" decoration-success="transaction_type == 'income' and state == 'confirmed'" decoration-danger="transaction_type == 'expense' and state == 'confirmed'" decoration-muted="state == 'cancelled'" decoration-warning="state == 'draft'">
+                    <field name="transaction_date" string="วันที่"/>
+                    <field name="name" string="รายละเอียด"/>
+                    <field name="transaction_type" string="ประเภท" widget="badge" decoration-success="transaction_type == 'income'" decoration-danger="transaction_type == 'expense'"/>
+                    <field name="category_display" string="หมวดหมู่"/>
+                    <field name="partner_id" string="คู่ค้า" optional="show"/>
+                    <field name="amount" string="จำนวนเงิน (บาท)" sum="รวม"/>
+                    <field name="reference" string="อ้างอิง" optional="show"/>
+                    <field name="state" string="สถานะ" widget="badge" decoration-warning="state == 'draft'" decoration-success="state == 'confirmed'" decoration-danger="state == 'cancelled'"/>
+                    <field name="created_by" string="บันทึกโดย" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ─── Form View ──────────────────────────────────────────────── -->
+        <record id="view_store_income_expense_form" model="ir.ui.view">
+            <field name="name">store.income.expense.form</field>
+            <field name="model">store.income.expense</field>
+            <field name="arch" type="xml">
+                <form string="บันทึกรายรับ-รายจ่าย">
+                    <header>
+                        <button name="action_confirm" string="✅ ยืนยัน" type="object" class="btn-primary" invisible="state != 'draft'" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                        <button name="action_cancel" string="❌ ยกเลิก" type="object" class="btn-secondary" invisible="state == 'cancelled'" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                        <button name="action_reset_to_draft" string="🔄 รีเซ็ตเป็นร่าง" type="object" class="btn-secondary" invisible="state != 'cancelled'" groups="warehousepart.group_spare_owner"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="รายละเอียดธุรกรรม"/>
+                            <h1>
+                                <field name="name" placeholder="ระบุรายละเอียด..."/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="ข้อมูลหลัก">
+                                <field name="transaction_type" widget="radio"/>
+                                <field name="income_category" invisible="transaction_type != 'income'"/>
+                                <field name="expense_category" invisible="transaction_type != 'expense'"/>
+                                <field name="transaction_date"/>
+                            </group>
+                            <group string="ยอดเงิน">
+                                <field name="amount" widget="monetary"/>
+                                <field name="currency_id" groups="base.group_multi_currency"/>
+                                <field name="reference"/>
+                                <field name="partner_id"/>
+                            </group>
+                        </group>
+
+                        <group string="ข้อมูลระบบ">
+                            <group>
+                                <field name="created_by" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="account_move_id" readonly="1" invisible="not account_move_id"/>
+                            </group>
+                        </group>
+
+                        <group string="หมายเหตุ">
+                            <field name="note" nolabel="1" placeholder="บันทึกเพิ่มเติม..."/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Search View ────────────────────────────────────────────── -->
+        <record id="view_store_income_expense_search" model="ir.ui.view">
+            <field name="name">store.income.expense.search</field>
+            <field name="model">store.income.expense</field>
+            <field name="arch" type="xml">
+                <search string="ค้นหารายรับ-รายจ่าย">
+                    <field name="name" string="รายละเอียด"/>
+                    <field name="partner_id" string="คู่ค้า"/>
+                    <field name="reference" string="เลขอ้างอิง"/>
+                    <separator/>
+                    <filter string="💚 รายรับ" name="filter_income" domain="[('transaction_type','=','income')]"/>
+                    <filter string="🔴 รายจ่าย" name="filter_expense" domain="[('transaction_type','=','expense')]"/>
+                    <separator/>
+                    <filter string="📝 ร่าง" name="filter_draft" domain="[('state','=','draft')]"/>
+                    <filter string="✅ ยืนยันแล้ว" name="filter_confirmed" domain="[('state','=','confirmed')]"/>
+                    <separator/>
+                    <filter string="เดือนนี้" name="filter_this_month" domain="[('transaction_date','&gt;=', (context_today()).strftime('%Y-%m-01'))]"/>
+                    <separator/>
+                    <group>
+                        <filter string="ประเภท" name="group_type" context="{'group_by': 'transaction_type'}"/>
+                        <filter string="หมวดหมู่รายรับ" name="group_income_cat" context="{'group_by': 'income_category'}"/>
+                        <filter string="หมวดหมู่รายจ่าย" name="group_expense_cat" context="{'group_by': 'expense_category'}"/>
+                        <filter string="เดือน" name="group_month" context="{'group_by': 'transaction_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ─── Graph View ─────────────────────────────────────────────── -->
+        <record id="view_store_income_expense_graph" model="ir.ui.view">
+            <field name="name">store.income.expense.graph</field>
+            <field name="model">store.income.expense</field>
+            <field name="arch" type="xml">
+                <graph string="กราฟรายรับ-รายจ่าย" type="bar">
+                    <field name="transaction_date" type="row" interval="month"/>
+                    <field name="transaction_type" type="col"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ─── Pivot View ─────────────────────────────────────────────── -->
+        <record id="view_store_income_expense_pivot" model="ir.ui.view">
+            <field name="name">store.income.expense.pivot</field>
+            <field name="model">store.income.expense</field>
+            <field name="arch" type="xml">
+                <pivot string="วิเคราะห์รายรับ-รายจ่าย">
+                    <field name="transaction_date" type="row" interval="month"/>
+                    <field name="transaction_type" type="col"/>
+                    <field name="amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- ─── Action ─────────────────────────────────────────────────── -->
+        <record id="action_store_income_expense" model="ir.actions.act_window">
+            <field name="name">📊 รายรับ-รายจ่ายร้าน</field>
+            <field name="res_model">store.income.expense</field>
+            <field name="view_mode">list,form,graph,pivot</field>
+            <field name="search_view_id" ref="view_store_income_expense_search"/>
+            <field name="context">{'search_default_filter_confirmed': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีรายการรายรับ-รายจ่าย
+                </p>
+                <p>
+                    คลิก                    <b>สร้าง</b> เพื่อบันทึกรายรับหรือรายจ่ายของร้าน
+                </p>
+            </field>
+        </record>
+
+        <!-- Action: เฉพาะรายรับ -->
+        <record id="action_store_income_only" model="ir.actions.act_window">
+            <field name="name">💚 รายรับ (Income)</field>
+            <field name="res_model">store.income.expense</field>
+            <field name="view_mode">list,form,graph,pivot</field>
+            <field name="domain">[('transaction_type','=','income')]</field>
+            <field name="context">{'default_transaction_type': 'income', 'search_default_filter_income': 1}</field>
+        </record>
+
+        <!-- Action: เฉพาะรายจ่าย -->
+        <record id="action_store_expense_only" model="ir.actions.act_window">
+            <field name="name">🔴 รายจ่าย (Expense)</field>
+            <field name="res_model">store.income.expense</field>
+            <field name="view_mode">list,form,graph,pivot</field>
+            <field name="domain">[('transaction_type','=','expense')]</field>
+            <field name="context">{'default_transaction_type': 'expense', 'search_default_filter_expense': 1}</field>
+        </record>
+
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             Views สำหรับ employee.salary.payment (เงินเดือน)
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ─── List View ──────────────────────────────────────────────── -->
+        <record id="view_salary_payment_list" model="ir.ui.view">
+            <field name="name">employee.salary.payment.list</field>
+            <field name="model">employee.salary.payment</field>
+            <field name="arch" type="xml">
+                <list string="รายการจ่ายเงินเดือน" decoration-success="state == 'paid'" decoration-warning="state == 'confirmed'" decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'">
+                    <header>
+                        <button name="action_confirm" string="✅ ยืนยันรายการที่เลือก" type="object" class="btn-primary" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                        <button name="action_mark_paid" string="💰 บันทึกการจ่ายที่เลือก" type="object" class="btn-success" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner" confirm="ยืนยันการบันทึกจ่ายเงินเดือนสำหรับทุกรายการที่เลือก? ระบบจะสร้างรายการรายจ่ายของร้านให้อัตโนมัติ"/>
+                        <button name="action_cancel" string="❌ ยกเลิกรายการที่เลือก" type="object" class="btn-secondary" groups="warehousepart.group_spare_owner" confirm="ยืนยันการยกเลิกรายการที่เลือกหรือไม่?"/>
+                    </header>
+                    <field name="payment_date" string="วันที่จ่าย"/>
+                    <field name="employee_id" string="พนักงาน"/>
+                    <field name="salary_type" string="ประเภท" widget="badge"/>
+                    <field name="period_month" string="เดือน"/>
+                    <field name="period_year" string="ปี"/>
+                    <field name="base_salary" string="เงินเดือน" sum="รวมเงินเดือน"/>
+                    <field name="ot_amount" string="ค่า OT" sum="รวม OT" optional="show"/>
+                    <field name="bonus_amount" string="โบนัส" sum="รวมโบนัส" optional="show"/>
+                    <field name="deduction_amount" string="หัก" sum="รวมหัก" optional="show"/>
+                    <field name="total_amount" string="ยอดสุทธิ (บาท)" sum="รวมสุทธิ"/>
+                    <field name="payment_method" string="ช่องทาง" optional="show"/>
+                    <field name="state" string="สถานะ" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'confirmed'" decoration-success="state == 'paid'" decoration-danger="state == 'cancelled'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ─── Form View ──────────────────────────────────────────────── -->
+        <record id="view_salary_payment_form" model="ir.ui.view">
+            <field name="name">employee.salary.payment.form</field>
+            <field name="model">employee.salary.payment</field>
+            <field name="arch" type="xml">
+                <form string="บันทึกการจ่ายเงินเดือน">
+                    <header>
+                        <!-- ปุ่มดึงจาก HR Payslip -->
+                        <button name="action_open_payslip_import" string="📥 ดึงเงินเดือนจาก HR Payslip" type="object" class="btn-info" title="ดึงข้อมูลจากสลิปเงินเดือน HR เข้าระบบบัญชี"/>
+                        <button name="action_confirm" string="✅ ยืนยัน" type="object" class="btn-primary" invisible="state != 'draft'" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                        <button name="action_mark_paid" string="💰 บันทึกการจ่าย" type="object" class="btn-success" invisible="state != 'confirmed'" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner" confirm="ยืนยันการจ่ายเงินเดือน? ระบบจะสร้างรายการรายจ่ายอัตโนมัติ"/>
+                        <button name="action_cancel" string="❌ ยกเลิก" type="object" class="btn-secondary" invisible="state in ('cancelled','paid')" groups="warehousepart.group_spare_owner"/>
+                        <button name="action_reset_draft" string="🔄 กลับเป็นร่าง" type="object" invisible="state != 'cancelled'" groups="warehousepart.group_spare_owner"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="display_name" string="รายการจ่ายเงินเดือน"/>
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <!-- สรุปจากระบบลงเวลา -->
+                        <div class="alert alert-info" role="alert" invisible="attendance_days == 0">
+                            <b>📊 ข้อมูลจากระบบลงเวลาเดือนนี้:</b>
+                            วันทำงาน                            <field name="attendance_days" readonly="1" nolabel="1"/>
+ วัน |
+                            OT <field name="attendance_ot" readonly="1" nolabel="1"/>
+ ชม.
+                        </div>
+
+                        <group>
+                            <group string="ข้อมูลพนักงาน">
+                                <field name="employee_id" options="{'no_create': True}"/>
+                                <field name="salary_type"/>
+                                <field name="payment_date"/>
+                            </group>
+                            <group string="ช่วงเวลา">
+                                <field name="period_month"/>
+                                <field name="period_year"/>
+                            </group>
+                        </group>
+
+                        <group string="ค่าตอบแทน">
+                            <group string="รายรับ">
+                                <field name="base_salary" widget="monetary"/>
+                                <field name="ot_hours"/>
+                                <field name="ot_rate_per_hour" widget="monetary"/>
+                                <field name="ot_amount" widget="monetary" readonly="1"/>
+                                <field name="bonus_amount" widget="monetary"/>
+                            </group>
+                            <group string="หักเงิน">
+                                <field name="deduction_amount" widget="monetary"/>
+                                <field name="deduction_reason" invisible="deduction_amount == 0"/>
+                                <field name="currency_id" groups="base.group_multi_currency"/>
+                                <field name="total_amount" widget="monetary" readonly="1" class="fw-bold text-success"/>
+                            </group>
+                        </group>
+
+                        <group string="ช่องทางการจ่าย">
+                            <group>
+                                <field name="payment_method"/>
+                                <field name="bank_account" invisible="payment_method == 'cash'"/>
+                                <field name="reference"/>
+                            </group>
+                            <group>
+                                <field name="approved_by" readonly="1" invisible="not approved_by"/>
+                                <field name="paid_by" readonly="1" invisible="not paid_by"/>
+                            </group>
+                        </group>
+
+                        <group string="หมายเหตุ">
+                            <field name="note" nolabel="1" placeholder="บันทึกเพิ่มเติม..."/>
+                        </group>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- ─── Search View ────────────────────────────────────────────── -->
+        <record id="view_salary_payment_search" model="ir.ui.view">
+            <field name="name">employee.salary.payment.search</field>
+            <field name="model">employee.salary.payment</field>
+            <field name="arch" type="xml">
+                <search string="ค้นหารายการเงินเดือน">
+                    <field name="employee_id" string="ชื่อพนักงาน"/>
+                    <field name="reference" string="เลขอ้างอิง"/>
+                    <separator/>
+                    <filter string="📝 ร่าง" name="filter_draft" domain="[('state','=','draft')]"/>
+                    <filter string="✅ ยืนยัน" name="filter_confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="💰 จ่ายแล้ว" name="filter_paid" domain="[('state','=','paid')]"/>
+                    <separator/>
+                    <filter string="รายเดือน" name="filter_monthly" domain="[('salary_type','=','monthly')]"/>
+                    <filter string="OT" name="filter_ot" domain="[('salary_type','=','ot')]"/>
+                    <filter string="โบนัส" name="filter_bonus" domain="[('salary_type','=','bonus')]"/>
+                    <separator/>
+                    <group>
+                        <filter string="พนักงาน" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                        <filter string="เดือน" name="group_month" context="{'group_by': 'period_month'}"/>
+                        <filter string="ประเภท" name="group_type" context="{'group_by': 'salary_type'}"/>
+                        <filter string="สถานะ" name="group_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ─── Pivot View ─────────────────────────────────────────────── -->
+        <record id="view_salary_payment_pivot" model="ir.ui.view">
+            <field name="name">employee.salary.payment.pivot</field>
+            <field name="model">employee.salary.payment</field>
+            <field name="arch" type="xml">
+                <pivot string="วิเคราะห์เงินเดือน">
+                    <field name="employee_id" type="row"/>
+                    <field name="period_month" type="col"/>
+                    <field name="total_amount" type="measure"/>
+                    <field name="ot_amount" type="measure"/>
+                    <field name="base_salary" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- ─── Action ─────────────────────────────────────────────────── -->
+        <record id="action_salary_payment" model="ir.actions.act_window">
+            <field name="name">👥 การจ่ายเงินเดือนพนักงาน</field>
+            <field name="res_model">employee.salary.payment</field>
+            <field name="view_mode">list,form,pivot</field>
+            <field name="search_view_id" ref="view_salary_payment_search"/>
+            <field name="context">{'search_default_group_employee': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีรายการจ่ายเงินเดือน
+                </p>
+                <p>
+                    คลิก                    <b>สร้าง</b> เพื่อบันทึกการจ่ายเงินเดือนพนักงาน
+                </p>
+            </field>
+        </record>
+
+        <!-- ─── Inherit hr.employee form to add salary settings ────────── -->
+        <record id="view_employee_form_inherit_salary" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit.salary</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="💰 ข้อมูลรายได้และเงินเดือน" name="accounting_salary_info" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner">
+                        <group>
+                            <group string="ตั้งค่าเงินเดือน/ค่าแรง">
+                                <field name="custom_salary_type" string="ประเภทการจ้างงาน"/>
+                                <field name="custom_base_salary" string="เงินเดือนพื้นฐาน / ค่าจ้างต่อวัน / ชั่วโมง (บาท)"/>
+                                <field name="custom_ot_rate" string="อัตรา OT ต่อชั่วโมง (บาท)"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

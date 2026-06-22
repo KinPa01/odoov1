@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ══════════════════════════════════════════════════════════════════
+             🔄 Wizard: ดึงยอดขาย POS → ระบบบัญชี (store.pos.sync.wizard)
+             ══════════════════════════════════════════════════════════════════ -->
+        <record id="view_pos_sync_wizard_form" model="ir.ui.view">
+            <field name="name">store.pos.sync.wizard.form</field>
+            <field name="model">store.pos.sync.wizard</field>
+            <field name="arch" type="xml">
+                <form string="🔄 ดึงยอดขาย POS → ระบบบัญชี">
+                    <sheet>
+                        <div class="oe_title">
+                            <h2>🔄 Sync ยอดขาย POS เข้าระบบบัญชี</h2>
+                            <p class="text-muted">
+                                ใช้สำหรับดึงยอดขายย้อนหลัง หรือบันทึก POS ลงในรายการรายรับ
+                                สำหรับข้อมูลวันนี้ไม่จำเป็นต้อง sync เพราะ
+                                <b>สรุปประจำวัน</b> ดึงจาก POS อัตโนมัติอยู่แล้ว
+                            </p>
+                        </div>
+
+                        <group>
+                            <group string="📅 ช่วงวันที่">
+                                <field name="date_from" string="จากวันที่"/>
+                                <field name="date_to" string="ถึงวันที่"/>
+                                <field name="pos_config_ids"
+                                       string="ร้าน POS (ว่าง = ทั้งหมด)"
+                                       widget="many2many_tags"
+                                       options="{'no_create': True}"/>
+                            </group>
+                            <group string="⚙️ ตัวเลือก">
+                                <field name="group_by" string="การจัดกลุ่มข้อมูล"/>
+                                <field name="overwrite" string="เขียนทับรายการเดิม (ถ้ามี)"/>
+                                <field name="update_daily_summary"
+                                       string="บังคับคำนวณสรุปประจำวันใหม่ด้วย"/>
+                            </group>
+                        </group>
+
+                        <div class="alert alert-info" role="alert">
+                            <b>💡 หมายเหตุ:</b>
+                            หลัง sync เสร็จ ระบบจะเปิดหน้า <b>รายรับจาก POS</b>
+                            และถ้าติ๊ก "บังคับคำนวณสรุป" จะ recalculate
+                            <b>กำไรสุทธิประจำวัน</b> ทุกวันในช่วงที่เลือก
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="action_sync"
+                                string="🔄 Sync จาก POS เดี๋ยวนี้"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="ยกเลิก" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action: เปิด wizard -->
+        <record id="action_pos_sync_wizard" model="ir.actions.act_window">
+            <field name="name">🔄 Sync ยอดขาย POS → บัญชี</field>
+            <field name="res_model">store.pos.sync.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

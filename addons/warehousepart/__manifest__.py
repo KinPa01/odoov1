@@ -19,12 +19,13 @@
         'pos_hr',
         'account',
         'l10n_th',
-        'delivery'
+        'delivery',
     ],
     'data': [
         'data/warehouse_setup.xml',
         'security/spare_security.xml',
         'security/ir.model.access.csv',
+        'security/access_new_models.xml',
         # ── Views (actions ต้องโหลดก่อน menu ที่ใช้ action เหล่านั้น) ──
         'views/spare_quick_transfer_views.xml',
         'views/spare_part_views.xml',
@@ -32,6 +33,11 @@
         'views/homepage_category_views.xml',
         'views/hr_attendance_views.xml',
         'views/stock_overview_views.xml',
+        'views/accounting_views.xml',
+        'views/product_income_views.xml',
+        'views/daily_summary_views.xml',
+        'views/pos_sync_views.xml',
+        'views/payslip_import_views.xml',
         # ── Menu โหลดหลัง views/actions ทั้งหมด ──
         'views/menu_views.xml',
         'views/website_templates.xml',

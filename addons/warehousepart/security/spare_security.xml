@@ -85,6 +85,7 @@
                 (4, ref('purchase.group_purchase_manager')),
                 (4, ref('base.group_erp_manager')),
                 (4, ref('base.group_system')),
+                (4, ref('hr.group_hr_manager')),
             ]"/>
             <field name="comment">เข้าถึงทุกเมนูและฟีเจอร์ทั้งหมดของระบบ — ดูสินค้า, การเงิน, คลัง, POS ได้ทุกอย่าง</field>
         </record>
@@ -118,6 +119,48 @@
         <record id="group_warehousepart_stock" model="res.groups">
             <field name="name">Warehousepart / Stock (Legacy)</field>
             <field name="implied_ids" eval="[(4, ref('group_spare_inventory'))]"/>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             Record Rules — hr.attendance.custom
+             ══════════════════════════════════════════════════════════════════
+             กฎ:
+               • พนักงานทั่วไป (cashier, inventory, front_staff)
+                 → เห็นได้เฉพาะ attendance บันทึกของตัวเอง
+               • เจ้าของร้าน + บัญชี (owner, accountant, admin)
+                 → เห็น attendance ของทุกคน
+        ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- Rule 1: พนักงานทั่วไป — เห็นแค่ของตัวเอง -->
+        <record id="rule_attendance_own_only" model="ir.rule">
+            <field name="name">บันทึกเวลางาน — เห็นเฉพาะของตัวเอง (พนักงาน)</field>
+            <field name="model_id" ref="model_hr_attendance_custom"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[
+                (4, ref('warehousepart.group_spare_cashier')),
+                (4, ref('warehousepart.group_spare_inventory')),
+                (4, ref('warehousepart.group_spare_front_staff')),
+            ]"/>
+            <field name="perm_read"   eval="True"/>
+            <field name="perm_write"  eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Rule 2: เจ้าของ + บัญชี — เห็นทุกคน (global read) -->
+        <record id="rule_attendance_all_access" model="ir.rule">
+            <field name="name">บันทึกเวลางาน — เห็นทุกคน (Owner/Accountant)</field>
+            <field name="model_id" ref="model_hr_attendance_custom"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[
+                (4, ref('warehousepart.group_spare_owner')),
+                (4, ref('warehousepart.group_spare_accountant')),
+                (4, ref('warehousepart.group_spare_manager')),
+            ]"/>
+            <field name="perm_read"   eval="True"/>
+            <field name="perm_write"  eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
         </record>
 
     </data>

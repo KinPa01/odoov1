@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--
+        ══════════════════════════════════════════════════════════════════════════
+         Access rights สำหรับ model ใหม่ที่เพิ่มใน store_accounting.py
+         (ต้องใช้ XML แทน CSV เพราะ XML โหลดหลัง models ถูก register แล้ว)
+         ─────────────────────────────────────────────────────────────────────
+         Models ที่ครอบคลุม:
+           - store.daily.summary
+           - store.pos.sync.wizard
+        ══════════════════════════════════════════════════════════════════════════
+        -->
+
+        <!-- ─── store.daily.summary ─────────────────────────────────────────── -->
+        <record id="access_daily_summary_owner" model="ir.model.access">
+            <field name="name">store.daily.summary.owner</field>
+            <field name="model_id" ref="model_store_daily_summary"/>
+            <field name="group_id" ref="warehousepart.group_spare_owner"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_daily_summary_accountant" model="ir.model.access">
+            <field name="name">store.daily.summary.accountant</field>
+            <field name="model_id" ref="model_store_daily_summary"/>
+            <field name="group_id" ref="warehousepart.group_spare_accountant"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- ─── store.pos.sync.wizard ───────────────────────────────────────── -->
+        <record id="access_pos_sync_wizard_owner" model="ir.model.access">
+            <field name="name">store.pos.sync.wizard.owner</field>
+            <field name="model_id" ref="model_store_pos_sync_wizard"/>
+            <field name="group_id" ref="warehousepart.group_spare_owner"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_pos_sync_wizard_accountant" model="ir.model.access">
+            <field name="name">store.pos.sync.wizard.accountant</field>
+            <field name="model_id" ref="model_store_pos_sync_wizard"/>
+            <field name="group_id" ref="warehousepart.group_spare_accountant"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <!-- ─── store.payslip.import.wizard ─────────────────────────────────── -->
+        <record id="access_payslip_import_wizard_owner" model="ir.model.access">
+            <field name="name">store.payslip.import.wizard.owner</field>
+            <field name="model_id" ref="model_store_payslip_import_wizard"/>
+            <field name="group_id" ref="warehousepart.group_spare_owner"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_payslip_import_wizard_accountant" model="ir.model.access">
+            <field name="name">store.payslip.import.wizard.accountant</field>
+            <field name="model_id" ref="model_store_payslip_import_wizard"/>
+            <field name="group_id" ref="warehousepart.group_spare_accountant"/>
+            <field name="perm_read"   eval="1"/>
+            <field name="perm_write"  eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>

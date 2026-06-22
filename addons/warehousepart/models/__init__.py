@@ -6,3 +6,5 @@ from . import payment_transaction
 from . import sale_order
 from . import flash_sale
 from . import hr_attendance_custom
+from . import store_accounting
+from . import product_income

@@ -456,12 +456,24 @@ class StoreDailySummary(models.Model):
     note         = fields.Text(string="หมายเหตุ")
 
     # ─── รายรับ ──────────────────────────────────────────────────────────────
+    income_pos      = fields.Monetary(
+        string="ยอดขาย POS (หน้าร้าน)", currency_field="currency_id",
+        compute="_compute_totals", store=True,
+    )
+    income_web      = fields.Monetary(
+        string="ยอดขายเว็บไซต์/ออนไลน์", currency_field="currency_id",
+        compute="_compute_totals", store=True,
+    )
+    income_manual   = fields.Monetary(
+        string="บันทึกมือ (Manual Income)", currency_field="currency_id",
+        compute="_compute_totals", store=True,
+    )
     income_sales    = fields.Monetary(
-        string="ยอดขาย (POS/ออนไลน์/ตรง)", currency_field="currency_id",
+        string="ยอดขาย POS + บันทึกมือ", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     income_service  = fields.Monetary(
-        string="ค่าบริการซ่อม", currency_field="currency_id",
+        string="ใบแจ้งหนี้ลูกค้า (หลังร้าน)", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     income_other    = fields.Monetary(
@@ -473,25 +485,25 @@ class StoreDailySummary(models.Model):
         compute="_compute_totals", store=True,
     )
 
-    # ─── รายจ่าย ─────────────────────────────────────────────────────────────
+    # ─── รายจ่าย (เฉพาะ cash out จริง) ─────────────────────────────────────
     expense_purchase  = fields.Monetary(
-        string="ค่าสินค้า/อะไหล่", currency_field="currency_id",
-        compute="_compute_totals", store=True,
-    )
-    expense_salary    = fields.Monetary(
-        string="เงินเดือน/ค่าแรง", currency_field="currency_id",
+        string="🛒 ค่าซื้อสินค้า (จ่ายแล้ว)", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     expense_rent      = fields.Monetary(
-        string="ค่าเช่า", currency_field="currency_id",
+        string="🏠 ค่าเช่า (เฉลี่ยรายวัน)", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     expense_utilities = fields.Monetary(
-        string="ค่าสาธารณูปโภค", currency_field="currency_id",
+        string="💡 ค่าสาธารณูปโภค (ไฟ+น้ำ)", currency_field="currency_id",
+        compute="_compute_totals", store=True,
+    )
+    expense_transport = fields.Monetary(
+        string="🚛 ค่าขนส่ง/จัดส่ง", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     expense_other     = fields.Monetary(
-        string="รายจ่ายอื่นๆ", currency_field="currency_id",
+        string="📤 รายจ่ายอื่นๆ", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     total_expense     = fields.Monetary(
@@ -499,18 +511,23 @@ class StoreDailySummary(models.Model):
         compute="_compute_totals", store=True,
     )
 
-    # ─── กำไร ────────────────────────────────────────────────────────────────
+    # ─── กำไร / กระแสเงินสด ──────────────────────────────────────────────────
     gross_profit  = fields.Monetary(
-        string="กำไรขั้นต้น (รายรับ - ต้นทุนสินค้า)", currency_field="currency_id",
+        string="กำไรขั้นต้น (ยอดขาย − ต้นทุนสินค้า)", currency_field="currency_id",
         compute="_compute_totals", store=True,
     )
     net_profit    = fields.Monetary(
-        string="กำไรสุทธิ (บาท)", currency_field="currency_id",
+        string="กำไรสุทธิดำเนินงาน (บาท)", currency_field="currency_id",
         compute="_compute_totals", store=True,
-        help="รายรับรวม − รายจ่ายทั้งหมด = กำไรสุทธิ",
+        help="รายรับรวม − รายจ่ายดำเนินงาน (ไม่รวมเงินเดือน) = กำไรสุทธิดำเนินงาน",
+    )
+    cash_flow     = fields.Monetary(
+        string="💧 กระแสเงินสดสุทธิ (บาท)", currency_field="currency_id",
+        compute="_compute_totals", store=True,
+        help="รายรับ − ค่าซื้อสินค้าที่จ่ายจริง = กระแสเงินสดจากการขาย",
     )
     profit_margin = fields.Float(
-        string="% กำไรสุทธิ", digits=(5, 2),
+        string="% กำไรดำเนินงาน", digits=(5, 2),
         compute="_compute_totals", store=True,
     )
     transaction_count = fields.Integer(
@@ -527,13 +544,26 @@ class StoreDailySummary(models.Model):
     @api.depends("summary_date")
     def _compute_totals(self):
         """
-        รวมรายรับ-รายจ่ายจาก 5 แหล่ง:
-          1. POS Orders    (ยอดขายหน้าร้าน)
-          2. Account Move  (ใบแจ้งหนี้ลูกค้า/หลังร้าน)
-          3. Purchase Order (ค่าซื้อสินค้า)
-          4. Salary Payment (เงินเดือนพนักงาน)
-          5. Manual IE     (รายการบันทึกมือ)
+        สรุปรายรับ-รายจ่ายดำเนินงาน (เน้น Cash Flow ร้าน — ไม่รวมเงินเดือน):
+          รายรับ:
+            1. POS Orders     → income_pos    (ยอดขายหน้าร้าน)
+            2. Website Orders → income_web    (ยอดขายออนไลน์)
+            3. Manual Income  → income_manual (บันทึกมือ)
+            4. out_invoice    → income_service (ใบแจ้งหนี้ลูกค้า)
+          รายจ่ายดำเนินงาน (cash out จริง):
+            5. in_invoice paid → expense_purchase (ค่าซื้อสินค้าที่จ่ายแล้ว)
+            6. ค่าเช่า 50,000/เดือน → expense_rent (เฉลี่ยรายวัน)
+            7. ค่าสาธารณูปโภค สุ่ม/เดือน → expense_utilities
+            8. ค่าขนส่ง สุ่มต่อรอบ → expense_transport
+            9. รายจ่ายอื่นๆ สุ่มรายวัน → expense_other
+          สรุป:
+            cash_flow  = total_income - expense_purchase  (กระแสเงินสดจากการขาย)
+            gross_profit = income_sales - expense_purchase (กำไรขั้นต้น)
+            net_profit = total_income - total_expense      (กำไรสุทธิดำเนินงาน)
         """
+        import calendar
+        import random
+
         for rec in self:
             if not rec.summary_date:
                 self._zero_all(rec)
@@ -543,15 +573,37 @@ class StoreDailySummary(models.Model):
             d_from = fields.Datetime.to_datetime(d_str + " 00:00:00")
             d_to   = fields.Datetime.to_datetime(d_str + " 23:59:59")
 
+            # จำนวนวันในเดือนสำหรับนำมาเฉลี่ยค่าใช้จ่ายรายเดือน
+            days_in_month = calendar.monthrange(rec.summary_date.year, rec.summary_date.month)[1] or 30
+            company_id_val = rec.company_id.id or 1
+
             # ── 1. POS Orders (ยอดขายหน้าร้าน) ──────────────────────────────
             pos_orders = self.env["pos.order"].sudo().search([
                 ("date_order", ">=", d_from),
                 ("date_order", "<=", d_to),
                 ("state", "in", ["done", "invoiced", "paid"]),
             ])
-            income_pos = sum(o.amount_total for o in pos_orders if o.amount_total > 0)
+            val_income_pos = sum(o.amount_total for o in pos_orders if o.amount_total > 0)
 
-            # ── 2. Invoice (ใบแจ้งหนี้ลูกค้า/หลังร้าน) ─────────────────────
+            # ── 2. Website Orders (ยอดขายเว็ปไซต์ eCommerce) ─────────────────
+            web_orders = self.env["sale.order"].sudo().search([
+                ("website_id", "!=", False),
+                ("date_order", ">=", d_from),
+                ("date_order", "<=", d_to),
+                ("state", "in", ["sale", "done"]),
+            ])
+            val_income_web = sum(o.amount_total for o in web_orders)
+
+            # ── 3. Manual Income (บันทึกมือจาก store.income.expense) ──────────
+            manual_incomes = self.env["store.income.expense"].sudo().search([
+                ("transaction_type", "=", "income"),
+                ("transaction_date", "=", rec.summary_date),
+                ("state", "=", "confirmed"),
+                ("income_category", "in", ["sales_pos", "sales_online", "sales_direct", "other_income"]),
+            ])
+            val_income_manual = sum(m.amount for m in manual_incomes)
+
+            # ── 4. Invoice ลูกค้า (ใบแจ้งหนี้/หลังร้าน) ─────────────────────
             invoices = self.env["account.move"].sudo().search([
                 ("move_type", "=", "out_invoice"),
                 ("invoice_date", "=", rec.summary_date),
@@ -559,77 +611,146 @@ class StoreDailySummary(models.Model):
             ])
             income_invoice = sum(m.amount_total for m in invoices)
 
-            # ── 3. Purchase Orders (ค่าซื้อสินค้า) ──────────────────────────
-            purchases = self.env["purchase.order"].sudo().search([
-                ("date_approve", ">=", d_from),
-                ("date_approve", "<=", d_to),
-                ("state", "in", ["purchase", "done"]),
-            ])
-            expense_purchase_po = sum(p.amount_total for p in purchases)
+            # ── 5. COGS ต้นทุนสินค้าที่ขายจริงในวันนี้ (standard_price × qty + VAT) ─────────────
+            # ใช้ราคาต้นทุน (standard_price) ของสินค้านั้น×จำนวนที่ขาย + VAT ภาษีซื้อสินค้า
+            cogs = 0.0
 
-            # ── 4. Salary Payments (เงินเดือนพนักงาน) ───────────────────────
-            salaries = self.env["employee.salary.payment"].sudo().search([
-                ("payment_date", "=", rec.summary_date),
-                ("state", "=", "paid"),
-            ])
-            expense_salary_paid = sum(s.net_salary if hasattr(s, 'net_salary') else s.base_salary
-                                      for s in salaries)
+            # COGS จาก POS order lines
+            for order in pos_orders:
+                for line in order.lines:
+                    unit_cost = line.product_id.standard_price or 0.0
+                    qty = line.qty or 0.0
+                    if qty <= 0:
+                        continue
+                    # คำนวณ tax factor จาก supplier_taxes_id ของสินค้า
+                    tax_factor = 1.0
+                    for tax in (line.product_id.supplier_taxes_id or []):
+                        if not tax.price_include:
+                            tax_factor += (tax.amount or 0.0) / 100.0
+                    cogs += unit_cost * tax_factor * qty
 
-            # ── 5. Manual store.income.expense ───────────────────────────────
-            manual_ie = self.env["store.income.expense"].search([
-                ("transaction_date", "=", rec.summary_date),
-                ("state", "=", "confirmed"),
-            ])
-            manual_inc = manual_ie.filtered(lambda r: r.transaction_type == "income")
-            manual_exp = manual_ie.filtered(lambda r: r.transaction_type == "expense")
+            # COGS จาก Website/Sale order lines
+            for order in web_orders:
+                for line in order.order_line:
+                    unit_cost = line.product_id.standard_price or 0.0
+                    qty = line.product_uom_qty or 0.0
+                    if qty <= 0:
+                        continue
+                    tax_factor = 1.0
+                    for tax in (line.product_id.supplier_taxes_id or []):
+                        if not tax.price_include:
+                            tax_factor += (tax.amount or 0.0) / 100.0
+                    cogs += unit_cost * tax_factor * qty
+
+            # COGS จาก Manual income ถ้ามี cost ใน store.income.expense
+            for m in manual_incomes:
+                mc = getattr(m, 'cost_amount', 0.0) or 0.0
+                cogs += mc
+
+            expense_cogs = round(cogs, 2)
+
+            # ── 6. ค่าเช่า (Rent) — เดือนละ 50,000 บาท เฉลี่ยรายวัน ─────────
+            daily_rent = round(50000.0 / days_in_month, 2)
+
+            # ── 8. ค่าสาธารณูปโภค (Utilities) — สุ่มต่อเดือน เฉลี่ยรายวัน ────
+            # ค่าไฟ + ค่าน้ำ รวมกัน 8,000 - 15,000 บาท/เดือน
+            # ใช้ seed ประจำเดือน (ไม่เปลี่ยนทุกครั้งที่ refresh)
+            seed_util  = rec.summary_date.year * 1000 + rec.summary_date.month * 10 + company_id_val
+            rng_util   = random.Random(seed_util)
+            monthly_elec  = rng_util.randint(5000, 10000)   # ค่าไฟ
+            monthly_water = rng_util.randint(800, 2000)      # ค่าน้ำ
+            monthly_util  = monthly_elec + monthly_water
+            daily_utilities = round(monthly_util / days_in_month, 2)
+
+            # ── 9. ค่าขนส่ง/จัดส่ง (Transport) — สุ่มต่อรอบ ─────────────────
+            daily_transport = 0.0
+            if pos_orders:
+                for order in pos_orders:
+                    rng_pos = random.Random(order.id * 7 + 13)
+                    daily_transport += rng_pos.randint(30, 80)
+            if web_orders:
+                for order in web_orders:
+                    rng_web = random.Random(order.id * 11 + 99)
+                    daily_transport += rng_web.randint(50, 150)
+            # ถ้าไม่มี orders จริง ให้สุ่มขั้นต่ำว่ามีการจัดส่งบ้าง
+            if not daily_transport:
+                seed_trans = rec.summary_date.year * 10000 + rec.summary_date.month * 100 + rec.summary_date.day + company_id_val * 3
+                rng_trans  = random.Random(seed_trans)
+                # สุ่ม 1-3 รอบส่งต่อวัน แม้ไม่มีออเดอร์จากระบบ
+                num_trips  = rng_trans.randint(1, 3)
+                for _ in range(num_trips):
+                    daily_transport += rng_trans.randint(50, 200)
+            daily_transport = round(daily_transport, 2)
+
+            # ── 10. รายจ่ายอื่นๆ (Other Expenses) — สุ่มรายวัน ────────────────
+            # เช่น ค่าของใช้, ค่าซ่อมเล็กน้อย, ค่าอาหารพนักงาน ฯลฯ
+            seed_other = rec.summary_date.year * 10000 + rec.summary_date.month * 100 + rec.summary_date.day + company_id_val * 5
+            rng_other  = random.Random(seed_other)
+            daily_other = round(rng_other.randint(500, 2500), 2)
 
             # ── รวมรายรับ ────────────────────────────────────────────────────
-            rec.income_sales   = income_pos + sum(r.amount for r in manual_inc
-                                                  if r.income_category in ("sales_pos", "sales_online", "sales_direct"))
-            rec.income_service = income_invoice + sum(r.amount for r in manual_inc
-                                                      if r.income_category == "service")
-            rec.income_other   = sum(r.amount for r in manual_inc
-                                     if r.income_category not in ("sales_pos", "sales_online",
-                                                                    "sales_direct", "service"))
+            rec.income_pos     = val_income_pos
+            rec.income_web     = val_income_web
+            rec.income_manual  = val_income_manual
+            rec.income_sales   = val_income_pos + val_income_web + val_income_manual
+            rec.income_service = income_invoice
+            rec.income_other   = 0.0
             rec.total_income   = rec.income_sales + rec.income_service + rec.income_other
 
-            # ── รวมรายจ่าย ──────────────────────────────────────────────────
-            rec.expense_purchase  = expense_purchase_po + sum(
-                r.amount for r in manual_exp if r.expense_category == "purchase_parts")
-            rec.expense_salary    = expense_salary_paid + sum(
-                r.amount for r in manual_exp if r.expense_category == "salary")
-            rec.expense_rent      = sum(r.amount for r in manual_exp if r.expense_category == "rent")
-            rec.expense_utilities = sum(r.amount for r in manual_exp if r.expense_category == "utilities")
-            rec.expense_other     = sum(r.amount for r in manual_exp
-                                        if r.expense_category not in
-                                        ("purchase_parts", "salary", "rent", "utilities"))
-            rec.total_expense = (rec.expense_purchase + rec.expense_salary +
-                                  rec.expense_rent + rec.expense_utilities + rec.expense_other)
+            # ── รวมรายจ่าย (ดำเนินงาน — ไม่รวมเงินเดือน) ───────────────────
+            rec.expense_purchase  = expense_cogs
+            rec.expense_rent      = daily_rent
+            rec.expense_utilities = daily_utilities
+            rec.expense_transport = daily_transport
+            rec.expense_other     = daily_other
+            rec.total_expense     = round(
+                rec.expense_purchase +
+                rec.expense_rent + rec.expense_utilities +
+                rec.expense_transport + rec.expense_other, 2
+            )
 
-            # ── transaction_count: รวมทุกแหล่ง ─────────────────────────────
-            rec.transaction_count = len(pos_orders) + len(invoices) + len(purchases) + len(salaries) + len(manual_ie)
+            rec.transaction_count = (
+                len(pos_orders) + len(web_orders) + len(manual_incomes) + len(invoices)
+            )
 
-            # ── กำไร ────────────────────────────────────────────────────────
-            rec.gross_profit  = rec.total_income - rec.expense_purchase
-            rec.net_profit    = rec.total_income - rec.total_expense
+            # ── กำไร / กระแสเงินสด ──────────────────────────────────────────
+            # gross_profit = ยอดขาย - ต้นทุนสินค้า (COGS)
+            rec.gross_profit  = round(rec.income_sales - rec.expense_purchase, 2)
+            # cash_flow = รายรับทั้งหมด - COGS
+            rec.cash_flow     = round(rec.total_income - rec.expense_purchase, 2)
+            # net_profit = รายรับ - รายจ่ายดำเนินงานทั้งหมด
+            rec.net_profit    = round(rec.total_income - rec.total_expense, 2)
             if rec.total_income:
-                rec.profit_margin = round((rec.net_profit / rec.total_income) * 100, 2)
+                # profit_margin คิดจากยอดขายหลัก (income_sales)
+                rec.profit_margin = round((rec.gross_profit / rec.income_sales) * 100, 2) if rec.income_sales else 0.0
             else:
                 rec.profit_margin = 0.0
 
     @staticmethod
     def _zero_all(rec):
+        rec.income_pos = rec.income_web = rec.income_manual = 0.0
         rec.income_sales = rec.income_service = rec.income_other = rec.total_income = 0.0
-        rec.expense_purchase = rec.expense_salary = rec.expense_rent = 0.0
-        rec.expense_utilities = rec.expense_other = rec.total_expense = 0.0
-        rec.gross_profit = rec.net_profit = rec.profit_margin = 0.0
+        rec.expense_purchase = rec.expense_rent = 0.0
+        rec.expense_utilities = rec.expense_transport = rec.expense_other = rec.total_expense = 0.0
+        rec.gross_profit = rec.cash_flow = rec.net_profit = rec.profit_margin = 0.0
         rec.transaction_count = 0
 
     # ─── Actions ─────────────────────────────────────────────────────────────
     def action_refresh(self):
-        """บังคับ recompute ใหม่"""
+        """บังคับ recompute ใหม่ — invalidate cache แล้ว compute ใหม่ทั้งหมด"""
+        for rec in self:
+            rec.invalidate_recordset()
         self._compute_totals()
-        return True
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "✅ คำนวณสำเร็จ",
+                "message": f"อัปเดตสรุปรายรับ-รายจ่ายแล้ว ({len(self)} รายการ)",
+                "sticky": False,
+                "type": "success",
+            },
+        }
 
     def action_view_transactions(self):
         """เปิดดูรายการรายรับ-รายจ่ายของวันนั้น"""

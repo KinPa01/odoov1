@@ -11,29 +11,23 @@
             <field name="name">store.product.income.list</field>
             <field name="model">store.product.income</field>
             <field name="arch" type="xml">
-                <list string="รายได้สุทธิสินค้า"
-                      decoration-success="net_profit &gt; 0"
-                      decoration-danger="net_profit &lt; 0"
-                      decoration-warning="net_profit == 0">
+                <list string="รายได้สุทธิสินค้า" decoration-success="net_profit &gt; 0" decoration-danger="net_profit &lt; 0" decoration-warning="net_profit == 0" default_order="qty_sold desc">
                     <field name="period_month" string="เดือน"/>
                     <field name="period_year" string="ปี"/>
                     <field name="product_id" string="สินค้า"/>
-                    <field name="categ_id" string="หมวดหมู่" optional="show"/>
+                    <field name="categ_id" string="หมวดหมู่คลัง" optional="show"/>
+                    <field name="pos_categ_ids" string="หมวดหมู่ POS" widget="many2many_tags" optional="show"/>
                     <field name="sale_price" string="ราคาขาย" optional="show"/>
                     <field name="cost_price" string="ต้นทุน/ชิ้น" optional="show"/>
                     <field name="qty_sold" string="จำนวนขาย (ชิ้น)" sum="รวม"/>
+                    <field name="qty_available" string="สต๊อกคงเหลือ" decoration-danger="qty_available &lt;= 2" decoration-warning="qty_available &gt; 2 and qty_available &lt;= 5"/>
+                    <field name="incoming_qty" string="กำลังจัดส่งเข้า" optional="show"/>
+                    <field name="stock_status" string="คำแนะนำเติมสต๊อก" widget="badge" decoration-danger="stock_status == 'critical'" decoration-warning="stock_status == 'reorder'" decoration-success="stock_status == 'sufficient'" decoration-info="stock_status == 'overstock'"/>
                     <field name="total_revenue" string="รายรับรวม (บาท)" sum="รวม"/>
                     <field name="total_cost" string="ต้นทุนรวม (บาท)" sum="รวม"/>
-                    <field name="gross_profit" string="กำไรขั้นต้น (บาท)" sum="รวม"
-                           decoration-success="gross_profit &gt; 0"
-                           decoration-danger="gross_profit &lt; 0"/>
-                    <field name="net_profit" string="รายได้สุทธิ (บาท)" sum="รวม"
-                           decoration-success="net_profit &gt; 0"
-                           decoration-danger="net_profit &lt; 0"/>
-                    <field name="margin_pct" string="% กำไร"
-                           decoration-success="margin_pct &gt;= 20"
-                           decoration-warning="margin_pct &gt; 0 and margin_pct &lt; 20"
-                           decoration-danger="margin_pct &lt;= 0"/>
+                    <field name="gross_profit" string="กำไรขั้นต้น (บาท)" sum="รวม" decoration-success="gross_profit &gt; 0" decoration-danger="gross_profit &lt; 0"/>
+                    <field name="net_profit" string="รายได้สุทธิ (บาท)" sum="รวม" decoration-success="net_profit &gt; 0" decoration-danger="net_profit &lt; 0"/>
+                    <field name="margin_pct" string="% กำไร" decoration-success="margin_pct &gt;= 20" decoration-warning="margin_pct &gt; 0 and margin_pct &lt; 20" decoration-danger="margin_pct &lt;= 0"/>
                 </list>
             </field>
         </record>
@@ -45,11 +39,7 @@
             <field name="arch" type="xml">
                 <form string="รายได้สุทธิสินค้า">
                     <header>
-                        <button name="action_sync_from_pos"
-                                string="🔄 Sync จาก POS"
-                                type="object"
-                                class="btn-primary"
-                                groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
+                        <button name="action_sync_from_pos" string="🔄 Sync จาก POS" type="object" class="btn-primary" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -62,13 +52,22 @@
                             <group string="ข้อมูลสินค้า">
                                 <field name="product_id" options="{'no_create': True}"/>
                                 <field name="categ_id" readonly="1"/>
+                                <field name="pos_categ_ids" widget="many2many_tags" readonly="1"/>
                             </group>
                             <group string="ช่วงเวลา">
                                 <field name="period_month"/>
                                 <field name="period_year"/>
                             </group>
                         </group>
-
+                        <group string="สถานะคลังสินค้าและการวิเคราะห์">
+                            <group>
+                                <field name="qty_available" readonly="1"/>
+                                <field name="incoming_qty" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="stock_status" readonly="1"/>
+                            </group>
+                        </group>
                         <group string="ราคา">
                             <group>
                                 <field name="sale_price" readonly="1"/>
@@ -83,12 +82,9 @@
                             </group>
                             <group string="คำนวณ (อัตโนมัติ)">
                                 <field name="total_cost" readonly="1"/>
-                                <field name="gross_profit" readonly="1"
-                                       class="fw-bold"/>
-                                <field name="net_profit" readonly="1"
-                                       class="fw-bold text-success"/>
-                                <field name="margin_pct" readonly="1"
-                                       string="อัตรากำไร (%)"/>
+                                <field name="gross_profit" readonly="1" class="fw-bold"/>
+                                <field name="net_profit" readonly="1" class="fw-bold text-success"/>
+                                <field name="margin_pct" readonly="1" string="อัตรากำไร (%)"/>
                             </group>
                         </group>
 
@@ -137,22 +133,21 @@
             <field name="arch" type="xml">
                 <search string="ค้นหารายได้สุทธิสินค้า">
                     <field name="product_id" string="ชื่อสินค้า"/>
-                    <field name="categ_id" string="หมวดหมู่"/>
+                    <field name="categ_id" string="หมวดหมู่คลัง"/>
+                    <field name="pos_categ_ids" string="หมวดหมู่ POS"/>
                     <separator/>
-                    <filter string="กำไร" name="filter_profit"
-                            domain="[('net_profit','&gt;',0)]"/>
-                    <filter string="ขาดทุน" name="filter_loss"
-                            domain="[('net_profit','&lt;',0)]"/>
-                    <filter string="กำไรสูง (&gt;20%)" name="filter_high_margin"
-                            domain="[('margin_pct','&gt;=',20)]"/>
+                    <filter string="กำไร" name="filter_profit" domain="[('net_profit','&gt;',0)]"/>
+                    <filter string="ขาดทุน" name="filter_loss" domain="[('net_profit','&lt;',0)]"/>
+                    <filter string="กำไรสูง (&gt;20%)" name="filter_high_margin" domain="[('margin_pct','&gt;=',20)]"/>
+                    <separator/>
+                    <filter string="🔥 สินค้าขายดี (ขาย &gt;= 10 ชิ้น)" name="filter_best_sellers" domain="[('qty_sold','&gt;=',10)]"/>
+                    <filter string="💰 สินค้าขายดีมาก (ขาย &gt;= 50 ชิ้น)" name="filter_top_sellers" domain="[('qty_sold','&gt;=',50)]"/>
+                    <filter string="📉 สินค้าไม่ขาย" name="filter_no_sales" domain="[('qty_sold','=',0)]"/>
                     <separator/>
                     <group>
-                        <filter string="หมวดหมู่" name="group_categ"
-                                context="{'group_by': 'categ_id'}"/>
-                        <filter string="เดือน" name="group_month"
-                                context="{'group_by': 'period_month'}"/>
-                        <filter string="สินค้า" name="group_product"
-                                context="{'group_by': 'product_id'}"/>
+                        <filter string="หมวดหมู่" name="group_categ" context="{'group_by': 'categ_id'}"/>
+                        <filter string="เดือน" name="group_month" context="{'group_by': 'period_month'}"/>
+                        <filter string="สินค้า" name="group_product" context="{'group_by': 'product_id'}"/>
                     </group>
                 </search>
             </field>
@@ -183,10 +178,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="action_sync"
-                                string="🔄 Sync ข้อมูล"
-                                type="object"
-                                class="btn-primary"/>
+                        <button name="action_sync" string="🔄 Sync ข้อมูล" type="object" class="btn-primary"/>
                         <button string="ยกเลิก" special="cancel" class="btn-secondary"/>
                     </footer>
                 </form>
@@ -204,8 +196,8 @@
                     ยังไม่มีข้อมูลรายได้สุทธิสินค้า
                 </p>
                 <p>
-                    ใช้ปุ่ม <b>🔄 Sync จาก POS</b> เพื่อดึงข้อมูลจากยอดขาย POS อัตโนมัติ
-                    หรือคลิก <b>สร้าง</b> เพื่อกรอกข้อมูลด้วยตนเอง
+                    ใช้ปุ่ม                    <b>🔄 Sync จาก POS</b> เพื่อดึงข้อมูลจากยอดขาย POS อัตโนมัติ
+                    หรือคลิก                    <b>สร้าง</b> เพื่อกรอกข้อมูลด้วยตนเอง
                 </p>
             </field>
         </record>
@@ -228,34 +220,15 @@
             <field name="name">stock.picking.goods.receipt.list</field>
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
-                <list string="รับสินค้าเข้าคลัง"
-                      decoration-success="state == 'done'"
-                      decoration-warning="state == 'assigned'"
-                      decoration-info="state == 'confirmed'"
-                      decoration-muted="state == 'cancel'">
+                <list string="รับสินค้าเข้าคลัง" decoration-success="state == 'done'" decoration-warning="state == 'assigned'" decoration-info="state == 'confirmed'" decoration-muted="state == 'cancel'">
                     <field name="name" string="เลขที่ใบรับ"/>
                     <field name="scheduled_date" string="วันที่กำหนดรับ"/>
                     <field name="date_done" string="วันที่รับจริง" optional="show"/>
                     <field name="partner_id" string="ซัพพลายเออร์"/>
                     <field name="origin" string="อ้างอิง PO" optional="show"/>
-                    <field name="state" string="สถานะ"
-                           widget="badge"
-                           decoration-info="state == 'confirmed'"
-                           decoration-warning="state == 'assigned'"
-                           decoration-success="state == 'done'"
-                           decoration-danger="state == 'cancel'"/>
-                    <button name="action_confirm"
-                            string="ยืนยัน"
-                            type="object"
-                            icon="fa-check"
-                            invisible="state != 'draft'"
-                            class="btn-secondary btn-sm"/>
-                    <button name="button_validate"
-                            string="✅ รับสินค้า"
-                            type="object"
-                            icon="fa-truck"
-                            invisible="state not in ('assigned','confirmed')"
-                            class="btn-primary btn-sm"/>
+                    <field name="state" string="สถานะ" widget="badge" decoration-info="state == 'confirmed'" decoration-warning="state == 'assigned'" decoration-success="state == 'done'" decoration-danger="state == 'cancel'"/>
+                    <button name="action_confirm" string="ยืนยัน" type="object" icon="fa-check" invisible="state != 'draft'" class="btn-secondary btn-sm"/>
+                    <button name="button_validate" string="✅ รับสินค้า" type="object" icon="fa-truck" invisible="state not in ('assigned','confirmed')" class="btn-primary btn-sm"/>
                 </list>
             </field>
         </record>
@@ -267,30 +240,11 @@
             <field name="arch" type="xml">
                 <form string="ใบรับสินค้าเข้าคลัง">
                     <header>
-                        <button name="action_confirm"
-                                string="📋 ยืนยันใบรับ"
-                                type="object"
-                                class="btn-secondary"
-                                invisible="state != 'draft'"/>
-                        <button name="action_assign"
-                                string="🔍 ตรวจสอบความพร้อม"
-                                type="object"
-                                class="btn-secondary"
-                                invisible="state != 'confirmed'"/>
-                        <button name="button_validate"
-                                string="✅ รับสินค้าเข้าคลัง"
-                                type="object"
-                                class="btn-success"
-                                invisible="state not in ('assigned','confirmed')"
-                                confirm="ยืนยันการรับสินค้าเข้าคลัง? ระบบจะอัปเดตสต็อกอัตโนมัติ"/>
-                        <button name="action_cancel"
-                                string="❌ ยกเลิก"
-                                type="object"
-                                class="btn-danger"
-                                invisible="state in ('done','cancel')"
-                                groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"/>
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft,confirmed,assigned,done"/>
+                        <button name="action_confirm" string="📋 ยืนยันใบรับ" type="object" class="btn-secondary" invisible="state != 'draft'"/>
+                        <button name="action_assign" string="🔍 ตรวจสอบความพร้อม" type="object" class="btn-secondary" invisible="state != 'confirmed'"/>
+                        <button name="button_validate" string="✅ รับสินค้าเข้าคลัง" type="object" class="btn-success" invisible="state not in ('assigned','confirmed')" confirm="ยืนยันการรับสินค้าเข้าคลัง? ระบบจะอัปเดตสต็อกอัตโนมัติ"/>
+                        <button name="action_cancel" string="❌ ยกเลิก" type="object" class="btn-danger" invisible="state in ('done','cancel')" groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -302,11 +256,9 @@
 
                         <group>
                             <group string="ข้อมูลการรับ">
-                                <field name="partner_id" string="ซัพพลายเออร์"
-                                       options="{'no_create': True}"/>
+                                <field name="partner_id" string="ซัพพลายเออร์" options="{'no_create': True}"/>
                                 <field name="scheduled_date" string="วันที่กำหนดรับ"/>
-                                <field name="date_done" string="รับจริงวันที่" readonly="1"
-                                       invisible="not date_done"/>
+                                <field name="date_done" string="รับจริงวันที่" readonly="1" invisible="not date_done"/>
                             </group>
                             <group string="อ้างอิง">
                                 <field name="origin" string="เลขที่ PO อ้างอิง"/>
@@ -317,21 +269,13 @@
 
                         <!-- รายการสินค้าที่รับ -->
                         <field name="move_ids">
-                            <list editable="bottom"
-                                  string="รายการสินค้าที่รับ"
-                                  decoration-success="state == 'done'">
-                                <field name="product_id" string="สินค้า"
-                                       options="{'no_create': True}"/>
-                                <field name="description_picking" string="รายละเอียด"
-                                       optional="hide"/>
+                            <list editable="bottom" string="รายการสินค้าที่รับ" decoration-success="state == 'done'">
+                                <field name="product_id" string="สินค้า" options="{'no_create': True}"/>
+                                <field name="description_picking" string="รายละเอียด" optional="hide"/>
                                 <field name="product_uom_qty" string="จำนวนที่สั่ง"/>
                                 <field name="quantity" string="จำนวนที่รับจริง"/>
                                 <field name="product_uom" string="หน่วย" readonly="1"/>
-                                <field name="state" string="สถานะ" readonly="1"
-                                       widget="badge"
-                                       decoration-success="state == 'done'"
-                                       decoration-warning="state == 'assigned'"
-                                       optional="show"/>
+                                <field name="state" string="สถานะ" readonly="1" widget="badge" decoration-success="state == 'done'" decoration-warning="state == 'assigned'" optional="show"/>
                             </list>
                         </field>
 
@@ -355,23 +299,15 @@
                     <field name="partner_id" string="ซัพพลายเออร์"/>
                     <field name="origin" string="เลข PO"/>
                     <separator/>
-                    <filter string="📋 รอยืนยัน" name="filter_confirmed"
-                            domain="[('state','=','confirmed')]"/>
-                    <filter string="🔍 พร้อมรับ" name="filter_ready"
-                            domain="[('state','=','assigned')]"/>
-                    <filter string="✅ รับแล้ว" name="filter_done"
-                            domain="[('state','=','done')]"/>
-                    <filter string="วันนี้" name="filter_today"
-                            domain="[('scheduled_date','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')),
-                                     ('scheduled_date','&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                    <filter string="📋 รอยืนยัน" name="filter_confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="🔍 พร้อมรับ" name="filter_ready" domain="[('state','=','assigned')]"/>
+                    <filter string="✅ รับแล้ว" name="filter_done" domain="[('state','=','done')]"/>
+                    <filter string="วันนี้" name="filter_today" domain="[('scheduled_date','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('scheduled_date','&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
                     <separator/>
                     <group>
-                        <filter string="ซัพพลายเออร์" name="group_partner"
-                                context="{'group_by': 'partner_id'}"/>
-                        <filter string="วันที่" name="group_date"
-                                context="{'group_by': 'scheduled_date:day'}"/>
-                        <filter string="สถานะ" name="group_state"
-                                context="{'group_by': 'state'}"/>
+                        <filter string="ซัพพลายเออร์" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                        <filter string="วันที่" name="group_date" context="{'group_by': 'scheduled_date:day'}"/>
+                        <filter string="สถานะ" name="group_state" context="{'group_by': 'state'}"/>
                     </group>
                 </search>
             </field>

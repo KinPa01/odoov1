@@ -3,177 +3,162 @@
     <data>
 
         <!-- ══════════════════════════════════════════════════════════════════
-             📅 สรุปรายรับ-รายจ่าย-กำไรสุทธิประจำวัน
-             store.daily.summary
+             💧 สรุปกระแสเงินสดประจำวัน  (store.daily.summary)
+             ต้นทุนสินค้า = standard_price × qty × (1 + VAT%)
+             Cash Flow = รายรับ − ต้นทุนสินค้า
              ══════════════════════════════════════════════════════════════════ -->
 
-        <!-- ─── List View ─────────────────────────────────────────────────── -->
+        <!-- ─── List View ──────────────────────────────────────────────── -->
         <record id="view_daily_summary_list" model="ir.ui.view">
             <field name="name">store.daily.summary.list</field>
             <field name="model">store.daily.summary</field>
             <field name="arch" type="xml">
-                <list string="สรุปรายได้ประจำวัน"
-                      decoration-success="net_profit &gt; 0"
-                      decoration-danger="net_profit &lt; 0"
-                      default_order="summary_date desc">
-                    <field name="summary_date" string="วันที่"/>
-                    <field name="transaction_count" string="จำนวนรายการ"/>
+                <list string="สรุปกระแสเงินสดประจำวัน" decoration-success="net_profit &gt; 0" decoration-danger="net_profit &lt; 0" default_order="summary_date desc">
+                    <field name="summary_date" string="📅 วันที่"/>
+                    <field name="transaction_count" string="รายการ"/>
+                    <!-- รายรับ -->
                     <field name="total_income" string="💚 รายรับรวม" sum="รวม"/>
-                    <field name="expense_purchase" string="🔩 ต้นทุนสินค้า" optional="show" sum="รวม"/>
-                    <field name="expense_salary" string="👥 เงินเดือน" optional="show" sum="รวม"/>
+                    <field name="income_pos" string="🏪 POS" optional="show" sum="รวม"/>
+                    <field name="income_web" string="🌐 เว็บ" optional="show" sum="รวม"/>
+                    <field name="income_manual" string="✍️ บันทึกมือ" optional="hide" sum="รวม"/>
+                    <field name="income_service" string="🧾 ใบแจ้งหนี้" optional="hide" sum="รวม"/>
+                    <!-- ต้นทุน + รายจ่าย -->
+                    <field name="expense_purchase" string="📦 ต้นทุนสินค้า" sum="รวม" decoration-danger="expense_purchase &gt; 0"/>
                     <field name="expense_rent" string="🏠 ค่าเช่า" optional="hide" sum="รวม"/>
                     <field name="expense_utilities" string="💡 สาธารณูปโภค" optional="hide" sum="รวม"/>
+                    <field name="expense_transport" string="🚛 ขนส่ง" optional="hide" sum="รวม"/>
                     <field name="expense_other" string="📤 อื่นๆ" optional="hide" sum="รวม"/>
                     <field name="total_expense" string="🔴 รายจ่ายรวม" sum="รวม"/>
-                    <field name="gross_profit" string="กำไรขั้นต้น" optional="hide" sum="รวม"/>
-                    <field name="net_profit" string="💰 กำไรสุทธิ"
-                           sum="รวม"
-                           decoration-success="net_profit &gt; 0"
-                           decoration-danger="net_profit &lt; 0"/>
-                    <field name="profit_margin" string="% กำไร"
-                           decoration-success="profit_margin &gt;= 20"
-                           decoration-warning="profit_margin &gt; 0 and profit_margin &lt; 20"
-                           decoration-danger="profit_margin &lt;= 0"/>
-                    <button name="action_refresh"
-                            string="🔄"
-                            type="object"
-                            title="คำนวณใหม่"
-                            class="btn-sm"/>
-                    <button name="action_view_transactions"
-                            string="📋 ดูรายการ"
-                            type="object"
-                            class="btn-secondary btn-sm"/>
+                    <!-- กำไร -->
+                    <field name="gross_profit" string="📊 กำไรขั้นต้น" optional="show" sum="รวม" decoration-success="gross_profit &gt; 0" decoration-danger="gross_profit &lt; 0"/>
+                    <field name="net_profit" string="💰 กำไรสุทธิ" sum="รวม" decoration-success="net_profit &gt; 0" decoration-danger="net_profit &lt; 0"/>
+                    <field name="profit_margin" string="% กำไรขั้นต้น" decoration-success="profit_margin &gt;= 20" decoration-warning="profit_margin &gt; 0 and profit_margin &lt; 20" decoration-danger="profit_margin &lt;= 0"/>
+                    <button name="action_refresh" string="🔄" type="object" title="คำนวณใหม่" class="btn-sm"/>
+                    <button name="action_view_transactions" string="📋" type="object" title="ดูรายการ" class="btn-secondary btn-sm"/>
                 </list>
             </field>
         </record>
 
-        <!-- ─── Form View — Dashboard style ──────────────────────────────── -->
+        <!-- ─── Form View — Cash Flow Dashboard ──────────────────────── -->
         <record id="view_daily_summary_form" model="ir.ui.view">
             <field name="name">store.daily.summary.form</field>
             <field name="model">store.daily.summary</field>
             <field name="arch" type="xml">
-                <form string="สรุปรายรับ-รายจ่ายประจำวัน">
+                <form string="สรุปกระแสเงินสดประจำวัน">
                     <header>
-                        <button name="action_refresh"
-                                string="🔄 คำนวณใหม่"
-                                type="object"
-                                class="btn-primary"/>
-                        <button name="action_view_transactions"
-                                string="📋 ดูรายการมือ"
-                                type="object"
-                                class="btn-secondary"/>
+                        <button name="action_refresh" string="🔄 คำนวณใหม่" type="object" class="btn-primary"/>
+                        <button name="action_view_transactions" string="📋 ดูรายการบันทึกมือ" type="object" class="btn-secondary"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
-                            <label for="summary_date" string="📅 สรุปประจำวันที่"/>
+                            <label for="summary_date" string="📅 สรุปกระแสเงินสดประจำวันที่"/>
                             <h1>
                                 <field name="summary_date" options="{'datepicker': {'warn_future': true}}"/>
                             </h1>
-                            <div class="o_field_badge">
-                                <span class="badge rounded-pill bg-primary text-white"
-                                      style="font-size:1.1rem; padding:8px 18px;">
-                                    กำไรสุทธิ:
-                                    <field name="net_profit" readonly="1"/>
-                                    (<field name="profit_margin" readonly="1"/>%)
-                                </span>
+                        </div>
+
+                        <!-- ══ KPI 4 กล่อง ══ -->
+                        <div class="row mt-3 mb-3">
+                            <!-- รายรับรวม -->
+                            <div class="col-3">
+                                <div class="card border-success shadow-sm h-100">
+                                    <div class="card-body text-center py-3">
+                                        <div style="font-size:2rem;">💚</div>
+                                        <h6 class="card-title text-success fw-bold mb-1">รายรับรวม</h6>
+                                        <h4 class="text-success fw-bold mb-0">
+                                            <field name="total_income" readonly="1" widget="monetary"/>
+                                        </h4>
+                                        <small class="text-muted">
+                                            <field name="transaction_count" readonly="1"/>
+ รายการ
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ต้นทุนสินค้า -->
+                            <div class="col-3">
+                                <div class="card border-warning shadow-sm h-100">
+                                    <div class="card-body text-center py-3">
+                                        <div style="font-size:2rem;">📦</div>
+                                        <h6 class="card-title text-warning fw-bold mb-1">ต้นทุนสินค้า</h6>
+                                        <h4 class="text-warning fw-bold mb-0">
+                                            <field name="expense_purchase" readonly="1" widget="monetary"/>
+                                        </h4>
+                                        <small class="text-muted">standard_price + VAT</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cash Flow -->
+                            <div class="col-3">
+                                <div class="card border-info shadow-sm h-100">
+                                    <div class="card-body text-center py-3">
+                                        <div style="font-size:2rem;">💧</div>
+                                        <h6 class="card-title text-info fw-bold mb-1">กระแสเงินสด</h6>
+                                        <h4 class="fw-bold mb-0" style="color:#0dcaf0;">
+                                            <field name="cash_flow" readonly="1" widget="monetary"/>
+                                        </h4>
+                                        <small class="text-muted">รายรับ − ต้นทุนสินค้า</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- กำไรขั้นต้น + % -->
+                            <div class="col-3">
+                                <div class="card border-primary shadow-sm h-100">
+                                    <div class="card-body text-center py-3">
+                                        <div style="font-size:2rem;">📊</div>
+                                        <h6 class="card-title text-primary fw-bold mb-1">กำไรขั้นต้น</h6>
+                                        <h4 class="fw-bold mb-0" style="color:#0d6efd;">
+                                            <field name="gross_profit" readonly="1" widget="monetary"/>
+                                        </h4>
+                                        <small class="fw-bold text-primary">
+                                            <field name="profit_margin" readonly="1"/>
+% ของยอดขาย
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- ── สรุปภาพรวม 3 กล่อง ── -->
-                        <div class="row mt-3 mb-3">
-                            <div class="col-4">
-                                <div class="card border-success shadow-sm">
-                                    <div class="card-body text-center">
-                                        <h6 class="card-title text-success">💚 รายรับรวม</h6>
-                                        <h3 class="text-success fw-bold">
-                                            <field name="total_income" readonly="1" widget="monetary"/>
-                                        </h3>
-                                        <small class="text-muted">
-                                            <field name="transaction_count" readonly="1"/> รายการ
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card border-danger shadow-sm">
-                                    <div class="card-body text-center">
-                                        <h6 class="card-title text-danger">🔴 รายจ่ายรวม</h6>
-                                        <h3 class="text-danger fw-bold">
-                                            <field name="total_expense" readonly="1" widget="monetary"/>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="card border-primary shadow-sm">
-                                    <div class="card-body text-center">
-                                        <h6 class="card-title text-primary">💰 กำไรสุทธิ</h6>
-                                        <h3 class="fw-bold" style="color: var(--o-success-color, #28a745)">
-                                            <field name="net_profit" readonly="1" widget="monetary"/>
-                                        </h3>
-                                        <small>
-                                            <field name="profit_margin" readonly="1"/>%
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- กำไรสุทธิ banner -->
+                        <div class="alert alert-primary text-center mb-3 p-2">
+                            <strong>💰 กำไรสุทธิหลังหักค่าใช้จ่ายดำเนินงาน:</strong>
+                            <span class="fs-5 fw-bold ms-2">
+                                <field name="net_profit" readonly="1" widget="monetary"/>
+                            </span>
+                            <span class="text-muted ms-2">
+                                (รายรับ − รายจ่ายทั้งหมด)
+                            </span>
                         </div>
 
                         <group>
-                            <!-- รายรับแยกแหล่ง -->
-                            <group string="💚 รายรับ (แยกตามแหล่ง)">
-                                <field name="income_sales"
-                                       string="🏪 ยอดขาย POS + บันทึกมือ"
-                                       readonly="1"/>
-                                <field name="income_service"
-                                       string="🧾 ใบแจ้งหนี้ลูกค้า (หลังร้าน)"
-                                       readonly="1"/>
-                                <field name="income_other"
-                                       string="📥 รายรับอื่นๆ (บันทึกมือ)"
-                                       readonly="1"/>
-                                <field name="total_income"
-                                       string="รวมรายรับ"
-                                       readonly="1"
-                                       class="fw-bold text-success"/>
+                            <!-- ══ รายรับแยกแหล่ง ══ -->
+                            <group string="💚 รายรับ — แยกตามแหล่ง">
+                                <field name="income_pos" string="🏪 ยอดขาย POS (หน้าร้าน)" readonly="1"/>
+                                <field name="income_web" string="🌐 ยอดขายเว็บไซต์/ออนไลน์" readonly="1"/>
+                                <field name="income_manual" string="✍️ บันทึกมือ" readonly="1"/>
+                                <field name="income_sales" string="═ ยอดขายรวม (POS+เว็บ+มือ)" readonly="1" class="fw-bold"/>
+                                <field name="income_service" string="🧾 ใบแจ้งหนี้ลูกค้า (B2B)" readonly="1"/>
+                                <field name="total_income" string="═ รายรับรวมทั้งสิ้น" readonly="1" class="fw-bold text-success"/>
                             </group>
 
-                            <!-- รายจ่ายแยกแหล่ง -->
-                            <group string="🔴 รายจ่าย (แยกตามแหล่ง)">
-                                <field name="expense_purchase"
-                                       string="🛒 ค่าซื้อสินค้า (PO + บันทึกมือ)"
-                                       readonly="1"/>
-                                <field name="expense_salary"
-                                       string="👥 เงินเดือนพนักงาน (ที่จ่ายแล้ว)"
-                                       readonly="1"/>
-                                <field name="expense_rent"
-                                       string="🏠 ค่าเช่า"
-                                       readonly="1"/>
-                                <field name="expense_utilities"
-                                       string="💡 ค่าสาธารณูปโภค"
-                                       readonly="1"/>
-                                <field name="expense_other"
-                                       string="📤 รายจ่ายอื่นๆ"
-                                       readonly="1"/>
-                                <field name="total_expense"
-                                       string="รวมรายจ่าย"
-                                       readonly="1"
-                                       class="fw-bold text-danger"/>
+                            <!-- ══ ต้นทุนสินค้าและรายจ่าย ══ -->
+                            <group string="🔴 ต้นทุนและรายจ่ายดำเนินงาน">
+                                <field name="expense_purchase" string="📦 ต้นทุนสินค้าที่ขาย (standard_price × qty + VAT)" readonly="1" class="fw-bold text-warning"/>
+                                <field name="expense_rent" string="🏠 ค่าเช่า (50,000/เดือน เฉลี่ยรายวัน)" readonly="1"/>
+                                <field name="expense_utilities" string="💡 ค่าสาธารณูปโภค (ไฟ+น้ำ เฉลี่ยรายวัน)" readonly="1"/>
+                                <field name="expense_transport" string="🚛 ค่าขนส่ง/จัดส่ง" readonly="1"/>
+                                <field name="expense_other" string="📤 รายจ่ายอื่นๆ" readonly="1"/>
+                                <field name="total_expense" string="═ รายจ่ายรวมทั้งสิ้น" readonly="1" class="fw-bold text-danger"/>
                             </group>
                         </group>
 
-                        <!-- กำไร -->
-                        <group string="📊 สรุปกำไร">
+                        <!-- ══ สรุปกำไร 3 ระดับ ══ -->
+                        <group string="📊 สรุปกำไร 3 ระดับ">
                             <group>
-                                <field name="gross_profit"
-                                       string="กำไรขั้นต้น (รายรับ − ต้นทุนสินค้า)"
-                                       readonly="1"/>
-                                <field name="net_profit"
-                                       string="💰 กำไรสุทธิ (รายรับ − รายจ่ายทั้งหมด)"
-                                       readonly="1"
-                                       class="fw-bold"/>
-                                <field name="profit_margin"
-                                       string="% กำไรสุทธิ"
-                                       readonly="1"/>
+                                <field name="gross_profit" string="📊 กำไรขั้นต้น  =  ยอดขาย − ต้นทุนสินค้า" readonly="1" class="fw-bold"/>
+                                <field name="profit_margin" string="   % กำไรขั้นต้น  (gross profit margin)" readonly="1"/>
+                                <field name="cash_flow" string="💧 กระแสเงินสด  =  รายรับ − ต้นทุนสินค้า" readonly="1" class="fw-bold text-info"/>
+                                <field name="net_profit" string="💰 กำไรสุทธิ  =  รายรับ − รายจ่ายดำเนินงานทั้งหมด" readonly="1" class="fw-bold"/>
                             </group>
                         </group>
 
@@ -181,92 +166,115 @@
                             <field name="note" nolabel="1" placeholder="บันทึกเพิ่มเติม เช่น เหตุการณ์พิเศษวันนี้..."/>
                         </group>
 
+                        <!-- Info footer -->
                         <div class="alert alert-light border mt-2" role="alert">
                             <small class="text-muted">
-                                <b>📌 แหล่งข้อมูล:</b>
-                                รายรับ POS ← pos.order (done/paid) |
-                                ใบแจ้งหนี้ ← account.move out_invoice (posted) |
-                                ค่าซื้อ ← purchase.order (done) |
-                                เงินเดือน ← employee.salary.payment (paid) |
-                                รายการมือ ← store.income.expense (confirmed)
-                            </small>
-                        </div>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+                                <b>📌 วิธีคำนวณ:</b>
+                                <br/>
+                                🏪                                <b>POS</b> ← pos.order (done/invoiced/paid) |
+                                🌐                                <b>เว็บ</b> ← sale.order (website) |
+                                ✍️                                <b>บันทึกมือ</b> ← store.income.expense (confirmed)<br/>
+                                📦                            <b>ต้นทุนสินค้า</b> = Σ (standard_price × qty × (1+VAT%)) จากทุก order line ที่ขายวันนี้ |
+                                🏠                            <b>ค่าเช่า</b> 50,000/เดือน ÷ จำนวนวันในเดือน |
+                                💡                            <b>ไฟ+น้ำ</b> สุ่มต่อเดือน ÷ วัน |
+                                🚛                            <b>ขนส่ง</b> สุ่มต่อ order |
+                                📤                            <b>อื่นๆ</b> สุ่มรายวัน                            <br/>
+                            <b>% กำไรขั้นต้น</b> = กำไรขั้นต้น ÷ ยอดขาย × 100 |
+                            <b class="text-warning">เงินเดือนไม่รวมในหน้านี้</b> — ดูที่ เมนู พนักงาน → เงินเดือน
+                        </small>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <!-- ─── Graph View ─────────────────────────────────────────────────── -->
-        <record id="view_daily_summary_graph" model="ir.ui.view">
-            <field name="name">store.daily.summary.graph</field>
-            <field name="model">store.daily.summary</field>
-            <field name="arch" type="xml">
-                <graph string="รายได้-รายจ่าย-กำไรประจำวัน" type="bar">
-                    <field name="summary_date" type="row" interval="day"/>
-                    <field name="total_income" type="measure"/>
-                    <field name="total_expense" type="measure"/>
-                    <field name="net_profit" type="measure"/>
-                </graph>
-            </field>
-        </record>
+    <!-- ─── Graph View ─────────────────────────────────────────────── -->
+    <record id="view_daily_summary_graph" model="ir.ui.view">
+        <field name="name">store.daily.summary.graph</field>
+        <field name="model">store.daily.summary</field>
+        <field name="arch" type="xml">
+            <graph string="กระแสเงินสด + กำไรประจำวัน" type="bar">
+                <field name="summary_date" type="row" interval="day"/>
+                <field name="total_income" type="measure" string="รายรับ"/>
+                <field name="expense_purchase" type="measure" string="ต้นทุนสินค้า"/>
+                <field name="total_expense" type="measure" string="รายจ่ายรวม"/>
+                <field name="gross_profit" type="measure" string="กำไรขั้นต้น"/>
+                <field name="net_profit" type="measure" string="กำไรสุทธิ"/>
+                <field name="cash_flow" type="measure" string="Cash Flow"/>
+            </graph>
+        </field>
+    </record>
 
-        <!-- ─── Search View ────────────────────────────────────────────────── -->
-        <record id="view_daily_summary_search" model="ir.ui.view">
-            <field name="name">store.daily.summary.search</field>
-            <field name="model">store.daily.summary</field>
-            <field name="arch" type="xml">
-                <search string="ค้นหาสรุปรายวัน">
-                    <field name="summary_date" string="วันที่"/>
-                    <separator/>
-                    <filter string="🟢 กำไร" name="filter_profit"
-                            domain="[('net_profit','&gt;',0)]"/>
-                    <filter string="🔴 ขาดทุน" name="filter_loss"
-                            domain="[('net_profit','&lt;',0)]"/>
-                    <filter string="วันนี้" name="filter_today"
-                            domain="[('summary_date','=',context_today())]"/>
-                    <filter string="สัปดาห์นี้" name="filter_week"
-                            domain="[('summary_date','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                    <filter string="เดือนนี้" name="filter_month"
-                            domain="[('summary_date','&gt;=', context_today().strftime('%Y-%m-01'))]"/>
-                    <separator/>
-                    <group>
-                        <filter string="รายเดือน" name="group_month"
-                                context="{'group_by': 'summary_date:month'}"/>
-                        <filter string="รายสัปดาห์" name="group_week"
-                                context="{'group_by': 'summary_date:week'}"/>
-                    </group>
-                </search>
-            </field>
-        </record>
+    <!-- ─── Pivot View ─────────────────────────────────────────────── -->
+    <record id="view_daily_summary_pivot" model="ir.ui.view">
+        <field name="name">store.daily.summary.pivot</field>
+        <field name="model">store.daily.summary</field>
+        <field name="arch" type="xml">
+            <pivot string="สรุปรายรับ-รายจ่าย-กำไร">
+                <field name="summary_date" type="row" interval="month"/>
+                <field name="total_income" type="measure"/>
+                <field name="expense_purchase" type="measure"/>
+                <field name="gross_profit" type="measure"/>
+                <field name="total_expense" type="measure"/>
+                <field name="net_profit" type="measure"/>
+                <field name="profit_margin" type="measure"/>
+            </pivot>
+        </field>
+    </record>
 
-        <!-- ─── Actions ───────────────────────────────────────────────────── -->
-        <record id="action_daily_summary" model="ir.actions.act_window">
-            <field name="name">📅 สรุปรายรับ-รายจ่ายประจำวัน</field>
-            <field name="res_model">store.daily.summary</field>
-            <field name="view_mode">list,form,graph</field>
-            <field name="search_view_id" ref="view_daily_summary_search"/>
-            <field name="context">{'search_default_filter_month': 1}</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    ยังไม่มีข้อมูลสรุปประจำวัน
-                </p>
-                <p>
-                    คลิก <b>สร้าง</b> เลือกวันที่ แล้วกดปุ่ม
-                    <b>🔄 คำนวณใหม่</b> เพื่อดึงข้อมูลจากรายการรายรับ-รายจ่ายที่ยืนยันแล้ว
-                </p>
-            </field>
-        </record>
+    <!-- ─── Search View ──────────────────────────────────────────────── -->
+    <record id="view_daily_summary_search" model="ir.ui.view">
+        <field name="name">store.daily.summary.search</field>
+        <field name="model">store.daily.summary</field>
+        <field name="arch" type="xml">
+            <search string="ค้นหาสรุปรายวัน">
+                <field name="summary_date" string="วันที่"/>
+                <separator/>
+                <filter string="💚 Cash Flow บวก" name="filter_positive_cf" domain="[('cash_flow','&gt;',0)]"/>
+                <filter string="🔴 Cash Flow ติดลบ" name="filter_negative_cf" domain="[('cash_flow','&lt;',0)]"/>
+                <filter string="💰 กำไรสุทธิบวก" name="filter_profit" domain="[('net_profit','&gt;',0)]"/>
+                <filter string="📅 วันนี้" name="filter_today" domain="[('summary_date','=',context_today())]"/>
+                <filter string="📅 สัปดาห์นี้" name="filter_week" domain="[('summary_date','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="📅 เดือนนี้" name="filter_month" domain="[('summary_date','&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <group>
+                    <filter string="รายเดือน" name="group_month" context="{'group_by': 'summary_date:month'}"/>
+                    <filter string="รายสัปดาห์" name="group_week" context="{'group_by': 'summary_date:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
-        <!-- Server Action: สร้างสรุปวันนี้ด้วยปุ่มเดียว -->
-        <record id="action_generate_today_summary" model="ir.actions.server">
-            <field name="name">📅 สร้างสรุปวันนี้</field>
-            <field name="model_id" ref="model_store_daily_summary"/>
-            <field name="binding_model_id" ref="model_store_daily_summary"/>
-            <field name="state">code</field>
-            <field name="code">
+    <!-- ─── Window Action ────────────────────────────────────────────── -->
+    <record id="action_daily_summary" model="ir.actions.act_window">
+        <field name="name"> สรุปกระแสเงินสดประจำวัน</field>
+        <field name="res_model">store.daily.summary</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_daily_summary_search"/>
+        <field name="context">{'search_default_filter_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีข้อมูลสรุปกระแสเงินสด
+            </p>
+            <p>
+                    คลิก                <b>สร้าง</b> → เลือกวันที่ → กด                <b>🔄 คำนวณใหม่</b>
+                <br/>
+                    ระบบจะดึงยอดขาย POS + เว็บ คำนวณต้นทุนจาก standard_price
+                    และแสดง Cash Flow + กำไรขั้นต้น + กำไรสุทธิ
+            </p>
+        </field>
+    </record>
+
+    <!-- Server Action: สร้างสรุปวันนี้ -->
+    <record id="action_generate_today_summary" model="ir.actions.server">
+        <field name="name">📅 สร้างสรุปวันนี้</field>
+        <field name="model_id" ref="model_store_daily_summary"/>
+        <field name="binding_model_id" ref="model_store_daily_summary"/>
+        <field name="state">code</field>
+        <field name="code">
 action = model.action_generate_today()
-            </field>
-        </record>
+        </field>
+    </record>
 
-    </data>
+</data>
 </odoo>

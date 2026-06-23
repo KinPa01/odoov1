@@ -25,7 +25,9 @@
         <!-- ─── 1. พนักงานหน้าร้าน (ดูชั้นวาง read-only) ─────────────── -->
         <record id="group_spare_front_staff" model="res.groups">
             <field name="name">พนักงานหน้าร้าน (Front Staff)</field>
-            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="implied_ids" eval="[
+                (6, 0, [ref('base.group_user'), ref('hr_attendance.group_hr_attendance_officer')]),
+            ]"/>
             <field name="comment">ดูชั้นวางสินค้าและสต็อกคลังหน้าร้านได้ — ห้ามแก้ไขข้อมูล</field>
         </record>
 
@@ -33,8 +35,7 @@
         <record id="group_spare_cashier" model="res.groups">
             <field name="name">พนักงานขายหน้าร้าน / แคชเชียร์ (Cashier)</field>
             <field name="implied_ids" eval="[
-                (4, ref('base.group_user')),
-                (4, ref('point_of_sale.group_pos_user')),
+                (6, 0, [ref('base.group_user'), ref('point_of_sale.group_pos_user'), ref('hr_attendance.group_hr_attendance_officer')]),
             ]"/>
             <field name="comment">เข้าถึงได้เฉพาะ POS — ไม่สามารถดูคลัง, บัญชี หรือข้อมูลสินค้าในแบ็กเอนด์ได้</field>
         </record>
@@ -43,8 +44,7 @@
         <record id="group_spare_inventory" model="res.groups">
             <field name="name">พนักงานคลัง (Inventory Staff)</field>
             <field name="implied_ids" eval="[
-                (4, ref('base.group_user')),
-                (4, ref('stock.group_stock_user')),
+                (6, 0, [ref('base.group_user'), ref('stock.group_stock_user'), ref('hr_attendance.group_hr_attendance_officer')]),
             ]"/>
             <field name="comment">จัดการการจัดส่งสินค้าและโอนย้ายสินค้าในคลัง — ไม่สามารถดูบัญชีหรือ POS ได้</field>
         </record>
@@ -53,8 +53,7 @@
         <record id="group_spare_accountant" model="res.groups">
             <field name="name">พนักงานบัญชี (Accountant)</field>
             <field name="implied_ids" eval="[
-                (4, ref('base.group_user')),
-                (4, ref('account.group_account_manager')),
+                (6, 0, [ref('base.group_user'), ref('account.group_account_manager'), ref('hr_attendance.group_hr_attendance_officer'), ref('hr_attendance.group_hr_attendance_user'), ref('hr_attendance.group_hr_attendance_manager')]),
             ]"/>
             <field name="comment">ดูและจัดการรายรับ/รายจ่าย + ข้อมูลเงินเดือนพนักงาน — ไม่สามารถดูคลังหรือ POS ได้</field>
         </record>
@@ -63,9 +62,7 @@
         <record id="group_spare_manager" model="res.groups">
             <field name="name">ผู้จัดการร้าน (Manager)</field>
             <field name="implied_ids" eval="[
-                (4, ref('group_spare_cashier')),
-                (4, ref('group_spare_inventory')),
-                (4, ref('purchase.group_purchase_user')),
+                (6, 0, [ref('group_spare_cashier'), ref('group_spare_inventory'), ref('purchase.group_purchase_user'), ref('hr_attendance.group_hr_attendance_officer')]),
             ]"/>
             <field name="comment">จัดการสินค้า คลัง POS และการจัดซื้อ</field>
         </record>
@@ -74,18 +71,23 @@
         <record id="group_spare_owner" model="res.groups">
             <field name="name">เจ้าของร้าน (Owner)</field>
             <field name="implied_ids" eval="[
-                (4, ref('group_spare_front_staff')),
-                (4, ref('group_spare_cashier')),
-                (4, ref('group_spare_inventory')),
-                (4, ref('group_spare_accountant')),
-                (4, ref('group_spare_manager')),
-                (4, ref('account.group_account_manager')),
-                (4, ref('stock.group_stock_manager')),
-                (4, ref('point_of_sale.group_pos_manager')),
-                (4, ref('purchase.group_purchase_manager')),
-                (4, ref('base.group_erp_manager')),
-                (4, ref('base.group_system')),
-                (4, ref('hr.group_hr_manager')),
+                (6, 0, [
+                    ref('group_spare_front_staff'),
+                    ref('group_spare_cashier'),
+                    ref('group_spare_inventory'),
+                    ref('group_spare_accountant'),
+                    ref('group_spare_manager'),
+                    ref('account.group_account_manager'),
+                    ref('stock.group_stock_manager'),
+                    ref('point_of_sale.group_pos_manager'),
+                    ref('purchase.group_purchase_manager'),
+                    ref('base.group_erp_manager'),
+                    ref('base.group_system'),
+                    ref('hr.group_hr_manager'),
+                    ref('hr_attendance.group_hr_attendance_officer'),
+                    ref('hr_attendance.group_hr_attendance_user'),
+                    ref('hr_attendance.group_hr_attendance_manager')
+                ]),
             ]"/>
             <field name="comment">เข้าถึงทุกเมนูและฟีเจอร์ทั้งหมดของระบบ — ดูสินค้า, การเงิน, คลัง, POS ได้ทุกอย่าง</field>
         </record>
@@ -137,9 +139,7 @@
             <field name="model_id" ref="model_hr_attendance_custom"/>
             <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
             <field name="groups" eval="[
-                (4, ref('warehousepart.group_spare_cashier')),
-                (4, ref('warehousepart.group_spare_inventory')),
-                (4, ref('warehousepart.group_spare_front_staff')),
+                (4, ref('base.group_user')),
             ]"/>
             <field name="perm_read"   eval="True"/>
             <field name="perm_write"  eval="False"/>

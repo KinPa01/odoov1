@@ -57,6 +57,11 @@ class StoreProductIncome(models.Model):
     )
 
     # ─── ยอดขาย (บันทึกด้วย manual หรือ wizard sync) ────────────────────────
+    # ─── ยอดขาย (บันทึกด้วย manual หรือ wizard sync) ────────────────────────
+    pos_categ_ids = fields.Many2many(
+        "pos.category", string="หมวดหมู่ POS",
+        related="product_id.pos_categ_ids", readonly=True,
+    )
     qty_sold      = fields.Float(string="จำนวนที่ขาย (ชิ้น)", digits=(16, 2), default=0.0)
     total_revenue = fields.Float(string="รายรับรวม (บาท)", digits=(16, 2), default=0.0)
     total_cost    = fields.Float(string="ต้นทุนรวม (บาท)", compute="_compute_profit", store=True)
@@ -64,10 +69,83 @@ class StoreProductIncome(models.Model):
     net_profit    = fields.Float(string="รายได้สุทธิ (บาท)", compute="_compute_profit", store=True)
     margin_pct    = fields.Float(string="% กำไร", compute="_compute_profit", store=True, digits=(5, 2))
 
+    qty_available = fields.Float(
+        string="คงเหลือคงคลัง", compute="_compute_stock_fields",
+        search="_search_qty_available", store=False
+    )
+    incoming_qty = fields.Float(
+        string="กำลังจัดส่งเข้า", compute="_compute_stock_fields",
+        search="_search_incoming_qty", store=False
+    )
+    stock_status = fields.Selection([
+        ('critical', '🚨 วิกฤต/ใกล้หมด'),
+        ('reorder', '⚠️ ควรสั่งซื้อเพิ่ม'),
+        ('sufficient', '✅ พอดี/ปลอดภัย'),
+        ('overstock', '📦 สต๊อกบวม'),
+    ], string="คำแนะนำเติมสต๊อก", compute="_compute_stock_fields",
+       search="_search_stock_status", store=False)
+
     note          = fields.Text(string="หมายเหตุ")
     company_id    = fields.Many2one("res.company", default=lambda self: self.env.company)
 
     # ─── Computed ────────────────────────────────────────────────────────────
+    @api.depends("product_id", "qty_sold")
+    def _compute_stock_fields(self):
+        for rec in self:
+            if not rec.product_id:
+                rec.qty_available = 0.0
+                rec.incoming_qty = 0.0
+                rec.stock_status = 'sufficient'
+                continue
+            tmpl = rec.product_id
+            rec.qty_available = tmpl.qty_available
+            rec.incoming_qty = tmpl.incoming_qty
+            
+            if rec.qty_available <= 2:
+                rec.stock_status = 'critical'
+            elif rec.qty_available < rec.qty_sold * 0.5:
+                rec.stock_status = 'critical'
+            elif rec.qty_available < rec.qty_sold * 1.2:
+                rec.stock_status = 'reorder'
+            elif rec.qty_available > rec.qty_sold * 3.0 and rec.qty_available > 50:
+                rec.stock_status = 'overstock'
+            else:
+                rec.stock_status = 'sufficient'
+
+    def _search_qty_available(self, operator, value):
+        templates = self.env['product.template'].search([('qty_available', operator, value)])
+        return [('product_id', 'in', templates.ids)]
+
+    def _search_incoming_qty(self, operator, value):
+        templates = self.env['product.template'].search([('incoming_qty', operator, value)])
+        return [('product_id', 'in', templates.ids)]
+
+    def _search_stock_status(self, operator, value):
+        if operator != '=':
+            return []
+        
+        # ค้นหาแบบ dynamic ใน memory เพื่อเลี่ยงการใช้ SQL query กับ non-stored computed field
+        all_records = self.search([])
+        matched_ids = []
+        for rec in all_records:
+            qty_avail = rec.product_id.qty_available
+            qty_sold = rec.qty_sold
+            status = 'sufficient'
+            
+            if qty_avail <= 2:
+                status = 'critical'
+            elif qty_avail < qty_sold * 0.5:
+                status = 'critical'
+            elif qty_avail < qty_sold * 1.2:
+                status = 'reorder'
+            elif qty_avail > qty_sold * 3.0 and qty_avail > 50:
+                status = 'overstock'
+            
+            if status == value:
+                matched_ids.append(rec.id)
+                
+        return [('id', 'in', matched_ids)]
+
     @api.depends("qty_sold", "cost_price", "total_revenue")
     def _compute_profit(self):
         for rec in self:

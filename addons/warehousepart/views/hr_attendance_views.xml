@@ -153,7 +153,6 @@
             </field>
         </record>
 
-        <!-- ─── Actions ────────────────────────────────────────────────── -->
         <record id="action_attendance_custom" model="ir.actions.act_window">
             <field name="name">บันทึกเวลาทำงาน</field>
             <field name="res_model">hr.attendance.custom</field>
@@ -167,6 +166,46 @@
                 <p>
                     คลิก <b>สร้าง</b> เพื่อเพิ่มบันทึกเวลา<br/>
                     หรือใช้ <b>🎲 สร้างข้อมูลสุ่ม</b> เพื่อ generate ข้อมูลย้อนหลัง
+                </p>
+            </field>
+        </record>
+
+        <!-- ─── Action: ดูเวลาของตัวเอง (ทุก role) ───────────────────────── -->
+        <record id="action_attendance_my_own" model="ir.actions.act_window">
+            <field name="name">⏱️ เวลาทำงานของฉัน</field>
+            <field name="res_model">hr.attendance.custom</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_attendance_custom_search"/>
+            <!-- domain กรองแค่ employee ที่ผูกกับ user ปัจจุบัน -->
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+            <field name="context">{
+                'search_default_group_date': 1,
+                'default_employee_id': False
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีบันทึกเวลาของคุณ
+                </p>
+                <p>
+                    หน้านี้แสดง <b>เวลาทำงานของคุณเท่านั้น</b><br/>
+                    ติดต่อผู้จัดการเพื่อแก้ไขหรือเพิ่มบันทึก
+                </p>
+            </field>
+        </record>
+
+        <!-- ─── Action: ดูเวลาทุกคน (เจ้าของ/บัญชีเท่านั้น) ─────────────── -->
+        <record id="action_attendance_all_staff" model="ir.actions.act_window">
+            <field name="name">👥 เวลาทำงานทุกคน</field>
+            <field name="res_model">hr.attendance.custom</field>
+            <field name="view_mode">list,form,pivot</field>
+            <field name="search_view_id" ref="view_attendance_custom_search"/>
+            <field name="context">{'search_default_group_employee': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ยังไม่มีบันทึกเวลาทำงาน
+                </p>
+                <p>
+                    แสดง <b>บันทึกเวลาทำงานของพนักงานทุกคน</b>
                 </p>
             </field>
         </record>

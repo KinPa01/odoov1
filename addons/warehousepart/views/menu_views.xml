@@ -38,7 +38,7 @@
     ══════════════════════════════════════════════════════════════════════════ -->
 
     <!-- 🏗️ คลัง / รับ-ส่งสินค้า (seq 10) — พนักงานคลัง กดรับ/ตรวจสอบสินค้า -->
-    <menuitem id="menu_spare_warehouse_main" name="คลัง / รับ-ส่งสินค้า" parent="menu_warehousepart_root" groups="warehousepart.group_spare_inventory,warehousepart.group_spare_manager,warehousepart.group_spare_owner" sequence="10"/>
+    <menuitem id="menu_spare_warehouse_main" name="คลัง / รับ-ส่งสินค้า" parent="stock.menu_stock_root" groups="warehousepart.group_spare_inventory,warehousepart.group_spare_manager,warehousepart.group_spare_owner" sequence="10"/>
 
     <menuitem id="menu_goods_receipt_pending" name="รับสินค้าเข้าคลัง" parent="menu_spare_warehouse_main" action="action_goods_receipt_inventory" groups="warehousepart.group_spare_inventory,warehousepart.group_spare_manager,warehousepart.group_spare_owner" sequence="10"/>
 
@@ -76,12 +76,35 @@
 
     <menuitem id="menu_front_stock_view" name="📊 ดูสต็อกคลัง" parent="menu_spare_parts_main" action="action_stock_quant_front" sequence="40"/>
 
-    <!-- ⏱️ เวลาทำงาน (seq 30) -->
-    <menuitem id="menu_spare_attendance_main" name="⏱️ เวลาทำงาน" parent="menu_warehousepart_root" sequence="30"/>
+    <!-- ⏱️ ระบบลงเวลาทำงาน (seq 30) — ทุก role เห็นได้ -->
+    <menuitem id="menu_spare_attendance_main"
+              name="⏱️ ระบบลงเวลาทำงาน"
+              parent="menu_warehousepart_root"
+              sequence="30"/>
 
-    <menuitem id="menu_spare_attendance_list" name="📋 บันทึกเวลาเข้า-ออก" parent="menu_spare_attendance_main" action="action_attendance_custom" sequence="10"/>
+    <!-- ทุก role: ดูเวลาของตัวเอง (domain กรองเฉพาะ employee ที่ผูกกับ user) -->
+    <menuitem id="menu_spare_attendance_my_own"
+              name="📋 บันทึกเวลาเข้า-ออกของฉัน"
+              parent="menu_spare_attendance_main"
+              action="action_attendance_my_own"
+              sequence="10"/>
 
-    <menuitem id="menu_spare_attendance_generate" name="🎲 สร้างข้อมูลสุ่ม (Generate)" parent="menu_spare_attendance_main" action="action_attendance_generate_wizard" groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager" sequence="20"/>
+    <!-- เฉพาะบัญชี + เจ้าของ: ดูเวลาทุกคน -->
+    <menuitem id="menu_spare_attendance_all"
+              name="👥 เวลาทำงานทุกคน"
+              parent="menu_spare_attendance_main"
+              action="action_attendance_all_staff"
+              groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner,base.group_system"
+              sequence="20"/>
+
+    <!-- เฉพาะ manager + เจ้าของ: สร้างข้อมูลสุ่ม -->
+    <menuitem id="menu_spare_attendance_generate"
+              name="🎲 สร้างข้อมูลสุ่ม (Generate)"
+              parent="menu_spare_attendance_main"
+              action="action_attendance_generate_wizard"
+              groups="warehousepart.group_spare_owner,warehousepart.group_spare_manager"
+              sequence="30"/>
+
 
 
     <!-- 🤝 ผู้ติดต่อ (seq 40) -->
@@ -157,4 +180,9 @@
 
     <menuitem id="menu_spare_hr_salary" name="👥 ข้อมูลพนักงาน (HR)" parent="menu_spare_acct_section" action="action_spare_hr_employees_salary" groups="warehousepart.group_spare_accountant,warehousepart.group_spare_owner,base.group_system" sequence="60"/>
 -->
+    <!-- ย้ายเมนูการกำหนดค่า (Configuration) ให้อยู่หลัง "บัญชี" ในแถบเมนูบน
+         sequence 80 = อยู่ก่อน "บัญชีการขาย" (seq 90) -->
+    <menuitem id="account.menu_finance_configuration"
+              parent="account.menu_finance"
+              sequence="80"/>
 </odoo>
